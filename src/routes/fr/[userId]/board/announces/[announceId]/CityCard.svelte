@@ -23,7 +23,7 @@
 
 	const form = superForm(data, {
 		validators: zodClient(citySchema),
-    invalidateAll: true,
+		invalidateAll: true,
 		onResult({ result }) {
 			switch (result.type) {
 				case 'success':

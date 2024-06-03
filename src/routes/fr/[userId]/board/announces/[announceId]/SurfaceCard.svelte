@@ -11,21 +11,20 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Pencil2 } from 'svelte-radix';
 	import { mediaQuery } from 'svelte-legos';
-  import { Input } from "$lib/components/ui/input"
-  
+	import { Input } from '$lib/components/ui/input';
 
 	export let data: SuperValidated<Infer<SurfaceSchema>>;
 	export let content: string;
 
-  $: number = content
-  $: $formData.surface = number
+	$: number = content;
+	$: $formData.surface = number;
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 	let open = false;
 
 	const form = superForm(data, {
 		validators: zodClient(surfaceSchema),
-    invalidateAll: true,
+		invalidateAll: true,
 		onResult({ result }) {
 			switch (result.type) {
 				case 'success':
@@ -42,7 +41,6 @@
 	const { form: formData, enhance } = form;
 
 	$: $formData.surface = content;
-	
 </script>
 
 <div class="rounded-md border bg-background p-4 shadow-sm">
@@ -58,13 +56,23 @@
 					<Dialog.Content>
 						<Dialog.Header>
 							<Dialog.Title>Superficie</Dialog.Title>
-              <Dialog.Description>Modifier la superficie</Dialog.Description>
+							<Dialog.Description>Modifier la superficie</Dialog.Description>
 						</Dialog.Header>
 						<form action="?/editSurface" method="POST" use:enhance>
 							<Form.Field {form} name="surface">
 								<Form.Control let:attrs>
 									<Form.Label>Superficie (m2)</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.surface = number}} />
+									<Input
+										type="number"
+										min="0"
+										inputmode="numeric"
+										autocomplete="off"
+										{...attrs}
+										bind:value={number}
+										on:change={() => {
+											$formData.surface = number;
+										}}
+									/>
 								</Form.Control>
 								<Form.FieldErrors />
 							</Form.Field>
@@ -93,13 +101,23 @@
 							class="mx-auto flex w-[100%] flex-col"
 						>
 							<div class="px-4">
-							<Form.Field {form} name="surface">
-								<Form.Control let:attrs>
-									<Form.Label>Superficie (m2)</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.surface = number}} />
-								</Form.Control>
-								<Form.FieldErrors />
-							</Form.Field>
+								<Form.Field {form} name="surface">
+									<Form.Control let:attrs>
+										<Form.Label>Superficie (m2)</Form.Label>
+										<Input
+											type="number"
+											min="0"
+											inputmode="numeric"
+											autocomplete="off"
+											{...attrs}
+											bind:value={number}
+											on:change={() => {
+												$formData.surface = number;
+											}}
+										/>
+									</Form.Control>
+									<Form.FieldErrors />
+								</Form.Field>
 							</div>
 							<Drawer.Footer>
 								<Button type="submit" size="sm" class="mt-2 w-full">Sauvegarder</Button>

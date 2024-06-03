@@ -53,20 +53,24 @@
 
 {#if !load}
 	<section class="">
-
 		<div>
-			<div class="flex justify-between items-center px-4">
+			<div class="flex items-center justify-between px-4">
 				<Button variant="outline" class="rounded-full " size="icon">
-					<ChevronLeft class="icon "/>
+					<ChevronLeft class="icon " />
 				</Button>
-				<Send img={announce.images[0]} announceId={announce.id} collectionId={announce.collectionId} city={announce.city} property={announce.propertyType} transaction={announce.transactionType}/>
-			</div>	
-
-			<div class="px-4 mt-4">
-				<TitleCard content={announce.title} data={data.titleForm}/>
+				<Send
+					img={announce.images[0]}
+					announceId={announce.id}
+					collectionId={announce.collectionId}
+					city={announce.city}
+					property={announce.propertyType}
+					transaction={announce.transactionType}
+				/>
 			</div>
 
-
+			<div class="mt-4 px-4">
+				<TitleCard content={announce.title} data={data.titleForm} />
+			</div>
 		</div>
 
 		<!-- images -->

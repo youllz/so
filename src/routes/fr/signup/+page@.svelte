@@ -61,7 +61,6 @@
 			nationalMode: true,
 			utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@23.0.10/build/js/utils.js' // URL vers utils.js
 		});
-
 	});
 </script>
 
@@ -73,7 +72,7 @@
 	<div class="flex w-[300px] flex-col items-center gap-4">
 		<div class="mb-6 flex w-full items-center gap-4">
 			{#if withEmail}
-			<!-- <SuperDebug data={$formData}/> -->
+				<!-- <SuperDebug data={$formData}/> -->
 				<div>
 					<Button on:click={() => (withEmail = false)} variant="secondary" size="icon">
 						<CaretLeft class="size-4" />
@@ -173,7 +172,14 @@
 					<Field {form} name="contact">
 						<Control let:attrs>
 							<Label>Contact</Label>
-							<input type="tel" class="tel" bind:this={phoneInput} bind:value={$formData.contact} autocomplete="off"  {...attrs} />
+							<input
+								type="tel"
+								class="tel"
+								bind:this={phoneInput}
+								bind:value={$formData.contact}
+								autocomplete="off"
+								{...attrs}
+							/>
 						</Control>
 						<FieldErrors class="text-xs text-destructive" />
 						<Description class="text-xs text-muted-foreground"
@@ -230,9 +236,6 @@
 
 <style lang="postcss">
 	.tel {
-		@apply flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50
+		@apply flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
 	}
 </style>
-
-
-

@@ -69,8 +69,7 @@ export const formSchema = z.object({
 		.optional()
 		.default(''),
 	district: z.string(),
-	status: z.string().default("activé")
-
+	status: z.string().default('activé')
 });
 
 export type FormSchema = typeof formSchema;

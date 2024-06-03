@@ -6,14 +6,13 @@
 	import type { RecordModel } from 'pocketbase';
 	import { Button } from '$lib/components/ui/button';
 	import { Skeleton } from '$lib/components/ui/skeleton';
-	import {page} from '$app/stores'
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 
 	$: ({ allAnnounces, totalItems } = data.announceData);
 
 	$: loadAnnounces = writable<RecordModel[]>(allAnnounces);
-
 
 	let start = 2;
 	let end = 20;
@@ -25,7 +24,9 @@
 		isLoading = true;
 
 		setTimeout(async () => {
-			const res = await fetch(`http://localhost:5173/api/announces?start=${start}&end=${end}&type=${$page.params.type}`);
+			const res = await fetch(
+				`http://localhost:5173/api/announces?start=${start}&end=${end}&type=${$page.params.type}`
+			);
 			const data = await res.json();
 			$loadAnnounces = $loadAnnounces.concat(data.items);
 			isLoading = false;
@@ -35,7 +36,7 @@
 		// load your data here
 	}
 
-	loadItems()
+	loadItems();
 </script>
 
 <section class="px-[2vw] pb-4">

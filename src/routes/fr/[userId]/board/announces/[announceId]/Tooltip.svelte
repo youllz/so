@@ -4,10 +4,6 @@
 	import { Pencil2 } from 'svelte-radix';
 </script>
 
-
-
-
-
 <Tooltip.Root openDelay={300}>
 	<Tooltip.Trigger>
 		<Button class="rounded-full" variant="ghost" size="icon">

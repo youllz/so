@@ -1,6 +1,5 @@
 // place files you want to import through the `$lib` alias in this folder.
 
-
 const city = [
 	'Abengourou',
 	'Abidjan',
@@ -69,7 +68,6 @@ export const cityObjects = city.map((cityName) => {
 	return { value: cityName.toLocaleLowerCase(), label: cityName };
 });
 
-
 const communesAbidjan = [
 	'Abobo',
 	'Adjamé',
@@ -90,5 +88,5 @@ export const communeAbidjanObject = communesAbidjan.map((name) => {
 	return {
 		value: name.toLocaleLowerCase(),
 		label: name
-	}
-})
+	};
+});

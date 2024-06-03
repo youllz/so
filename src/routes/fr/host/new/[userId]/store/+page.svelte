@@ -26,13 +26,13 @@
 	import Reload from 'svelte-radix/Reload.svelte';
 	import { Toaster, toast } from 'svelte-sonner';
 	import { page } from '$app/stores';
-	import {cityObjects, communeAbidjanObject} from '$lib/data'
-	import {loadTimerForm} from '$lib/store'
+	import { cityObjects, communeAbidjanObject } from '$lib/data';
+	import { loadTimerForm } from '$lib/store';
 	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
-	const {delayMs, timeOutMs} = loadTimerForm()
+	const { delayMs, timeOutMs } = loadTimerForm();
 	const form = superForm(data.form, {
 		validators: zodClient(formSchema),
 		invalidateAll: true,
@@ -43,7 +43,10 @@
 			switch (result.type) {
 				case 'success':
 					toast.success('Votre annonce a été créee avec succès.', {});
-					await goto(`/fr/${data.user?.id}/board/announces`, {replaceState: true, invalidateAll: true})
+					await goto(`/fr/${data.user?.id}/board/announces`, {
+						replaceState: true,
+						invalidateAll: true
+					});
 					break;
 				case 'failure':
 					toast.error("Désolé, une erreur s'est produite.", {});
@@ -53,8 +56,7 @@
 			}
 		},
 
-		onSubmit: async () => {
-		}
+		onSubmit: async () => {}
 	});
 	const { form: formData, enhance, errors, delayed } = form;
 
@@ -149,14 +151,18 @@
 			<Form.Field {form} name="title">
 				<Form.Control let:attrs>
 					<Form.Label>Titre de l'annonce</Form.Label>
-					<Input 	on:keypress={(e) => {
-						if(e.code.includes("Digit")) {
-							e.preventDefault()
-						}
-						if(e.code.includes("Numpad")) {
-							e.preventDefault()
-						}
-					}} {...attrs} bind:value={$formData.title} />
+					<Input
+						on:keypress={(e) => {
+							if (e.code.includes('Digit')) {
+								e.preventDefault();
+							}
+							if (e.code.includes('Numpad')) {
+								e.preventDefault();
+							}
+						}}
+						{...attrs}
+						bind:value={$formData.title}
+					/>
 				</Form.Control>
 				<Form.FieldErrors class="text-xs" />
 			</Form.Field>
@@ -403,7 +409,7 @@
 				</div>
 			{/if}
 		</div>
-		
+
 		<div>
 			<div class="field">
 				<Form.Field {form} name="numOfBath">

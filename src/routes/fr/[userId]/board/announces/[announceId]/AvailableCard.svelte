@@ -114,68 +114,68 @@
 									<input hidden value={$formData.available} name={attrs.name} />
 								</Form.Control>
 							</Form.Field>
-              <div class="w-full flex items-center justify-end mt-4">
-                <Button type="submit" size="sm">Sauvegarder</Button>
-              </div>
+							<div class="mt-4 flex w-full items-center justify-end">
+								<Button type="submit" size="sm">Sauvegarder</Button>
+							</div>
 						</form>
 					</Dialog.Content>
 				</Dialog.Root>
-        {:else}
-          <Drawer.Root>
-            <Drawer.Trigger>
-              <Button variant="ghost" size="icon" class="rounded-full">
-                <Pencil2 class="icon"/>
-              </Button>
-            </Drawer.Trigger>
-            <Drawer.Content>
-              <Drawer.Header>
-                <Drawer.Title>Date de disponibilité</Drawer.Title>
-                <Drawer.Description>Modifier la date de disponibilité</Drawer.Description>
-              </Drawer.Header>
-             	<form
+			{:else}
+				<Drawer.Root>
+					<Drawer.Trigger>
+						<Button variant="ghost" size="icon" class="rounded-full">
+							<Pencil2 class="icon" />
+						</Button>
+					</Drawer.Trigger>
+					<Drawer.Content>
+						<Drawer.Header>
+							<Drawer.Title>Date de disponibilité</Drawer.Title>
+							<Drawer.Description>Modifier la date de disponibilité</Drawer.Description>
+						</Drawer.Header>
+						<form
 							action="?/editAvailable"
 							method="POST"
 							use:enhance
 							class="mx-auto flex w-[100%] flex-col"
 						>
 							<div class="px-4">
-							<Form.Field {form} name="available" class="flex flex-col">
-								<Form.Control let:attrs>
-									<Form.Label>Disponibilité</Form.Label>
-									<Popover.Root>
-										<Popover.Trigger
-											{...attrs}
-											class={cn(
-												buttonVariants({ variant: 'outline' }),
-												'w-full justify-start pl-4 text-left font-normal',
-												!value && 'text-muted-foreground'
-											)}
-										>
-											{value ? df.format(value.toDate(getLocalTimeZone())) : 'Choisir une date'}
-											<CalendarIcon class="ml-auto h-4 w-4 opacity-50" />
-										</Popover.Trigger>
-										<Popover.Content class="w-auto p-0" side="top">
-											<Calendar
-												{value}
-												bind:placeholder={placeholder1}
-												minValue={today(getLocalTimeZone())}
-												calendarLabel="Date de disponibilité"
-												initialFocus
-												onValueChange={(v) => {
-													if (v) {
-														$formData.available = v.toString();
-													} else {
-														$formData.available = '';
-													}
-												}}
-											/>
-										</Popover.Content>
-									</Popover.Root>
-									<!-- <Form.Description>Your date of birth is used to calculator your age</Form.Description> -->
-									<Form.FieldErrors />
-									<input hidden value={$formData.available} name={attrs.name} />
-								</Form.Control>
-							</Form.Field>
+								<Form.Field {form} name="available" class="flex flex-col">
+									<Form.Control let:attrs>
+										<Form.Label>Disponibilité</Form.Label>
+										<Popover.Root>
+											<Popover.Trigger
+												{...attrs}
+												class={cn(
+													buttonVariants({ variant: 'outline' }),
+													'w-full justify-start pl-4 text-left font-normal',
+													!value && 'text-muted-foreground'
+												)}
+											>
+												{value ? df.format(value.toDate(getLocalTimeZone())) : 'Choisir une date'}
+												<CalendarIcon class="ml-auto h-4 w-4 opacity-50" />
+											</Popover.Trigger>
+											<Popover.Content class="w-auto p-0" side="top">
+												<Calendar
+													{value}
+													bind:placeholder={placeholder1}
+													minValue={today(getLocalTimeZone())}
+													calendarLabel="Date de disponibilité"
+													initialFocus
+													onValueChange={(v) => {
+														if (v) {
+															$formData.available = v.toString();
+														} else {
+															$formData.available = '';
+														}
+													}}
+												/>
+											</Popover.Content>
+										</Popover.Root>
+										<!-- <Form.Description>Your date of birth is used to calculator your age</Form.Description> -->
+										<Form.FieldErrors />
+										<input hidden value={$formData.available} name={attrs.name} />
+									</Form.Control>
+								</Form.Field>
 							</div>
 							<Drawer.Footer>
 								<Button type="submit" size="sm" class="mt-2 w-full">Sauvegarder</Button>
@@ -184,9 +184,8 @@
 								</Drawer.Close>
 							</Drawer.Footer>
 						</form>
-            </Drawer.Content>
-          </Drawer.Root>
-          
+					</Drawer.Content>
+				</Drawer.Root>
 			{/if}
 		</div>
 	</div>

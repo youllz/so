@@ -17,7 +17,7 @@
 </script>
 
 <Toaster richColors position={$isDesktop ? 'bottom-right' : 'top-center'} />
-<main class=" flex min-h-[100dvh] items-start  bg-card">
+<main class=" flex min-h-[100dvh] items-start bg-card">
 	{#if $isDesktop}
 		{#key $preferences.deploySidebar}
 			<aside
@@ -153,7 +153,7 @@
 											remove your data from our servers.
 										</Sheet.Description> -->
 									</Sheet.Header>
-									<div class="flex flex-col justify-between h-full">
+									<div class="flex h-full flex-col justify-between">
 										<ul>
 											<li>
 												<Button size="sm" variant="ghost" class="min-w-full justify-start">
@@ -180,11 +180,11 @@
 										<ul>
 											<li>
 												<Button variant="ghost" size="sm" class="min-w-full justify-start">
-													<QuestionMarkCircled  class="icon mr-4"/> Aide
+													<QuestionMarkCircled class="icon mr-4" /> Aide
 												</Button>
 											</li>
 											<li>
-												<Theme/>
+												<Theme />
 											</li>
 										</ul>
 									</div>

@@ -23,16 +23,15 @@
 	import { Calendar } from '$lib/components/ui/calendar';
 	import CalendarIcon from 'svelte-radix/Calendar.svelte';
 	import Reload from 'svelte-radix/Reload.svelte';
-	import {  toast } from 'svelte-sonner';
+	import { toast } from 'svelte-sonner';
 	import { page } from '$app/stores';
 	import { cityObjects, communeAbidjanObject } from '$lib/data';
 	import { goto } from '$app/navigation';
-	import {loadTimerForm} from '$lib/store'
+	import { loadTimerForm } from '$lib/store';
 
 	export let data: PageData;
 
-	
-	const  {delayMs, timeOutMs} = loadTimerForm()
+	const { delayMs, timeOutMs } = loadTimerForm();
 	const form = superForm(data.form, {
 		validators: zodClient(formSchema),
 		invalidateAll: true,
@@ -42,11 +41,14 @@
 		onResult: async ({ result }) => {
 			switch (result.type) {
 				case 'success':
-					console.log($message)
+					console.log($message);
 					toast.success('Votre annonce a été créee avec succès.', {});
-					await goto(`/fr/${data.user?.id}/board/announces/`, {replaceState: true, invalidateAll: true})
+					await goto(`/fr/${data.user?.id}/board/announces/`, {
+						replaceState: true,
+						invalidateAll: true
+					});
 					break;
-					case 'failure':
+				case 'failure':
 					toast.error("Désolé, une erreur s'est produite.", {});
 					break;
 				default:
@@ -59,7 +61,6 @@
 			if (data.city !== 'abidjan') {
 				formData.set('commune', 'none');
 			}
-
 
 			if (data.commune === 'Sélectionner une commune' && data.city === 'abidjan') {
 				cancel();
@@ -470,8 +471,8 @@
 							min="0"
 							autocomplete="off"
 							bind:value={$formData.numOfPieces}
-								on:input={() => {
-								$formData.numOfPieces = Number($formData.numOfPieces)
+							on:input={() => {
+								$formData.numOfPieces = Number($formData.numOfPieces);
 							}}
 							{...attrs}
 							inputmode="numeric"

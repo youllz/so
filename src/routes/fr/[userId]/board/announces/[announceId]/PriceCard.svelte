@@ -11,21 +11,20 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Pencil2 } from 'svelte-radix';
 	import { mediaQuery } from 'svelte-legos';
-  import { Input } from "$lib/components/ui/input"
-  
+	import { Input } from '$lib/components/ui/input';
 
 	export let data: SuperValidated<Infer<PriceSchema>>;
 	export let content: string;
 
-  $: number = content
-  $: $formData.price = number
+	$: number = content;
+	$: $formData.price = number;
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 	let open = false;
 
 	const form = superForm(data, {
 		validators: zodClient(priceSchema),
-    invalidateAll: true,
+		invalidateAll: true,
 		onResult({ result }) {
 			switch (result.type) {
 				case 'success':
@@ -42,10 +41,9 @@
 	const { form: formData, enhance } = form;
 
 	$: $formData.price = content;
-	
 </script>
 
-<div class="rounded-md border bg-background p-4 shadow-sm ">
+<div class="rounded-md border bg-background p-4 shadow-sm">
 	<div class="flex items-center justify-between">
 		<h2 class="text-sm font-medium text-muted-foreground max-md:text-xs">Prix</h2>
 
@@ -58,13 +56,23 @@
 					<Dialog.Content>
 						<Dialog.Header>
 							<Dialog.Title>Prix</Dialog.Title>
-              <Dialog.Description>Modifier le prix</Dialog.Description>
+							<Dialog.Description>Modifier le prix</Dialog.Description>
 						</Dialog.Header>
 						<form action="?/editPrice" method="POST" use:enhance>
 							<Form.Field {form} name="price">
 								<Form.Control let:attrs>
 									<Form.Label>Prix (fcfa)</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.price = number}} />
+									<Input
+										type="number"
+										min="0"
+										inputmode="numeric"
+										autocomplete="off"
+										{...attrs}
+										bind:value={number}
+										on:change={() => {
+											$formData.price = number;
+										}}
+									/>
 								</Form.Control>
 								<Form.FieldErrors />
 							</Form.Field>
@@ -93,13 +101,23 @@
 							class="mx-auto flex w-[100%] flex-col"
 						>
 							<div class="px-4">
-							<Form.Field {form} name="price">
-								<Form.Control let:attrs>
-									<Form.Label>Prix (fcfa)</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.price = number}} />
-								</Form.Control>
-								<Form.FieldErrors />
-							</Form.Field>
+								<Form.Field {form} name="price">
+									<Form.Control let:attrs>
+										<Form.Label>Prix (fcfa)</Form.Label>
+										<Input
+											type="number"
+											min="0"
+											inputmode="numeric"
+											autocomplete="off"
+											{...attrs}
+											bind:value={number}
+											on:change={() => {
+												$formData.price = number;
+											}}
+										/>
+									</Form.Control>
+									<Form.FieldErrors />
+								</Form.Field>
 							</div>
 							<Drawer.Footer>
 								<Button type="submit" size="sm" class="mt-2 w-full">Sauvegarder</Button>

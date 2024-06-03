@@ -19,7 +19,7 @@ export const load = (async ({ params, locals }) => {
 
 	return {
 		announce: await getUserAnnounces(),
-		imageForm: await (superValidate(zod(schema.imageSchema))),
+		imageForm: await superValidate(zod(schema.imageSchema)),
 		transactionForm: await superValidate(zod(schema.transactionSchema)),
 		equipmentsForm: await superValidate(zod(schema.equipmentsSchema)),
 		titleForm: await superValidate(zod(schema.titleSchema)),

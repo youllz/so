@@ -16,7 +16,7 @@ export const GET: RequestHandler = async ({ locals, url, params }) => {
 			});
 			return json(record);
 		} catch (e) {
-			console.log(e)
+			console.log(e);
 		}
 	}
 
@@ -27,7 +27,7 @@ export const GET: RequestHandler = async ({ locals, url, params }) => {
 		});
 		return json(record);
 	} catch (e) {
-		console.log(e)
+		console.log(e);
 	}
 
 	return json([]);

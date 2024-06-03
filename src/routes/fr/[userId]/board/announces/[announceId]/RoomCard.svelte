@@ -11,21 +11,20 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Pencil2 } from 'svelte-radix';
 	import { mediaQuery } from 'svelte-legos';
-  import { Input } from "$lib/components/ui/input"
-  
+	import { Input } from '$lib/components/ui/input';
 
 	export let data: SuperValidated<Infer<RoomSchema>>;
 	export let content: string;
 
-  $: number = content
-  $: $formData.numOfRoom = number
+	$: number = content;
+	$: $formData.numOfRoom = number;
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 	let open = false;
 
 	const form = superForm(data, {
 		validators: zodClient(roomSchema),
-    invalidateAll: true,
+		invalidateAll: true,
 		onResult({ result }) {
 			switch (result.type) {
 				case 'success':
@@ -42,7 +41,6 @@
 	const { form: formData, enhance } = form;
 
 	$: $formData.numOfRoom = content;
-	
 </script>
 
 <div class="rounded-md border bg-background p-4 shadow-sm">
@@ -63,7 +61,17 @@
 							<Form.Field {form} name="numOfRoom">
 								<Form.Control let:attrs>
 									<Form.Label>Nombre de chambres</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.numOfRoom = number}} />
+									<Input
+										type="number"
+										min="0"
+										inputmode="numeric"
+										autocomplete="off"
+										{...attrs}
+										bind:value={number}
+										on:change={() => {
+											$formData.numOfRoom = number;
+										}}
+									/>
 								</Form.Control>
 								<Form.FieldErrors />
 							</Form.Field>
@@ -92,13 +100,23 @@
 							class="mx-auto flex w-[100%] flex-col"
 						>
 							<div class="px-4">
-							<Form.Field {form} name="numOfRoom">
-								<Form.Control let:attrs>
-									<Form.Label>Nombre de chambres</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.numOfRoom = number}} />
-								</Form.Control>
-								<Form.FieldErrors />
-							</Form.Field>
+								<Form.Field {form} name="numOfRoom">
+									<Form.Control let:attrs>
+										<Form.Label>Nombre de chambres</Form.Label>
+										<Input
+											type="number"
+											min="0"
+											inputmode="numeric"
+											autocomplete="off"
+											{...attrs}
+											bind:value={number}
+											on:change={() => {
+												$formData.numOfRoom = number;
+											}}
+										/>
+									</Form.Control>
+									<Form.FieldErrors />
+								</Form.Field>
 							</div>
 							<Drawer.Footer>
 								<Button type="submit" size="sm" class="mt-2 w-full">Sauvegarder</Button>

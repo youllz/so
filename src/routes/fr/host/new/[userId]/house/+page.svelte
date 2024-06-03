@@ -31,7 +31,6 @@
 
 	export let data: PageData;
 
-
 	$: console.log($delayed);
 
 	const { delayMs, timeOutMs } = loadTimerForm();
@@ -48,8 +47,7 @@
 			switch (result.type) {
 				case 'success':
 					console.log('success', $message);
-					toast.success('Votre annonce a été créee avec succès.', {
-					});
+					toast.success('Votre annonce a été créee avec succès.', {});
 
 					await goto(`/fr/${data.user?.id}/board/announces`, {
 						replaceState: true,
@@ -57,8 +55,7 @@
 					});
 					break;
 				case 'failure':
-					toast.error("Désolé, une erreur s'est produite.", {
-					});
+					toast.error("Désolé, une erreur s'est produite.", {});
 					break;
 				default:
 					break;
@@ -71,16 +68,15 @@
 				formData.set('commune', 'none');
 			}
 
-
 			if (data.commune === 'Sélectionner une commune' && data.city === 'abidjan') {
 				cancel();
 				communeIsValid = false;
 			}
-		}, 
-
-		onError({result}) {
-			console.log(result)
 		},
+
+		onError({ result }) {
+			console.log(result);
+		}
 	});
 
 	const { form: formData, enhance, errors, message, delayed } = form;

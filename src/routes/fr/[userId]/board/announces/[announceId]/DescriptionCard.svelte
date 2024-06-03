@@ -8,13 +8,12 @@
 	import { toast } from 'svelte-sonner';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { descriptionSchema, type DescriptionSchema } from './schemas';
-	 
 
 	export let content: string;
 	export let data: SuperValidated<Infer<DescriptionSchema>>;
 
 	$: description = content;
-	$: $formData.description = description
+	$: $formData.description = description;
 
 	const form = superForm(data, {
 		validators: zodClient(descriptionSchema),
@@ -37,19 +36,15 @@
 
 	let edit = false;
 </script>
-<div class="grid w-full gap-3 rounded-md bg-background text-foreground p-4">
+
+<div class="grid w-full gap-3 rounded-md bg-background p-4 text-foreground">
 	<div class="flex w-full items-center justify-between">
-		<h2 class="text-sm max-md:text-xs font-semibold text-muted-foreground">Description</h2>
+		<h2 class="text-sm font-semibold text-muted-foreground max-md:text-xs">Description</h2>
 
 		{#if !edit}
 			<Tooltip.Root openDelay={300}>
 				<Tooltip.Trigger>
-					<Button
-						on:click={() => (edit = !edit)}
-						variant="ghost"
-						size="icon"
-						class="rounded-full"
-					>
+					<Button on:click={() => (edit = !edit)} variant="ghost" size="icon" class="rounded-full">
 						<Pencil2 class="size-4" />
 					</Button>
 				</Tooltip.Trigger>
@@ -75,12 +70,14 @@
 				<Form.FieldErrors />
 			</Form.Field>
 			<div class="flex">
-				<Button on:click={() => (edit = false)} type="submit" size="sm" variant="ghost">Annuler</Button>
+				<Button on:click={() => (edit = false)} type="submit" size="sm" variant="ghost"
+					>Annuler</Button
+				>
 				<Button type="submit" size="sm">Sauvegarder</Button>
 			</div>
 		</form>
 	{:else}
-		<pre class="text-wrap max-sm:text-sm font-sans h-[400px] max-sm:h-auto">
+		<pre class="h-[400px] text-wrap font-sans max-sm:h-auto max-sm:text-sm">
   {content}
 </pre>
 	{/if}

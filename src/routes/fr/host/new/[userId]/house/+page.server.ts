@@ -28,12 +28,11 @@ export const actions: Actions = {
 			announceId = record.id;
 		} catch (e) {
 			console.log(e);
-			return fail(400, {form});
+			return fail(400, { form });
 		}
 
 		// Display a success status message
-		return message(form, {id: announceId})
+		return message(form, { id: announceId });
 		// redirect(303, `/fr/${params.userId}/board/announces/${announceId}`);
-		
 	}
 };

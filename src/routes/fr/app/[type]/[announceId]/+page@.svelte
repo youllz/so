@@ -92,7 +92,6 @@
 				bathroom={announce.numOfBath}
 				propertyType={announce.propertyType}
 				surface={announce.surface}
-				
 			/>
 		</div>
 

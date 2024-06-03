@@ -28,7 +28,7 @@ export const actions: Actions = {
 			announceId = record.id;
 		} catch (e) {
 			console.log(e);
-			return fail(400, {form});
+			return fail(400, { form });
 		}
 
 		// Display a success status message

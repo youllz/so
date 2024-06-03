@@ -11,21 +11,20 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Pencil2 } from 'svelte-radix';
 	import { mediaQuery } from 'svelte-legos';
-  import { Input } from "$lib/components/ui/input"
-  
+	import { Input } from '$lib/components/ui/input';
 
 	export let data: SuperValidated<Infer<TitleSchema>>;
 	export let content: string;
 
-  $: title = content
-  $: $formData.title = title
+	$: title = content;
+	$: $formData.title = title;
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 	let open = false;
 
 	const form = superForm(data, {
 		validators: zodClient(titleSchema),
-    invalidateAll: true,
+		invalidateAll: true,
 		onResult({ result }) {
 			switch (result.type) {
 				case 'success':
@@ -40,87 +39,98 @@
 		}
 	});
 	const { form: formData, enhance } = form;
-
-	
 </script>
 
-	<div class="flex items-start gap-2 ">
-    <h1 class="">{content}</h1>
-		<div>
-			{#if $isDesktop}
-				<Dialog.Root bind:open>
-					<Dialog.Trigger>
-						<Tooltip />
-					</Dialog.Trigger>
-					<Dialog.Content>
-						<Dialog.Header>
-							<Dialog.Title>Titre</Dialog.Title>
-              <Dialog.Description>Modifier le titre de l'annonce</Dialog.Description>
-						</Dialog.Header>
-						<form action="?/editTitle" method="POST" use:enhance>
+<div class="flex items-start gap-2">
+	<h1 class="">{content}</h1>
+	<div>
+		{#if $isDesktop}
+			<Dialog.Root bind:open>
+				<Dialog.Trigger>
+					<Tooltip />
+				</Dialog.Trigger>
+				<Dialog.Content>
+					<Dialog.Header>
+						<Dialog.Title>Titre</Dialog.Title>
+						<Dialog.Description>Modifier le titre de l'annonce</Dialog.Description>
+					</Dialog.Header>
+					<form action="?/editTitle" method="POST" use:enhance>
+						<Form.Field {form} name="title">
+							<Form.Control let:attrs>
+								<Form.Label>Titre</Form.Label>
+								<Input
+									type="text"
+									min="0"
+									inputmode="numeric"
+									autocomplete="off"
+									{...attrs}
+									bind:value={title}
+									on:change={() => {
+										$formData.title = title;
+									}}
+								/>
+							</Form.Control>
+							<Form.FieldErrors />
+						</Form.Field>
+						<div class="mt-4 flex items-center justify-end">
+							<Button type="submit" size="sm">Sauvegarder</Button>
+						</div>
+					</form>
+				</Dialog.Content>
+			</Dialog.Root>
+		{:else}
+			<Drawer.Root bind:open>
+				<Drawer.Trigger>
+					<Button class="rounded-full" variant="ghost" size="icon">
+						<Pencil2 class="icon" />
+					</Button>
+				</Drawer.Trigger>
+				<Drawer.Content>
+					<Drawer.Header>
+						<Drawer.Title>Titre</Drawer.Title>
+						<Drawer.Description>Modifier le titre de l'annonce</Drawer.Description>
+					</Drawer.Header>
+					<form
+						action="?/editTitle"
+						method="POST"
+						use:enhance
+						class="mx-auto flex w-[100%] flex-col"
+					>
+						<div class="px-4">
 							<Form.Field {form} name="title">
 								<Form.Control let:attrs>
 									<Form.Label>Titre</Form.Label>
-									<Input type="text" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={title} on:change={() => {$formData.title = title}} />
+									<Input
+										type="text"
+										autocomplete="off"
+										{...attrs}
+										bind:value={title}
+										on:change={() => {
+											$formData.title = title;
+										}}
+									/>
 								</Form.Control>
 								<Form.FieldErrors />
 							</Form.Field>
-							<div class="mt-4 flex items-center justify-end">
-								<Button type="submit" size="sm">Sauvegarder</Button>
-							</div>
-						</form>
-					</Dialog.Content>
-				</Dialog.Root>
-			{:else}
-				<Drawer.Root bind:open>
-					<Drawer.Trigger>
-						<Button class="rounded-full" variant="ghost" size="icon">
-							<Pencil2 class="icon" />
-						</Button>
-					</Drawer.Trigger>
-					<Drawer.Content>
-						<Drawer.Header>
-							<Drawer.Title>Titre</Drawer.Title>
-							<Drawer.Description>Modifier le titre de l'annonce</Drawer.Description>
-						</Drawer.Header>
-						<form
-							action="?/editTitle"
-							method="POST"
-							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
-						>
-							<div class="px-4">
-							<Form.Field {form} name="title">
-								<Form.Control let:attrs>
-									<Form.Label>Titre</Form.Label>
-									<Input type="text"  autocomplete="off" {...attrs} bind:value={title} on:change={() => {$formData.title = title}} />
-								</Form.Control>
-								<Form.FieldErrors />
-							</Form.Field>
-							</div>
-							<Drawer.Footer>
-								<Button type="submit" size="sm" class="mt-2 w-full">Sauvegarder</Button>
-								<Drawer.Close>
-									<Button variant="outline" size="sm" class="w-full">Annuler</Button>
-								</Drawer.Close>
-							</Drawer.Footer>
-						</form>
-					</Drawer.Content>
-				</Drawer.Root>
-			{/if}
-		</div>
-
-		
+						</div>
+						<Drawer.Footer>
+							<Button type="submit" size="sm" class="mt-2 w-full">Sauvegarder</Button>
+							<Drawer.Close>
+								<Button variant="outline" size="sm" class="w-full">Annuler</Button>
+							</Drawer.Close>
+						</Drawer.Footer>
+					</form>
+				</Drawer.Content>
+			</Drawer.Root>
+		{/if}
 	</div>
+</div>
 
-  <style>
-    h1 {
-      font-size: clamp(14px, 5vw + 0.1rem, 1.8rem);
-      line-height: 120%;
-			padding-bottom: 8px;
-			text-wrap: balance;
-    }
-
-		
-  </style>
-	
+<style>
+	h1 {
+		font-size: clamp(14px, 5vw + 0.1rem, 1.8rem);
+		line-height: 120%;
+		padding-bottom: 8px;
+		text-wrap: balance;
+	}
+</style>

@@ -10,23 +10,22 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Pencil2 } from 'svelte-radix';
 	import { mediaQuery } from 'svelte-legos';
-  import { Input } from "$lib/components/ui/input"
+	import { Input } from '$lib/components/ui/input';
 	import { bathSchema, type BathSchema } from './schemas';
-  
 
 	export let data: SuperValidated<Infer<BathSchema>>;
 	export let content: string;
-	export let propertyType: string
+	export let propertyType: string;
 
-  $: number = content
-  $: $formData.numOfBath = number
+	$: number = content;
+	$: $formData.numOfBath = number;
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 	let open = false;
 
 	const form = superForm(data, {
 		validators: zodClient(bathSchema),
-    invalidateAll: true,
+		invalidateAll: true,
 		onResult({ result }) {
 			switch (result.type) {
 				case 'success':
@@ -43,15 +42,14 @@
 	const { form: formData, enhance } = form;
 
 	$: $formData.numOfBath = content;
-	
 </script>
 
 <div class="rounded-md border bg-background p-4 shadow-sm">
 	<div class="flex items-center justify-between">
 		<h2 class="text-sm font-medium text-muted-foreground max-md:text-xs">
-			{#if propertyType === "bureau" || propertyType === "magasin"}
+			{#if propertyType === 'bureau' || propertyType === 'magasin'}
 				Nombre de toilettes
-				{:else}
+			{:else}
 				Nombre de salle de bains
 			{/if}
 		</h2>
@@ -70,7 +68,17 @@
 							<Form.Field {form} name="numOfBath">
 								<Form.Control let:attrs>
 									<Form.Label>Nombre de salle de bains</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.numOfBath = number}} />
+									<Input
+										type="number"
+										min="0"
+										inputmode="numeric"
+										autocomplete="off"
+										{...attrs}
+										bind:value={number}
+										on:change={() => {
+											$formData.numOfBath = number;
+										}}
+									/>
 								</Form.Control>
 								<Form.FieldErrors />
 							</Form.Field>
@@ -99,13 +107,23 @@
 							class="mx-auto flex w-[100%] flex-col"
 						>
 							<div class="px-4">
-							<Form.Field {form} name="numOfBath">
-								<Form.Control let:attrs>
-									<Form.Label>Nombre de salle de bains</Form.Label>
-									<Input type="number" min="0" inputmode="numeric" autocomplete="off" {...attrs} bind:value={number} on:change={() => {$formData.numOfBath = number}} />
-								</Form.Control>
-								<Form.FieldErrors />
-							</Form.Field>
+								<Form.Field {form} name="numOfBath">
+									<Form.Control let:attrs>
+										<Form.Label>Nombre de salle de bains</Form.Label>
+										<Input
+											type="number"
+											min="0"
+											inputmode="numeric"
+											autocomplete="off"
+											{...attrs}
+											bind:value={number}
+											on:change={() => {
+												$formData.numOfBath = number;
+											}}
+										/>
+									</Form.Control>
+									<Form.FieldErrors />
+								</Form.Field>
 							</div>
 							<Drawer.Footer>
 								<Button type="submit" size="sm" class="mt-2 w-full">Sauvegarder</Button>

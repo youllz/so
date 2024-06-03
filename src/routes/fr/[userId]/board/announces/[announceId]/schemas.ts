@@ -8,7 +8,7 @@ export const equipments = {
 	terrasse: 'Terrasse'
 } as const;
 
- type Equipments = keyof typeof equipments;
+type Equipments = keyof typeof equipments;
 
 export const imageSchema = z.object({
 	images: z
@@ -78,22 +78,22 @@ export const communeSchema = z.object({
 
 export const roomSchema = z.object({
 	numOfRoom: z.string()
-})
+});
 export const bathSchema = z.object({
 	numOfBath: z.string()
-})
+});
 
-export type ImageSchema = typeof imageSchema
-export type TransactionSchema = typeof transactionSchema
-export type DescriptionSchema = typeof descriptionSchema
-export type StateSchema = typeof stateSchema
-export type CitySchema = typeof citySchema
-export type CommuneSchema = typeof communeSchema
-export type RoomSchema = typeof roomSchema 
-export type BathSchema = typeof bathSchema 
-export type SurfaceSchema = typeof surfaceSchema
-export type PriceSchema = typeof priceSchema
-export type AvailableSchema = typeof availableSchema
-export type EndOfAvailabilitySchema = typeof endOfAvailabilitySchema
-export type TitleSchema = typeof titleSchema
-export type EquipmentsSchema = typeof equipmentsSchema
+export type ImageSchema = typeof imageSchema;
+export type TransactionSchema = typeof transactionSchema;
+export type DescriptionSchema = typeof descriptionSchema;
+export type StateSchema = typeof stateSchema;
+export type CitySchema = typeof citySchema;
+export type CommuneSchema = typeof communeSchema;
+export type RoomSchema = typeof roomSchema;
+export type BathSchema = typeof bathSchema;
+export type SurfaceSchema = typeof surfaceSchema;
+export type PriceSchema = typeof priceSchema;
+export type AvailableSchema = typeof availableSchema;
+export type EndOfAvailabilitySchema = typeof endOfAvailabilitySchema;
+export type TitleSchema = typeof titleSchema;
+export type EquipmentsSchema = typeof equipmentsSchema;

@@ -23,13 +23,13 @@ export const actions: Actions = {
 
 		// TODO: Do something with the validated form.data
 		let announceId = '';
-		form.data.userId = params.userId
+		form.data.userId = params.userId;
 		try {
 			const record = await locals.pb.collection('announces').create(form.data);
 			announceId = record.id;
 		} catch (e) {
 			console.log(e);
-			return fail(400, {form});
+			return fail(400, { form });
 		}
 
 		// Display a success status message

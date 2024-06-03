@@ -24,14 +24,13 @@
 		if (isLoading) return;
 		isLoading = true;
 
-		setTimeout( async() => {
+		setTimeout(async () => {
 			const res = await fetch(`http://localhost:5173/api/announces?start=${start}&end=${end}`);
 			const data = await res.json();
 			$loadAnnounces = $loadAnnounces.concat(data.items);
 			console.log($loadAnnounces);
 			isLoading = false;
 			start += 1;
-			
 		}, 2000);
 
 		// load your data here
@@ -52,9 +51,9 @@
 				propertyType={announce.propertyType}
 			/>
 		{/each}
-		{#if isLoading }
+		{#if isLoading}
 			{#each { length: 4 } as _}
-				<div class="grid gap-4 ">
+				<div class="grid gap-4">
 					<Skeleton class="h-[18rem] w-full rounded-md" />
 					<div class="grid gap-2">
 						<div class="flex items-center justify-between">
@@ -76,7 +75,6 @@
 				cb: loadItems,
 				distance: 100
 			}}
-
 			class="h-20"
 		>
 			<!-- <Button on:click={loadItems}>Button</Button> -->

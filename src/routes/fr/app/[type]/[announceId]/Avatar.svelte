@@ -24,7 +24,7 @@
 	console.log(dateState.asMinutes());
 </script>
 
-<div class="flex items-center gap-6 mt-4" >
+<div class="mt-4 flex items-center gap-6">
 	<div>
 		<Avatar.Root class="border border-input">
 			<Avatar.Image
@@ -45,16 +45,11 @@
 				{durationTime.format('D [jours]')}
 			{/if}
 
-			{#if  durationTime.format('M') >= '12'}
-				{durationTime.format('Y [ans]')} 
-
-				{:else}
+			{#if durationTime.format('M') >= '12'}
+				{durationTime.format('Y [ans]')}
+			{:else}
 				{durationTime.format('M [mois]')}
-
 			{/if}
-
-			
-			
 		</p>
 	</div>
 </div>

@@ -1,9 +1,7 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import { cubicOut } from "svelte/easing";
-import type { TransitionConfig } from "svelte/transition";
-
-
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { cubicOut } from 'svelte/easing';
+import type { TransitionConfig } from 'svelte/transition';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -21,13 +19,9 @@ export const flyAndScale = (
 	params: FlyAndScaleParams = { y: -8, x: 0, start: 0.95, duration: 150 }
 ): TransitionConfig => {
 	const style = getComputedStyle(node);
-	const transform = style.transform === "none" ? "" : style.transform;
+	const transform = style.transform === 'none' ? '' : style.transform;
 
-	const scaleConversion = (
-		valueA: number,
-		scaleA: [number, number],
-		scaleB: [number, number]
-	) => {
+	const scaleConversion = (valueA: number, scaleA: [number, number], scaleB: [number, number]) => {
 		const [minA, maxA] = scaleA;
 		const [minB, maxB] = scaleB;
 
@@ -37,13 +31,11 @@ export const flyAndScale = (
 		return valueB;
 	};
 
-	const styleToString = (
-		style: Record<string, number | string | undefined>
-	): string => {
+	const styleToString = (style: Record<string, number | string | undefined>): string => {
 		return Object.keys(style).reduce((str, key) => {
 			if (style[key] === undefined) return str;
 			return str + `${key}:${style[key]};`;
-		}, "");
+		}, '');
 	};
 
 	return {
@@ -63,10 +55,10 @@ export const flyAndScale = (
 	};
 };
 
-export function firstCapitalize(mot:string) {
-    // Vérifie si le mot est vide ou nul
-    if (!mot) return mot;
-    
-    // Met la première lettre en majuscule et concatène avec le reste du mot en minuscules
-    return mot.charAt(0).toUpperCase() + mot.slice(1).toLowerCase();
+export function firstCapitalize(mot: string) {
+	// Vérifie si le mot est vide ou nul
+	if (!mot) return mot;
+
+	// Met la première lettre en majuscule et concatène avec le reste du mot en minuscules
+	return mot.charAt(0).toUpperCase() + mot.slice(1).toLowerCase();
 }

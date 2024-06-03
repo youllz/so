@@ -62,7 +62,7 @@ export const formSchema = z.object({
 		.min(2, { message: 'Veillez donner la ville' }),
 	commune: z.string().min(2, { message: 'Veillez sélectionner la ville' }).optional().default(''),
 	district: z.string(),
-	status: z.string().default("activé")
+	status: z.string().default('activé')
 });
 
 export type FormSchema = typeof formSchema;

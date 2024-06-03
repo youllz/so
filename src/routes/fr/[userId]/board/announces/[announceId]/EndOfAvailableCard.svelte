@@ -29,11 +29,8 @@
 	const isDesktop = mediaQuery('(min-width: 768px)');
 	let open = false;
 
-  $: date = content
-  $: $formData.endOfAvailability = date
-
-
-	
+	$: date = content;
+	$: $formData.endOfAvailability = date;
 
 	const form = superForm(data, {
 		validators: zodClient(endOfAvailabilitySchema),
@@ -77,7 +74,7 @@
 					<Dialog.Content>
 						<Dialog.Header>
 							<Dialog.Title>Fin de la Date de disponibilité</Dialog.Title>
-							<Dialog.Description> Modifier la date </Dialog.Description>
+							<Dialog.Description>Modifier la date</Dialog.Description>
 						</Dialog.Header>
 						<form action="?/editEnOfAvailability" use:enhance method="POST">
 							<Form.Field {form} name="endOfAvailability" class="flex flex-col">
@@ -192,12 +189,11 @@
 			{/if}
 		</div>
 	</div>
-  {#if content === ""}
-    <p class="text-sm text-destructive">Veillez sélectionner une date</p>
-    {:else}
-    <p>
-      {df.format(new Date(content))}
-    </p>
-  {/if}
-	
+	{#if content === ''}
+		<p class="text-sm text-destructive">Veillez sélectionner une date</p>
+	{:else}
+		<p>
+			{df.format(new Date(content))}
+		</p>
+	{/if}
 </div>

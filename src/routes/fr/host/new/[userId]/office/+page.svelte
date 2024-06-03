@@ -27,14 +27,14 @@
 	import { Toaster, toast } from 'svelte-sonner';
 	import { page } from '$app/stores';
 	import { cityObjects, communeAbidjanObject } from '$lib/data';
-	import {loadTimerForm} from '$lib/store'
+	import { loadTimerForm } from '$lib/store';
 	import { goto, invalidateAll, replaceState } from '$app/navigation';
 
 	export let data: PageData;
 
 	let formIsLoad = false;
 
-	const {delayMs, timeOutMs} = loadTimerForm()
+	const { delayMs, timeOutMs } = loadTimerForm();
 	const form = superForm(data.form, {
 		validators: zodClient(formSchema),
 		invalidateAll: true,
@@ -45,7 +45,10 @@
 			switch (result.type) {
 				case 'success':
 					toast.success('Votre annonce a été créee avec succès.', {});
-					await goto(`/fr/${data.user?.id}/board/announces`, {replaceState: true, invalidateAll: true})
+					await goto(`/fr/${data.user?.id}/board/announces`, {
+						replaceState: true,
+						invalidateAll: true
+					});
 					break;
 				case 'failure':
 					toast.error("Désolé, une erreur s'est produite. Veuillez réessayer plus tard.", {});

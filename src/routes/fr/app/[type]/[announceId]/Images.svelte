@@ -8,7 +8,7 @@
 	export let propertyType: string;
 
 	$: images = allImages;
-	 $: imageSlice = [...images.slice(1)]
+	$: imageSlice = [...images.slice(1)];
 </script>
 
 <div class="relative mt-6 grid h-[400px] grid-cols-2 gap-2 rounded-md">

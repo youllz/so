@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ModeWatcher } from "mode-watcher";
+	import { ModeWatcher } from 'mode-watcher';
 	import '../app.pcss';
 </script>
 
-<ModeWatcher defaultMode="dark"/>
+<ModeWatcher defaultMode="dark" />
 <slot></slot>

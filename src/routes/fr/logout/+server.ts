@@ -1,11 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async ({locals}) => {
+export const GET: RequestHandler = async ({ locals }) => {
+	locals.pb.authStore.clear();
 
-	 locals.pb.authStore.clear()
-
-	 redirect(303, '/fr/login')
-
-	
+	redirect(303, '/fr/login');
 };

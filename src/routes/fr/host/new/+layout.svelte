@@ -6,11 +6,11 @@
 	import { Button } from '$lib/components/ui/button';
 	import { onNavigate } from '$app/navigation';
 	import { Toaster } from 'svelte-sonner';
-	import {isDesktop} from '$lib/store'
+	import { isDesktop } from '$lib/store';
 
 	export let data: LayoutData;
 
-	let slideEl: HTMLDivElement
+	let slideEl: HTMLDivElement;
 
 	const svgH = 16;
 	const svgW = 16;
@@ -52,7 +52,7 @@
 	];
 </script>
 
-<Toaster position={$isDesktop ?  'bottom-right' : 'top-center'} richColors />
+<Toaster position={$isDesktop ? 'bottom-right' : 'top-center'} richColors />
 <header class="fixed z-40 w-full border-b border-input bg-background">
 	<nav class="flex items-center justify-between px-[3vw] py-2">
 		<div>
@@ -74,7 +74,7 @@
 		</ul>
 	</nav>
 </header>
-<div class=" title  flex items-center justify-center pt-[7rem]">
+<div class=" title flex items-center justify-center pt-[7rem]">
 	<div class="">
 		<h1 class="text-4xl">Poster une annonce sur SO</h1>
 		<p class="mt-1">
@@ -85,23 +85,21 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div  class="card-container mt-8 flex w-full items-center justify-center gap-3 relative">
+<div class="card-container relative mt-8 flex w-full items-center justify-center gap-3">
 	{#each navItems as item}
-			
-			<Button
+		<Button
 			href={item.url}
-				size="sm"
-				variant={$page.url.pathname === item.url ? 'default' : 'ghost'}
-				class="rounded-full border border-input "
-				
-			>
-				<span class="mr-4 pointer-events-none" >
-					{@html item.icon}
-				</span>
-				<span class="pointer-events-none">
-					{item.title}
-				</span>
-			</Button>
+			size="sm"
+			variant={$page.url.pathname === item.url ? 'default' : 'ghost'}
+			class="rounded-full border border-input "
+		>
+			<span class="pointer-events-none mr-4">
+				{@html item.icon}
+			</span>
+			<span class="pointer-events-none">
+				{item.title}
+			</span>
+		</Button>
 	{/each}
 	<!-- <div bind:this={slideEl} class="h-full absolute rounded-full bg-primary w-[50px] z-[-1]"> 
 
@@ -113,39 +111,35 @@
 </main>
 
 <style lang="postcss">
+	/* Define the scrollbar style */
+	::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
+	}
 
-/* Define the scrollbar style */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
+	/* Define the thumb style */
+	::-webkit-scrollbar-thumb {
+		background: theme(backgroundColor.green.800);
+		border-radius: 100px;
+	}
 
-/* Define the thumb style */
-::-webkit-scrollbar-thumb {
-  background: theme(backgroundColor.green.800);
-  border-radius: 100px;
-}
+	/* Define the track style */
+	::-webkit-scrollbar-track {
+		background-color: theme(backgroundColor.muted.foreground);
+		/* border: 1px solid #ccc; */
+		margin-inline: 0.5rem;
+		border-radius: 200px;
+	}
 
-/* Define the track style */
-::-webkit-scrollbar-track {
-  background-color: theme(backgroundColor.muted.foreground);
-  /* border: 1px solid #ccc; */
-  margin-inline: 0.5rem;
-	border-radius: 200px;
-}
+	/* Define the button style */
+	::-webkit-scrollbar-button {
+		border-radius: 5px;
+		height: 0px;
+		width: 0px;
+	}
 
-/* Define the button style */
-::-webkit-scrollbar-button {
-  border-radius: 5px;
-  height: 0px;
-  width: 0px;
-
-}
-
-/* Define the button style when being hovered over */
-::-webkit-scrollbar-button:hover {
-  background-color: #999999;
-}
+	/* Define the button style when being hovered over */
+	::-webkit-scrollbar-button:hover {
+		background-color: #999999;
+	}
 </style>
-
-

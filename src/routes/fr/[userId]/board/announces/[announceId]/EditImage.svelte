@@ -15,8 +15,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 	import { fade } from 'svelte/transition';
 	import { mediaQuery } from 'svelte-legos';
-	import { Label } from "$lib/components/ui/label"
-	
+	import { Label } from '$lib/components/ui/label';
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 
@@ -74,7 +73,7 @@
 				<div>
 					<form action="?/addImage" method="POST" use:addEnhance enctype="multipart/form-data">
 						<div class="field">
-							<Label for="images"> Les images </Label>
+							<Label for="images">Les images</Label>
 
 							<Input
 								type="file"
@@ -116,33 +115,29 @@
 					<Drawer.Description>Ajouter des images</Drawer.Description>
 				</Drawer.Header>
 				<form action="?/addImage" method="POST" use:enhance>
-					<div class="px-4 field">
+					<div class="field px-4">
 						<Label for="image">Images</Label>
-							<Input
-								type="file"
-								multiple
-								accept="image/png, image/avif, image/jpeg, image/webp"
-								name="images"
-								id="image"
-								on:input={(e) => ($addForm.images = Array.from(e.currentTarget.files ?? []))}
-							/>
-							<span class="text-xs text-muted-foreground">Sélectionner une ou plusieurs images</span
-							>
+						<Input
+							type="file"
+							multiple
+							accept="image/png, image/avif, image/jpeg, image/webp"
+							name="images"
+							id="image"
+							on:input={(e) => ($addForm.images = Array.from(e.currentTarget.files ?? []))}
+						/>
+						<span class="text-xs text-muted-foreground">Sélectionner une ou plusieurs images</span>
 
-							{#if $addErrors.images}
-								<span class="text-xs text-destructive">{$addErrors.images[0] || ''}</span>
-							{/if}
-						
+						{#if $addErrors.images}
+							<span class="text-xs text-destructive">{$addErrors.images[0] || ''}</span>
+						{/if}
 					</div>
 					<Drawer.Footer>
 						<Button>Submit</Button>
 						<Drawer.Close>Annuler</Drawer.Close>
 					</Drawer.Footer>
 				</form>
-				
 			</Drawer.Content>
 		</Drawer.Root>
-		
 	{/if}
 </div>
 

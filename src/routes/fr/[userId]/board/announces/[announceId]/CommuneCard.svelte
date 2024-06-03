@@ -50,7 +50,10 @@
 			};
 </script>
 
-<div class="rounded-md border bg-background p-4 shadow-sm" class:border-destructive={content === "none"}>
+<div
+	class="rounded-md border bg-background p-4 shadow-sm"
+	class:border-destructive={content === 'none'}
+>
 	<div class="flex items-center justify-between">
 		<h2 class="text-sm font-medium text-muted-foreground max-md:text-xs">Commune</h2>
 
@@ -62,7 +65,7 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-              <!-- <SuperDebug data={$formData}/> -->
+							<!-- <SuperDebug data={$formData}/> -->
 							<Dialog.Title>Modifier la commune</Dialog.Title>
 						</Dialog.Header>
 						<form action="?/editCommune" method="POST" use:enhance>
@@ -151,17 +154,13 @@
 			{/if}
 		</div>
 	</div>
-  {#if content === "none"}
-    <p class="text-sm text-destructive">
-      Veillez sélectionner la commune
-    </p>
-    {:else}
-    <p>
-      {content}
-    </p>
-  {/if}
-  
-	<p>
-		
-	</p>
+	{#if content === 'none'}
+		<p class="text-sm text-destructive">Veillez sélectionner la commune</p>
+	{:else}
+		<p>
+			{content}
+		</p>
+	{/if}
+
+	<p></p>
 </div>

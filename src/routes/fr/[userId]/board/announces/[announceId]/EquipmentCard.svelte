@@ -54,10 +54,8 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Modifier les  Equipements</Dialog.Title>
-              <Dialog.Description>
-                Modifier les  equipements disponibles
-              </Dialog.Description>
+							<Dialog.Title>Modifier les Equipements</Dialog.Title>
+							<Dialog.Description>Modifier les equipements disponibles</Dialog.Description>
 						</Dialog.Header>
 						<form action="?/editEquipments" method="POST" use:enhance>
 							<Form.Field {form} name="equipments">
@@ -104,8 +102,8 @@
 					</Drawer.Trigger>
 					<Drawer.Content>
 						<Drawer.Header>
-							<Drawer.Title>Les  equipements </Drawer.Title>
-							<Drawer.Description>Modifier les  equipements disponibles.</Drawer.Description>
+							<Drawer.Title>Les equipements</Drawer.Title>
+							<Drawer.Description>Modifier les equipements disponibles.</Drawer.Description>
 						</Drawer.Header>
 						<form
 							action="?/editEquipments"
@@ -158,9 +156,9 @@
 	</div>
 	<p class="flex gap-4">
 		{#each content as item}
-      <span>
-        {item}
-      </span>
-    {/each}
+			<span>
+				{item}
+			</span>
+		{/each}
 	</p>
 </div>

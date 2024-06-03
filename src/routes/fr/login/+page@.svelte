@@ -23,7 +23,7 @@
 				</div>
 				<div>
 					<Label for="password">Mot de passe</Label>
-					<Input type="password" name="password" id="password" autocomplete="on"/>
+					<Input type="password" name="password" id="password" autocomplete="on" />
 				</div>
 				<div>
 					<Button type="submit" class="w-full">Se connecter</Button>
@@ -42,7 +42,7 @@
 				<Separator />
 			</div>
 			<div>
-				<Button variant="outline"  class="w-full">
+				<Button variant="outline" class="w-full">
 					<span class="mr-4">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 262"
 							><path
