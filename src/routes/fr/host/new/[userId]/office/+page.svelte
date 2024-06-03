@@ -1,0 +1,601 @@
+<script lang="ts">
+	import type { PageData } from './$types';
+	import { Button, buttonVariants } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
+	import { Textarea } from '$lib/components/ui/textarea';
+	import { formSchema, equipments, transactionTypes, states } from './schema';
+	import { superForm } from 'sveltekit-superforms';
+	import { Field, Control, FieldErrors, Description } from 'formsnap';
+	import { zodClient } from 'sveltekit-superforms/adapters';
+	import * as Select from '$lib/components/ui/select';
+	import * as Form from '$lib/components/ui/form';
+	import SuperDebug from 'sveltekit-superforms';
+	import {
+		CalendarDate,
+		DateFormatter,
+		type DateValue,
+		getLocalTimeZone,
+		parseDate,
+		today
+	} from '@internationalized/date';
+	import * as Popover from '$lib/components/ui/popover';
+	import { cn } from '$lib/utils.js';
+	import { Calendar } from '$lib/components/ui/calendar';
+	import CalendarIcon from 'svelte-radix/Calendar.svelte';
+	import Reload from 'svelte-radix/Reload.svelte';
+	import { Toaster, toast } from 'svelte-sonner';
+	import { page } from '$app/stores';
+	import { cityObjects, communeAbidjanObject } from '$lib/data';
+	import {loadTimerForm} from '$lib/store'
+	import { goto, invalidateAll, replaceState } from '$app/navigation';
+
+	export let data: PageData;
+
+	let formIsLoad = false;
+
+	const {delayMs, timeOutMs} = loadTimerForm()
+	const form = superForm(data.form, {
+		validators: zodClient(formSchema),
+		invalidateAll: true,
+		applyAction: true,
+		delayMs: $delayMs,
+		timeoutMs: $timeOutMs,
+		onResult: async ({ result }) => {
+			switch (result.type) {
+				case 'success':
+					toast.success('Votre annonce a été créee avec succès.', {});
+					await goto(`/fr/${data.user?.id}/board/announces`, {replaceState: true, invalidateAll: true})
+					break;
+				case 'failure':
+					toast.error("Désolé, une erreur s'est produite. Veuillez réessayer plus tard.", {});
+					break;
+				default:
+					break;
+			}
+			formIsLoad = false;
+		},
+
+		onSubmit: async ({ formData, cancel }) => {
+			let data = Object.fromEntries(formData);
+			if (data.city !== 'abidjan') {
+				formData.set('commune', 'none');
+			}
+
+			formIsLoad = true;
+
+			if (data.commune === 'Sélectionner une commune' && data.city === 'abidjan') {
+				cancel();
+				communeIsValid = false;
+				formIsLoad = false;
+			}
+		}
+	});
+	const { form: formData, enhance, errors, delayed } = form;
+
+	// $: console.log($errors)
+
+	// userId
+	$: $formData.userId = $page.params.userId;
+
+	// select  transaction type
+	$: selectedTransactionType = $formData.transactionType
+		? {
+				label: $formData.transactionType,
+				value: $formData.transactionType
+			}
+		: undefined;
+	// slect state
+
+	// $: selectState = {
+	// 	label: states[$formData.state],
+	// 	value:
+
+	$: selectState = $formData.state
+		? {
+				label: $formData.state,
+				value: $formData.state
+			}
+		: undefined;
+
+	// Select equipment
+	$: selectedEquipment = $formData.equipments.map((c) => ({ label: equipments[c], value: c }));
+
+	// selectCity
+	$: selectCity = $formData.city
+		? {
+				label: $formData.city,
+				value: $formData.city
+			}
+		: undefined;
+
+	// selectCommune
+
+	$: selectCommune = $formData.commune
+		? {
+				label: $formData.commune,
+				value: $formData.commune
+			}
+		: undefined;
+
+	// get commune
+
+	$: if ($formData.city !== 'abidjan') {
+		$formData.commune = 'Sélectionner une commune';
+	}
+
+	let communeIsValid = true;
+
+	// avalaible
+	const df1 = new DateFormatter('fr-FR', {
+		dateStyle: 'long'
+	});
+
+	let value1: DateValue | undefined;
+
+	$: value1 = $formData.available ? parseDate($formData.available) : undefined;
+
+	let placeholder1: DateValue = today(getLocalTimeZone());
+
+	// en of avalaible
+	const df2 = new DateFormatter('fr-FR', {
+		dateStyle: 'long'
+	});
+
+	let value2: DateValue | undefined;
+
+	$: value2 = $formData.endOfAvailability ? parseDate($formData.endOfAvailability) : undefined;
+
+	let placeholder2: DateValue = today(getLocalTimeZone());
+</script>
+
+<section class="flex items-center justify-center pb-6">
+	<form
+		method="POST"
+		use:enhance
+		enctype="multipart/form-data"
+		class="mt-[5rem] grid w-[30rem] gap-6"
+	>
+		<div class="field">
+			<Label for="type">Type</Label>
+			<Input disabled type="text" name="idType" id="type" value="bureau" />
+		</div>
+		<input type="hidden" name="userId" bind:value={$formData.userId} />
+		<div class="field">
+			<Form.Field {form} name="title">
+				<Form.Control let:attrs>
+					<Form.Label>Titre de l'annonce</Form.Label>
+					<Input
+						on:keypress={(e) => {
+							if (e.code.includes('Digit')) {
+								e.preventDefault();
+							}
+							if (e.code.includes('Numpad')) {
+								e.preventDefault();
+							}
+						}}
+						{...attrs}
+						bind:value={$formData.title}
+					/>
+				</Form.Control>
+				<Form.FieldErrors class="text-xs" />
+			</Form.Field>
+		</div>
+
+		<!-- description -->
+		<div class="field">
+			<Form.Field {form} name="description">
+				<Form.Control let:attrs>
+					<Form.Label>Description</Form.Label>
+					<Textarea
+						{...attrs}
+						placeholder="Toutes les informations supplémentaires sont les bienvenues"
+						class="resize-none"
+						bind:value={$formData.description}
+					/>
+					<!-- <Form.Description>
+						Toutes les informations supplémentaires sont les bienvenues
+					</Form.Description> -->
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+		</div>
+
+		<!-- city -->
+
+		<Form.Field {form} name="city">
+			<Form.Control let:attrs>
+				<Form.Label>Ville</Form.Label>
+				<Select.Root
+					preventScroll={false}
+					selected={selectCity}
+					onSelectedChange={(s) => {
+						s && ($formData.city = s.value);
+					}}
+				>
+					<Select.Trigger class="w-full">
+						<Select.Input {...attrs} bind:value={$formData.city} />
+						<Select.Value placeholder="Sélectionner une ville" />
+					</Select.Trigger>
+					<Select.Content class="h-[200px] overflow-y-scroll">
+						{#each cityObjects as city}
+							<Select.Item value={city.value} label={city.label}>{city.label}</Select.Item>
+						{/each}
+					</Select.Content>
+				</Select.Root>
+			</Form.Control>
+			<Form.FieldErrors class="text-xs text-destructive" />
+		</Form.Field>
+
+		<!-- commune -->
+
+		{#if $formData.city === 'abidjan'}
+			<Form.Field {form} name="commune">
+				<Form.Control let:attrs>
+					<Form.Label>Commune</Form.Label>
+					<Select.Root
+						disabled={$formData.city !== 'abidjan'}
+						selected={selectCommune}
+						onSelectedChange={(s) => {
+							s && ($formData.commune = s.value);
+							communeIsValid = true;
+						}}
+					>
+						<Select.Trigger class="w-full">
+							<Select.Input {...attrs} bind:value={$formData.commune} />
+							<Select.Value placeholder="Sélectionner une ville" />
+						</Select.Trigger>
+						<Select.Content class="h-[200px] overflow-y-scroll">
+							{#each communeAbidjanObject as commune}
+								<Select.Item value={commune.value} label={commune.label}
+									>{commune.label}</Select.Item
+								>
+							{/each}
+						</Select.Content>
+					</Select.Root>
+				</Form.Control>
+				<Form.FieldErrors class="text-xs text-destructive" />
+				{#if !communeIsValid}
+					<span class="text-sm text-destructive"> Veillez sélectionner une commune </span>
+				{/if}
+			</Form.Field>
+		{:else}
+			<input type="hidden" name="commune" bind:value={$formData.commune} />
+		{/if}
+
+		<!-- #district -->
+
+		<div class="field">
+			<Form.Field {form} name="district">
+				<Form.Control let:attrs>
+					<Form.Label>Quartier</Form.Label>
+					<Input
+						type="text"
+						bind:value={$formData.district}
+						placeholder="exemple: Angré"
+						autocomplete="off"
+						{...attrs}
+					/>
+				</Form.Control>
+				<Form.FieldErrors class="text-xs text-destructive" />
+			</Form.Field>
+		</div>
+
+		<!-- Transaction type -->
+		<div class="field">
+			<Form.Field {form} name="transactionType">
+				<Form.Control let:attrs>
+					<Form.Label>Type de transaction</Form.Label>
+					<Select.Root
+						selected={selectedTransactionType}
+						onSelectedChange={(v) => {
+							v && ($formData.transactionType = v.value);
+						}}
+					>
+						<Select.Trigger {...attrs}>
+							<Select.Value placeholder="Selectionner le type de transaction" />
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Item value="vente" label="Vente" />
+							<Select.Item value="location" label="Location" />
+							<Select.Item value="location saisonnière" label="Location saisonnière" />
+						</Select.Content>
+					</Select.Root>
+					<input hidden bind:value={$formData.transactionType} name={attrs.name} />
+				</Form.Control>
+
+				<Form.FieldErrors />
+			</Form.Field>
+		</div>
+
+		<!-- state -->
+
+		<div class="field">
+			<Form.Field {form} name="state">
+				<Form.Control let:attrs>
+					<Form.Label>L'état du bâtiment</Form.Label>
+					<Select.Root
+						selected={selectState}
+						onSelectedChange={(v) => {
+							v && ($formData.state = v.value);
+						}}
+					>
+						<Select.Trigger {...attrs}>
+							<Select.Value placeholder="sélectionner l'état du bâtiment" />
+						</Select.Trigger>
+						<Select.Content>
+							<Select.Item value="neuf" label="Neuf" />
+							<Select.Item value="en construction" label="En construction" />
+							<Select.Item value="occasion" label="Occasion" />
+						</Select.Content>
+					</Select.Root>
+					<input hidden bind:value={$formData.state} name={attrs.name} />
+				</Form.Control>
+				<Form.FieldErrors class="text-sm" />
+			</Form.Field>
+		</div>
+
+		<!-- <div class="field">
+			<Form.Field {form} name="state">
+				<Form.Control let:attrs>
+					<Form.Label>L'etat</Form.Label>
+					<Select.Root
+						selected={selectState}
+						onSelectedChange={(s) => {
+							s && ($formData.state = s.value);
+						}}
+					>
+						<Select.Trigger class="w-full">
+							<Select.Input {...attrs} bind:value={$formData.state} />
+							<Select.Value placeholder="" />
+						</Select.Trigger>
+						<Select.Content>
+							{#each Object.entries(states) as [value, label]}
+								<Select.Item {value} {label}>{label}</Select.Item>
+							{/each}
+						</Select.Content>
+					</Select.Root>
+				</Form.Control>
+				<Form.Description>Sélectionner l'etat du batiment (neuf par défaut)</Form.Description>
+				<Form.FieldErrors class="text-xs text-destructive" />
+			</Form.Field>
+		</div> -->
+
+		<!-- #calandare -->
+		<div class=" grid gap-6">
+			<!-- ##avalaible -->
+			<div class="field">
+				<Form.Field {form} name="available" class="flex flex-col">
+					<Form.Control let:attrs>
+						<Form.Label>Disponibilité</Form.Label>
+						<Popover.Root>
+							<Popover.Trigger
+								{...attrs}
+								class={cn(
+									buttonVariants({ variant: 'outline' }),
+									'w-full justify-start pl-4 text-left font-normal',
+									!value1 && 'text-muted-foreground'
+								)}
+							>
+								{value1 ? df1.format(value1.toDate(getLocalTimeZone())) : 'Choisir une date'}
+								<CalendarIcon class="ml-auto h-4 w-4 opacity-50" />
+							</Popover.Trigger>
+							<Popover.Content class="w-auto p-0" side="top">
+								<Calendar
+									value={value1}
+									bind:placeholder={placeholder1}
+									minValue={today(getLocalTimeZone())}
+									calendarLabel="Date de disponibilité"
+									initialFocus
+									onValueChange={(v) => {
+										if (v) {
+											$formData.available = v.toString();
+										} else {
+											$formData.available = '';
+										}
+									}}
+								/>
+							</Popover.Content>
+						</Popover.Root>
+						<!-- <Form.Description>Your date of birth is used to calculator your age</Form.Description> -->
+						<Form.FieldErrors />
+						<input hidden value={$formData.available} name={attrs.name} />
+					</Form.Control>
+				</Form.Field>
+			</div>
+			<!-- ##end of availability -->
+			{#if $formData.transactionType === 'saisonnière'}
+				<div>
+					<div class="field">
+						<Form.Field {form} name="endOfAvailability" class="flex flex-col">
+							<Form.Control let:attrs>
+								<Form.Label>Fin de la disponibilité</Form.Label>
+								<Popover.Root>
+									<Popover.Trigger
+										{...attrs}
+										class={cn(
+											buttonVariants({ variant: 'outline' }),
+											'w-full justify-start pl-4 text-left font-normal',
+											!value2 && 'text-muted-foreground'
+										)}
+									>
+										{value2 ? df2.format(value2.toDate(getLocalTimeZone())) : 'Choisir une date'}
+										<CalendarIcon class="ml-auto h-4 w-4 opacity-50" />
+									</Popover.Trigger>
+									<Popover.Content class="w-auto p-0" side="top">
+										<Calendar
+											value={value2}
+											bind:placeholder={placeholder2}
+											minValue={today(getLocalTimeZone())}
+											calendarLabel="Date de disponibilité"
+											initialFocus
+											onValueChange={(v) => {
+												if (v) {
+													$formData.endOfAvailability = v.toString();
+												} else {
+													$formData.endOfAvailability = '';
+												}
+											}}
+										/>
+									</Popover.Content>
+								</Popover.Root>
+								<!-- <Form.Description>Your date of birth is used to calculator your age</Form.Description> -->
+								<Form.FieldErrors />
+								<input hidden value={$formData.endOfAvailability} name={attrs.name} />
+							</Form.Control>
+						</Form.Field>
+					</div>
+				</div>
+			{/if}
+		</div>
+		<!-- #equipments -->
+		<div class="field">
+			<Field {form} name="equipments">
+				<Control let:attrs>
+					<Label>Les equipements</Label>
+					<Select.Root
+						multiple
+						selected={selectedEquipment}
+						onSelectedChange={(s) => {
+							if (s) {
+								$formData.equipments = s.map((c) => c.value);
+							} else {
+								$formData.equipments = [];
+							}
+						}}
+					>
+						{#each $formData.equipments as item}
+							<input name={attrs.name} hidden value={item} />
+						{/each}
+						<Select.Trigger {...attrs}>
+							<Select.Value placeholder="Sélectionner les équipements " />
+						</Select.Trigger>
+						<Select.Content>
+							{#each Object.entries(equipments) as [value, label]}
+								<Select.Item {value} {label} />
+							{/each}
+						</Select.Content>
+					</Select.Root>
+					<FieldErrors class="text-sm text-destructive" />
+				</Control>
+			</Field>
+		</div>
+
+		<!-- ## number of room -->
+		<!-- <div>
+			<div class="field">
+				<Form.Field {form} name="numOfRoom">
+					<Form.Control let:attrs>
+						<Form.Label>Nombre de Chambres</Form.Label>
+						<Input
+							type="number"
+							inputmode="numeric"
+							min="0"
+							{...attrs}
+							bind:value={$formData.numOfRoom}
+						/>
+					</Form.Control>
+					<Form.FieldErrors class="text-xs" />
+				</Form.Field>
+			</div>
+		</div> -->
+
+		<div>
+			<div class="field">
+				<Form.Field {form} name="numOfBath">
+					<Form.Control let:attrs>
+						<Form.Label>Nombre de toilettes</Form.Label>
+						<Input
+							type="number"
+							inputmode="numeric"
+							min="0"
+							{...attrs}
+							bind:value={$formData.numOfBath}
+						/>
+					</Form.Control>
+					<Form.FieldErrors class="text-xs" />
+				</Form.Field>
+			</div>
+		</div>
+
+		<!-- surface -->
+		<div>
+			<div class="field">
+				<Form.Field {form} name="surface">
+					<Form.Control let:attrs>
+						<Form.Label>Superficie (m2)</Form.Label>
+						<Input
+							type="number"
+							inputmode="numeric"
+							min="0"
+							{...attrs}
+							bind:value={$formData.surface}
+						/>
+					</Form.Control>
+					<Form.FieldErrors class="text-xs" />
+				</Form.Field>
+			</div>
+		</div>
+
+		<!-- images -->
+		<div>
+			<div class="field">
+				<!-- <Form.Field {form} name="images">
+					<Form.Control let:attrs>
+						<Form.Label>Images</Form.Label>
+					</Form.Control>
+					<Form.FieldErrors class="text-xs" />
+				</Form.Field> -->
+
+				<label for="images"> Les images </label>
+
+				<Input
+					type="file"
+					multiple
+					accept="image/*"
+					name="images"
+					id="image"
+					on:input={(e) => ($formData.images = Array.from(e.currentTarget.files ?? []))}
+				/>
+				<span class="text-xs text-muted-foreground">Sélectionner une ou plusieurs images</span>
+
+				{#if $errors.images}
+					<span class="text-xs text-destructive">{$errors.images[0] || ''}</span>
+				{/if}
+				{#if $errors.images?._errors}
+					<span class="text-xs text-destructive">{$errors.images._errors[0] || ''}</span>
+				{/if}
+			</div>
+		</div>
+
+		<div>
+			<div class="field">
+				<Form.Field {form} name="price">
+					<Form.Control let:attrs>
+						<Form.Label>Prix (fcfa)</Form.Label>
+						<Input
+							type="number"
+							inputmode="numeric"
+							min="0"
+							autocomplete="off"
+							{...attrs}
+							bind:value={$formData.price}
+						/>
+					</Form.Control>
+					<Form.FieldErrors class="text-xs" />
+				</Form.Field>
+			</div>
+		</div>
+
+		<div>
+			{#if $delayed}
+				<Button class="w-full" disabled>
+					<Reload class="mr-2 h-4 w-4 animate-spin" />
+					Veillez patienter
+				</Button>
+			{:else}
+				<Button type="submit" class="w-full">Créer</Button>
+			{/if}
+		</div>
+	</form>
+</section>
