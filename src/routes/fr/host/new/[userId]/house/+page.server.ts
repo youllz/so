@@ -4,7 +4,8 @@ import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate, message } from 'sveltekit-superforms';
 
-export const load = (async () => {
+export const load = (async ({parent}) => {
+	await parent()
 	return {
 		form: await superValidate(zod(formSchema))
 	};

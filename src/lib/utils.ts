@@ -62,3 +62,17 @@ export function firstCapitalize(mot: string) {
 	// Met la première lettre en majuscule et concatène avec le reste du mot en minuscules
 	return mot.charAt(0).toUpperCase() + mot.slice(1).toLowerCase();
 }
+
+
+export function formatFCFA(amount: string) {
+	// Convert the amount to a string
+	let str = amount.toString();
+
+	// Add thousands separators
+	str = str.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+	// Add the FCFA currency symbol
+	str += ' FCFA';
+
+	return str;
+}

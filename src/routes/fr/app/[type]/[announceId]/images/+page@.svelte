@@ -6,9 +6,10 @@
 	import Slide from './Slide.svelte';
 	import { slide } from 'svelte/transition';
 	import { expoInOut } from 'svelte/easing';
+	import SaveBtn from '$lib/components/own/SaveBtn.svelte'
 
 	export let data: PageData;
-	$: ({ announce } = data);
+	$: ({ announce, user, saved } = data);
 
 	let openSlider = false;
 	let idx = 0;
@@ -36,10 +37,12 @@
 			/>
 		</li>
 		<li>
-			<Button variant="ghost" size="sm">
-				<Heart class="icon mr-4" />
-				Enregistrer
-			</Button>
+			<SaveBtn 
+			{user}
+			{saved}
+			recordId={announce.id}
+			state="sm"
+			/>
 		</li>
 	</ul>
 </header>
@@ -75,7 +78,26 @@
 			announceId={announce.id}
 			collectionId={announce.collectionId}
 			images={announce.images}
-		/>
+		>
+		<div slot="send">
+			<Send
+				announceId={announce.id}
+				city={announce.city}
+				collectionId={announce.collectionId}
+				img={announce.images[0]}
+				property={announce.propertyType}
+				transaction={announce.transactionType}
+			/>
+		</div>
+		<div slot="save">
+			<SaveBtn 
+			{user}
+			{saved}
+			recordId={announce.id}
+			state="sm"
+			/>
+		</div>
+	</Slide>
 	</div>
 {/if}
 

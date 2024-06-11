@@ -7,8 +7,17 @@
 	import Theme from '$lib/components/own/Theme.svelte';
 	import { page } from '$app/stores';
 	import FilterDialog from '$lib/components/own/FilterDialog.svelte';
+	import { Toaster, toast } from 'svelte-sonner';
+	import { Heart } from 'svelte-radix';
+	import {isDesktop} from '$lib/store'
+	import Saved from '$lib/components/own/Saved.svelte';
+
+
 
 	export let data: LayoutData;
+
+	$: ({savedData} = data)
+
 	const svgH = 16;
 	const svgW = 16;
 
@@ -19,7 +28,7 @@
 			title: 'Maisons'
 		},
 		{
-			type: 'apartment',
+			type: 'appartement',
 			icon: `<svg xmlns="http://www.w3.org/2000/svg" width=${svgW} height=${svgH} viewBox="0 0 24 24"><path fill="currentColor" d="M19 3v18h-6v-3.5h-2V21H5V3zm-4 4h2V5h-2zm-4 0h2V5h-2zM7 7h2V5H7zm8 4h2V9h-2zm-4 0h2V9h-2zm-4 0h2V9H7zm8 4h2v-2h-2zm-4 0h2v-2h-2zm-4 0h2v-2H7zm8 4h2v-2h-2zm-8 0h2v-2H7zM21 1H3v22h18z"/></svg>`,
 			title: 'Appartements'
 		},
@@ -49,6 +58,8 @@
 	];
 </script>
 
+<Toaster richColors  />
+
 <header class="fixed top-0 z-40 flex w-full flex-col gap-6 border-b border-input bg-background">
 	<nav class="flex items-center justify-between px-[3vw] py-2">
 		<div>
@@ -64,6 +75,9 @@
 		<ul class="flex items-center gap-4">
 			<li>
 				<Button size="sm" variant="default">Mettre son annonce sur SO</Button>
+			</li>
+			<li>
+				<Saved savedData={savedData?.saved.reverse()}/>
 			</li>
 			<li>
 				<Theme />
@@ -100,7 +114,7 @@
 						/></svg
 					>
 				</span>
-				<span> Nouveaux </span>
+				<span> Tous </span>
 			</Button>
 			{#each subNavItems as item}
 				<li>

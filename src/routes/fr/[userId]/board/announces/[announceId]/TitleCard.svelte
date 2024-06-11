@@ -42,7 +42,9 @@
 </script>
 
 <div class="flex items-start gap-2">
-	<h1 class="">{content}</h1>
+	<h1 class="tracking-tight ">
+		{content} 
+</h1>
 	<div>
 		{#if $isDesktop}
 			<Dialog.Root bind:open>
@@ -128,9 +130,10 @@
 
 <style>
 	h1 {
-		font-size: clamp(14px, 5vw + 0.1rem, 1.8rem);
+		font-size: clamp(14px, 5vw + 0.1rem, 3rem);
 		line-height: 120%;
 		padding-bottom: 8px;
 		text-wrap: balance;
+		font-weight: 800;
 	}
 </style>

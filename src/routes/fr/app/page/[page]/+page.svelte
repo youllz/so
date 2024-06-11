@@ -1,23 +1,22 @@
 <script lang="ts">
 	import Card from '$lib/components/own/Card.svelte';
-	import type { PageData } from './$types';
-	import * as Pagination from '$lib/components/ui/pagination';
 	import { isDesktop } from '$lib/store';
+	import type { PageData } from './$types';
 	import { ChevronLeft, ChevronRight } from 'svelte-radix';
 	import { goto } from '$app/navigation';
-
+	import * as Pagination from '$lib/components/ui/pagination';
 	export let data: PageData;
 
-	$: ({ allAnnounces } = data.announceData);
+	$: ({ allAnnounces } = data);
 	$: ({ user, saved } = data);
 
 	// $: loadAnnounces = writable<RecordModel[]>(allAnnounces.items);
 
 	$: count = allAnnounces.totalItems;
-	$: perPage = allAnnounces.perPage
-	$: siblingCount = $isDesktop ? allAnnounces.page : 0;
-
+	$: perPage = allAnnounces.perPage;
+	$: siblingCount = 2
 </script>
+
 
 <section class="px-[2vw] pb-4">
 	<div class="cards-container">
@@ -35,7 +34,7 @@
 				{saved}
 			/>
 		{:else}
-			<div class="absolute top-1/3 left-1/2 translate-x-[-50%] translate-y-[50%]">
+		<div class="absolute top-1/3 left-1/2 translate-x-[-50%] translate-y-[50%]">
 				<p class="text-2xl text-muted-foreground">Aucun résultat trouvé</p>
 			</div>
 		{/each}
@@ -43,11 +42,12 @@
 	</div>
 
 	
-{#if allAnnounces.totalPages > 1}
+	{#if allAnnounces.totalPages > 1}
 		<div class="mt-14">
-			<Pagination.Root {count} {perPage} {siblingCount} let:pages let:currentPage onPageChange={(item) => {
+			<Pagination.Root {count} {perPage} siblingCount={siblingCount} let:pages let:currentPage onPageChange={(item) => {
 				 goto(`/fr/app/page/${item}`, {replaceState: true, invalidateAll: true})
 			}}> 
+	
 	  <Pagination.Content>
 	    <Pagination.Item>
 	      <Pagination.PrevButton>
@@ -58,11 +58,11 @@
 	    {#each pages as page (page.key)}
 	      {#if page.type === "ellipsis"}
 	        <Pagination.Item>
-	          <Pagination.Ellipsis  />
+	          <Pagination.Ellipsis />
 	        </Pagination.Item>
 	      {:else}
 	        <Pagination.Item>
-	          <Pagination.Link href="/fr/app/page/{page.value}" {page} isActive={currentPage === page.value}>
+	          <Pagination.Link {page} isActive={Number(allAnnounces.page) === page.value}>
 	            {page.value}
 	          </Pagination.Link>
 	        </Pagination.Item>
@@ -77,7 +77,7 @@
 	  </Pagination.Content>
 	</Pagination.Root>
 		</div>
-{/if}
+	{/if}
 </section>
 
 <style>
@@ -88,3 +88,5 @@
 		grid-auto-rows: minmax(18rem, auto);
 	}
 </style>
+
+

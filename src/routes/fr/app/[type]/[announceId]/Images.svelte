@@ -73,7 +73,8 @@
 
 <style lang="postcss">
 	img {
-		@apply h-full w-full object-cover transition-transform hover:scale-[1.03];
+		transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+		@apply h-full w-full object-cover  hover:scale-[1.03];
 	}
 
 	.img-container {

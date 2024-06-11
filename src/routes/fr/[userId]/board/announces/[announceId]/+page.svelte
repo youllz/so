@@ -70,6 +70,9 @@
 
 			<div class="mt-4 px-4">
 				<TitleCard content={announce.title} data={data.titleForm} />
+				<p class="text-sm text-muted-foreground">
+					créer le {df.format(createDay)}
+				</p>
 			</div>
 		</div>
 

@@ -1,25 +1,25 @@
 <script lang="ts">
 	import Card from '$lib/components/own/Card.svelte';
-	import type { PageData } from './$types';
-	import * as Pagination from '$lib/components/ui/pagination';
 	import { isDesktop } from '$lib/store';
+	import type { PageData } from './$types';
 	import { ChevronLeft, ChevronRight } from 'svelte-radix';
 	import { goto } from '$app/navigation';
-
+	import * as Pagination from '$lib/components/ui/pagination';
+	import { page } from '$app/stores';
 	export let data: PageData;
 
-	$: ({ allAnnounces } = data.announceData);
+	$: ({ allAnnounces } = data);
 	$: ({ user, saved } = data);
 
 	// $: loadAnnounces = writable<RecordModel[]>(allAnnounces.items);
 
 	$: count = allAnnounces.totalItems;
 	$: perPage = allAnnounces.perPage;
-	$: siblingCount = $isDesktop ? allAnnounces.page : 0;
+	$: siblingCount = 2;
 </script>
 
 <section class="px-[2vw] pb-4">
-	<div class="cards-container ">
+	<div class="cards-container">
 		{#each allAnnounces.items as announce}
 			<Card
 				images={announce.images}
@@ -34,13 +34,11 @@
 				{saved}
 			/>
 		{:else}
-			<div class="absolute top-1/3 left-1/2 translate-x-[-50%] translate-y-[50%]">
-				<p class="text-2xl text-muted-foreground">Aucun résultat trouvé</p>
-			</div>
+			<p class="text-7xl text-muted-foreground">Aucun résultat trouvé</p>
 		{/each}
 	</div>
 
-	{#if allAnnounces.totalPages > 2 }
+	{#if allAnnounces.totalPages !== 1}
 		<div class="mt-14">
 			<Pagination.Root
 				{count}
@@ -49,7 +47,7 @@
 				let:pages
 				let:currentPage
 				onPageChange={(item) => {
-					goto(`/fr/app/page/${item}`, { replaceState: true, invalidateAll: true });
+					goto(`/fr/app/${$page.params.type}/page/${item}`, { replaceState: true, invalidateAll: true });
 				}}
 			>
 				<Pagination.Content>
@@ -66,7 +64,7 @@
 							</Pagination.Item>
 						{:else}
 							<Pagination.Item>
-								<Pagination.Link {page} isActive={currentPage === page.value}>
+								<Pagination.Link {page} isActive={Number(allAnnounces.page) === page.value}>
 									{page.value}
 								</Pagination.Link>
 							</Pagination.Item>

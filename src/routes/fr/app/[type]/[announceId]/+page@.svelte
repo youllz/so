@@ -8,15 +8,30 @@
 	import FilterDialog from '$lib/components/own/FilterDialog.svelte';
 	import Images from './Images.svelte';
 	import Avatar from './Avatar.svelte';
-	import { firstCapitalize } from '$lib/utils';
+	import { firstCapitalize, formatFCFA } from '$lib/utils';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Card from '$lib/components/ui/card';
 	import Details from './Details.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
+	import {ExclamationTriangle} from 'svelte-radix'
+	import Warning from './warning.svelte';
+	import SaveBtn from '$lib/components/own/SaveBtn.svelte';
+	import Saved from '$lib/components/own/Saved.svelte';
 
 	export let data: PageData;
 
-	$: ({ announce } = data);
-	$: console.log(announce);
+	$: ({ announce, user, saved, savedData } = data);
+
+	$: city = firstCapitalize(announce.city) as string;
+	$: commune = announce.commune === 'none' ? ' ' : (announce.commune as string);
+	$: district = announce.district ?? ('' as string);
+
+	let location: string;
+	$: if (city === 'Abidjan') {
+		location = city.concat(' ', commune, ' ', district);
+	} else {
+		location = city;
+	}
 </script>
 
 <header class="fixed top-0 z-40 flex w-full flex-col gap-6 border-b border-input bg-background">
@@ -32,6 +47,9 @@
 		<ul class="flex items-center gap-4">
 			<li>
 				<Button size="sm">Mettre son annonce sur SO</Button>
+			</li>
+			<li>
+				<Saved savedData={savedData?.saved.reverse()}/>
 			</li>
 			<li>
 				<Theme />
@@ -50,7 +68,14 @@
 </header>
 
 <section class="px-[10vw] pb-4 pt-[80px]">
-	<Header title={announce.title} />
+	<Header title={announce.title} propertyType={announce.propertyType}>
+		<SaveBtn
+		recordId={announce.id}
+		{saved}
+		{user}
+		state="sm"
+		/>
+	</Header>
 
 	<Images
 		allImages={announce.images}
@@ -85,31 +110,233 @@
 			/>
 			<Separator class="mt-6" />
 
-			<Details
-				transaction={announce.transactionType}
-				state={announce.state}
-				bedroom={announce.numOfRoom}
-				bathroom={announce.numOfBath}
-				propertyType={announce.propertyType}
-				surface={announce.surface}
-			/>
+			<div class="mt-6 grid gap-6">
+				<Details label="Type de transaction" value={firstCapitalize(announce.transactionType)}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="28"
+						height="28"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="0.8571428571428571"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="lucide lucide-arrow-right-left"
+						><path d="m16 3 4 4-4 4" /><path d="M20 7H4" /><path d="m8 21-4-4 4-4" /><path
+							d="M4 17h16"
+						/></svg
+					>
+				</Details>
+				<Details label="Localisation" value={location}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="28"
+						height="28"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="0.8571428571428571"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="lucide lucide-map-pin"
+						><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle
+							cx="12"
+							cy="10"
+							r="3"
+						/></svg
+					>
+				</Details>
+				{#if announce.propertyType !== 'terrain'}
+					<Details label="Etat du bâtiment" value={firstCapitalize(announce.state)}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="28"
+							height="28"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="0.8571428571428571"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-box"
+							><path
+								d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
+							/><path d="m3.3 7 8.7 5 8.7-5" /><path d="M12 22V12" /></svg
+						>
+					</Details>
+				{/if}
+				<Details label="Superficie (m2)" value={announce.surface}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="28"
+						height="28"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="0.8571428571428571"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="lucide lucide-grid-2x2"
+						><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M3 12h18" /><path
+							d="M12 3v18"
+						/></svg
+					>
+				</Details>
+
+				{#if announce.propertyType === 'maison' || announce.propertyType === 'appartement'}
+					<Details label="Nombre de pièces" value={announce.numOfPieces}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="28"
+							height="28"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="0.8571428571428571"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-layout-panel-top"
+							><rect width="18" height="7" x="3" y="3" rx="1" /><rect
+								width="7"
+								height="7"
+								x="3"
+								y="14"
+								rx="1"
+							/><rect width="7" height="7" x="14" y="14" rx="1" /></svg
+						>
+					</Details>
+					<Details label="Nombre de Chambres" value={announce.numOfRoom}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="28"
+							height="28"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="0.8571428571428571"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-bed"
+							><path d="M2 4v16" /><path d="M2 8h18a2 2 0 0 1 2 2v10" /><path d="M2 17h20" /><path
+								d="M6 8v9"
+							/></svg
+						>
+					</Details>
+					<Details label="Nombre de salle de bains" value={announce.numOfBath}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="28"
+							height="28"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="0.8571428571428571"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-shower-head"
+							><path d="m4 4 2.5 2.5" /><path d="M13.5 6.5a4.95 4.95 0 0 0-7 7" /><path
+								d="M15 5 5 15"
+							/><path d="M14 17v.01" /><path d="M10 16v.01" /><path d="M13 13v.01" /><path
+								d="M16 10v.01"
+							/><path d="M11 20v.01" /><path d="M17 14v.01" /><path d="M20 11v.01" /></svg
+						>
+					</Details>
+				{/if}
+
+				<Separator />
+
+				<div>
+					<p class="text-lg font-medium">Description</p>
+
+					<pre class="line-clamp-6 text-wrap text-left indent-0 font-sans"> 
+						<p>{announce.description.trim()}</p>
+					</pre>
+
+					<div class="sticky top-1/2 mt-4">
+						<Dialog.Root>
+							<Dialog.Trigger
+								><span class="underline underline-offset-2">En savoir plus</span></Dialog.Trigger
+							>
+							<Dialog.Content class="max-w-[800px]">
+								<Dialog.Header>
+									<Dialog.Title>Description de l'annonce</Dialog.Title>
+									<Dialog.Description>Pus de détails de l'annonce</Dialog.Description>
+								</Dialog.Header>
+								<div class="h-[60dvh] overflow-y-auto">
+									<pre class="text text-wrap font-sans">
+										<p>{announce.description}</p>
+									</pre>
+								</div>
+							</Dialog.Content>
+						</Dialog.Root>
+					</div>
+				</div>
+
+				<Separator class="my-3" />
+			</div>
+
+			{#if announce.equipments}
+				<p class="mt-4 text-lg font-medium">Les équipements</p>
+
+				<div class="equipement mt-4 w-full">
+					{#each announce.equipments as item}
+						<span class="p-3 rounded-md text-muted-foreground bg-muted border border-input flex items-center justify-center">
+							<p class="text-lg font-medium">
+								{firstCapitalize(item)}
+							</p>
+						</span>
+					{/each}
+				</div>
+			{/if}
 		</div>
 
 		<!--  -->
 
-		<div class=" sticky top-1/2">
+		<div class=" sticky top-1/3">
 			<Card.Root class="mt-6">
-				<Card.Header>
-					<Card.Title>Card Title</Card.Title>
-					<Card.Description>Card Description</Card.Description>
-				</Card.Header>
+				<!-- <Card.Header>
+					<Card.Title>Description de l'annonce</Card.Title>
+					<Card.Description>Pus de détails de l'annonce</Card.Description>
+				</Card.Header> -->
 				<Card.Content>
-					<p>Card Content</p>
+					<div class="grid gap-3 mt-6">
+						<div>
+							<p class="text-sm text-muted-foreground">Type de transaction</p>
+							<p>{firstCapitalize(announce.transactionType)}</p>
+						</div>
+						<Separator/>
+						<div>
+							<p class="text-muted-foreground text-sm">Prix</p>
+							<p>{formatFCFA(announce.price)}</p>
+						</div>
+						<Separator/>
+					</div>
+
+					<div class="mt-6">
+						<Button  class="w-full">
+							Contacter
+						</Button>
+					</div>
+
+				
 				</Card.Content>
-				<Card.Footer>
+				<!-- <Card.Footer>
 					<p>Card Footer</p>
-				</Card.Footer>
+				</Card.Footer> -->
 			</Card.Root>
+			<div class="mt-4 ">
+				<Warning/>
+			</div>
+
+			<div class="mt-4">
+				<Button variant="link" class="text-muted-foreground w-full">
+					<span class="icon mr-4">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+					</span>
+					Signaler cette annonce
+				</Button>
+			</div>
 		</div>
 	</div>
 	<!--  -->
@@ -119,6 +346,7 @@
 	.card-container {
 		display: flex;
 		gap: 5vw;
+		align-items: flex-start;
 	}
 
 	.card-container div:nth-child(1) {
@@ -126,5 +354,11 @@
 	}
 	.card-container div:nth-child(2) {
 		flex: 1 1 0;
+	}
+
+	.equipement {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+		gap: 1.5rem;
 	}
 </style>

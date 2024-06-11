@@ -31,7 +31,6 @@
 
 	export let data: PageData;
 
-	$: console.log($delayed);
 
 	const { delayMs, timeOutMs } = loadTimerForm();
 
@@ -74,9 +73,7 @@
 			}
 		},
 
-		onError({ result }) {
-			console.log(result);
-		}
+		
 	});
 
 	const { form: formData, enhance, errors, message, delayed } = form;
@@ -165,6 +162,7 @@
 		enctype="multipart/form-data"
 		class="mt-[5rem] grid w-[30rem] gap-6"
 	>
+	
 		<div class="field">
 			<Label for="type">Type</Label>
 			<Input disabled type="text" name="Type" id="type" value="maison" />

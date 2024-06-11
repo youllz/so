@@ -4,7 +4,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import * as schema from './schemas';
 import { error, fail } from '@sveltejs/kit';
 
-export const load = (async ({ params, locals }) => {
+export const load = (async ({ params, locals, parent }) => {
+		await parent()
 	const getUserAnnounces = async () => {
 		try {
 			const record = await locals.pb

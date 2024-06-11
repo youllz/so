@@ -28,14 +28,10 @@
 
 			<ul class="flex items-center gap-2">
 				<li>
-					<Button variant="ghost" size="icon" class="rounded-full">
-						<Share1 class="icon" />
-					</Button>
+					<slot name="send"/>
 				</li>
 				<li>
-					<Button variant="ghost" size="icon" class="rounded-full">
-						<Heart class="icon" />
-					</Button>
+					<slot name="save"/>
 				</li>
 			</ul>
 		</div>

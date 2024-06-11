@@ -20,8 +20,27 @@
 	let startDate = dayjs(create);
 
 	let durationTime = dayjs.duration(endDate.diff(startDate));
-	let dateState = dayjs.duration(2, 'minute');
-	console.log(dateState.asMinutes());
+
+	function formatDate() {
+		const days = Number(durationTime.format('D'))
+		const months = Number(durationTime.format('M'))
+		const years = Number(durationTime.format('Y'))
+
+
+		if (months === 0 && years === 0) {
+			return durationTime.format('D [jours]')
+		}
+		if (months !== 0 && years === 0) {
+			return durationTime.format('M [mois]')
+		}
+		if ( years !== 0) {
+			return durationTime.format('Y [années]')
+		}
+
+
+	}
+
+	
 </script>
 
 <div class="mt-4 flex items-center gap-6">
@@ -40,8 +59,8 @@
 			<span>{lastname}</span>
 		</p>
 		<p class="text-sm text-muted-foreground">
-			Actif depuis
-			{#if durationTime.format('M') === '0' && durationTime.format('Y') === '0'}
+			Actif depuis {formatDate()}
+			<!-- {#if durationTime.format('M') === '0' && durationTime.format('Y') === '0'}
 				{durationTime.format('D [jours]')}
 			{/if}
 
@@ -49,7 +68,7 @@
 				{durationTime.format('Y [ans]')}
 			{:else}
 				{durationTime.format('M [mois]')}
-			{/if}
+			{/if} -->
 		</p>
 	</div>
 </div>

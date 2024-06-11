@@ -10,7 +10,6 @@
 
 	export let data: LayoutData;
 
-	let slideEl: HTMLDivElement;
 
 	const svgH = 16;
 	const svgW = 16;

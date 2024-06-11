@@ -7,12 +7,12 @@ export const GET: RequestHandler = async ({ locals, url, params }) => {
 	let start = url.searchParams.get('start') as string;
 	let end = url.searchParams.get('end') as string;
 	let type = url.searchParams.get('type') as string;
-	console.log(type);
 
 	if (!type) {
 		try {
 			const record = await locals.pb.collection('announces').getList(Number(start), Number(end), {
-				sort: '-created'
+				sort: '-created',
+				filter: `status = "activé"`
 			});
 			return json(record);
 		} catch (e) {
@@ -23,7 +23,7 @@ export const GET: RequestHandler = async ({ locals, url, params }) => {
 	try {
 		const record = await locals.pb.collection('announces').getList(Number(start), Number(end), {
 			sort: '-created',
-			filter: `propertyType="${type}"`
+			filter: `propertyType="${type}" && status = "activé"`
 		});
 		return json(record);
 	} catch (e) {
