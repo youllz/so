@@ -35,9 +35,9 @@ export const formSchema = z.object({
 		.string({ required_error: 'Veillez sélectionner le type de transaction' })
 		.min(1, { message: 'Veillez sélectionner le type de transaction' }),
 
-	equipments: z
-		.array(z.enum(Object.keys(equipments) as [Equipments, ...Equipments[]]))
-		.min(1, 'Veillez selectionner les équipements disponible ou aucun'),
+	// equipments: z
+	// 	.array(z.enum(Object.keys(equipments) as [Equipments, ...Equipments[]]))
+	// 	.min(1, 'Veillez selectionner les équipements disponible ou aucun'),
 	available: z.string().refine((v) => v, { message: 'la date de disponibilité est requise' }),
 	endOfAvailability: z.string(),
 	state: z

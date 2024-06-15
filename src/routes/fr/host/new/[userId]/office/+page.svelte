@@ -102,7 +102,7 @@
 		: undefined;
 
 	// Select equipment
-	$: selectedEquipment = $formData.equipments.map((c) => ({ label: equipments[c], value: c }));
+	// $: selectedEquipment = $formData.equipments.map((c) => ({ label: equipments[c], value: c }));
 
 	// selectCity
 	$: selectCity = $formData.city
@@ -452,7 +452,7 @@
 			{/if}
 		</div>
 		<!-- #equipments -->
-		<div class="field">
+		<!-- <div class="field">
 			<Field {form} name="equipments">
 				<Control let:attrs>
 					<Label>Les equipements</Label>
@@ -482,7 +482,7 @@
 					<FieldErrors class="text-sm text-destructive" />
 				</Control>
 			</Field>
-		</div>
+		</div> -->
 
 		<!-- ## number of room -->
 		<!-- <div>
