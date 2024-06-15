@@ -56,7 +56,18 @@
 			}
 		},
 
-		onSubmit: async () => {}
+		onSubmit: async ({ formData, cancel }) => {
+			let data = Object.fromEntries(formData);
+			if (data.city !== 'abidjan') {
+				formData.set('commune', 'none');
+			}
+
+
+			if (data.commune === 'Sélectionner une commune' && data.city === 'abidjan') {
+				cancel();
+				communeIsValid = false;
+			}
+		}
 	});
 	const { form: formData, enhance, errors, delayed } = form;
 
