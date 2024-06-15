@@ -17,3 +17,5 @@ export function loadTimerForm() {
 		timeOutMs
 	};
 }
+
+export const resultFound = writable<number>()

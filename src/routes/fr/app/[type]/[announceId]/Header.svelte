@@ -5,15 +5,15 @@
 
 
 	export let title: string;
-	export let propertyType: string
+	// export let propertyType: string
 
 </script>
 
 <div class="flex items-center justify-between">
 	<div class="flex items-center gap-4">
-		<Button href="/fr/app/{propertyType}" variant="ghost" size="icon" class="rounded-full">
+		<!-- <Button href="/fr/app/{propertyType}" variant="ghost" size="icon" class="rounded-full">
 			<ChevronLeft class="icon"/>
-		</Button>
+		</Button> -->
 
 		<h1 class="text-2xl font-semibold">
 			{title}

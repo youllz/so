@@ -21,6 +21,8 @@
 	export let recordId: string;
 	export let user: AuthModel | undefined;
 	export let saved: string[] | undefined;
+	export let href: string
+	export let target:string
 
 	$: getSave = saved?.find((item) => item === recordId);
 
@@ -48,7 +50,7 @@
 </script>
 
 <Carousel.Root class="relative w-full">
-	<a href="/fr/app/{$page.params.type ?? propertyType}/{recordId}">
+	<a href={href} target="{target}">
 		<Carousel.Content class="-ml-1 ">
 			{#each images as image}
 				<Carousel.Item>

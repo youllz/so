@@ -30,7 +30,7 @@ export const formSchema = z.object({
 	description: z
 		.string()
 		.min(2, { message: "Veuillez donner une description détaillée de l'annonce" }),
-	propertyType: z.string().default('bureau'),
+	propertyType: z.string().default('burreau'),
 	transactionType: z
 		.string({ required_error: 'Veillez sélectionner le type de transaction' })
 		.min(1, { message: 'Veillez sélectionner le type de transaction' }),

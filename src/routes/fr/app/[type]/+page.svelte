@@ -32,6 +32,8 @@
 				propertyType={announce.propertyType}
 				{user}
 				{saved}
+				href="/fr/app/{announce.propertyType}/{announce.id}"
+				target="_self"
 			/>
 		{:else}
 			<div class="absolute top-1/3 left-1/2 translate-x-[-50%] translate-y-[50%]">
