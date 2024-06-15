@@ -33,6 +33,5 @@ export const actions: Actions = {
 		}
 
 		// Display a success status message
-		redirect(303, `/fr/${params.userId}/board/announces/${announceId}`);
 	}
 };
