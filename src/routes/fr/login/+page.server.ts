@@ -7,25 +7,25 @@ export const load = (async () => {
 
 export const actions: Actions = {
 	oauth: async ({ request, locals, url, cookies }) => {
+		const authMethod = await locals.pb.collection('users').listAuthMethods();
+		const redirectURL = `${url.origin}/oauth`;
+		const googleAuthProvider = authMethod.authProviders[0];
+		const authProviderRedirect = `${googleAuthProvider.authUrl}${redirectURL}`;
 
-		const authMethod = await locals.pb.collection("users").listAuthMethods()
-		const redirectURL = `${url.origin}/oauth`
-		const googleAuthProvider = authMethod.authProviders[0]
-		const authProviderRedirect = `${googleAuthProvider.authUrl}${redirectURL}` 
-
-		const {state, codeVerifier} = googleAuthProvider
+		const { state, codeVerifier } = googleAuthProvider;
 
 		cookies.set('state', state, {
-			path: "/"
-		})
+			path: '/',
+			maxAge: 60 * 60 * 24 * 365
+		});
 		cookies.set('codeVerifier', codeVerifier, {
-			path: "/"
-		})
+			path: '/',
+			maxAge: 60 * 60 * 24 * 365
+		});
 
+		throw redirect(302, authProviderRedirect);
 
-		throw redirect(302, authProviderRedirect)
-
-		console.log(authMethod)
+		console.log(authMethod);
 
 		// const data = Object.fromEntries(await request.formData()) as {
 		// 	email: string;
@@ -43,8 +43,6 @@ export const actions: Actions = {
 		// 	console.log(e);
 		// 	return fail(400);
 		// }
-
-
 
 		// throw redirect(303, `/fr/app`);
 		// if (isNew !== null) {

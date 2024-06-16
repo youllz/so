@@ -9,13 +9,12 @@ export const load = (async ({ locals }) => {
 				filter: `status = "activé"`
 			});
 
-
 			return {
-				allAnnounces: record,
+				allAnnounces: record
 			};
 		} catch (e) {
 			console.log(e);
-				throw error(400, { message: "Pour une raison quelconque, nous n'avons pas pu charger 😓" });
+			throw error(400, { message: "Pour une raison quelconque, nous n'avons pas pu charger 😓" });
 		}
 	};
 
@@ -23,7 +22,6 @@ export const load = (async ({ locals }) => {
 		announceData: await getannounces()
 	};
 }) satisfies PageServerLoad;
-
 
 export const actions: Actions = {
 	oauth: async ({ request, locals, url, cookies }) => {
@@ -35,14 +33,15 @@ export const actions: Actions = {
 		const { state, codeVerifier } = googleAuthProvider;
 
 		cookies.set('state', state, {
-			path: '/'
+			path: '/',
+			maxAge: 60 * 60 * 24 * 365
 		});
 		cookies.set('codeVerifier', codeVerifier, {
-			path: '/'
+			path: '/',
+			maxAge: 60 * 60 * 24 * 365
 		});
 
 		throw redirect(302, authProviderRedirect);
-
 
 		// const data = Object.fromEntries(await request.formData()) as {
 		// 	email: string;
@@ -68,47 +67,38 @@ export const actions: Actions = {
 		// 	throw redirect(303, `/fr/${id}/board/announce`);
 		// }
 	},
-	save : async ({locals, url}) => {
-		const recordId = url.searchParams.get('recordId') 
-		
-		
+	save: async ({ locals, url }) => {
+		const recordId = url.searchParams.get('recordId');
 
-		if(!recordId) {
-			return fail(400, {message: "L'enregistrement a échoué"})
-
+		if (!recordId) {
+			return fail(400, { message: "L'enregistrement a échoué" });
 		}
 
 		if (!locals.user) {
 			throw redirect(307, '/fr/login');
 		}
 
-
-
 		try {
-			await locals.pb.collection("users").update(locals.user?.id, {
+			await locals.pb.collection('users').update(locals.user?.id, {
 				'saved+': recordId
-			})
+			});
 		} catch (e) {
-			console.log(e)
+			console.log(e);
 			return fail(400, {
 				message: "L'enregistrement a échoué"
 			});
 		}
-
-
 	},
-	deleteSaved: async ({locals, url}) => {
+	deleteSaved: async ({ locals, url }) => {
 		const recordId = url.searchParams.get('recordId');
-		console.log(recordId)
-	
-
+		console.log(recordId);
 
 		if (!recordId) {
 			return fail(400, { message: "L'enregistrement a échoué" });
 		}
 
-		if(!locals.user) {
-			throw redirect(307, '/fr/login')
+		if (!locals.user) {
+			throw redirect(307, '/fr/login');
 		}
 
 		try {
@@ -121,6 +111,5 @@ export const actions: Actions = {
 				message: "Le retrait de l'annonce a échoué"
 			});
 		}
-
 	}
 };
