@@ -68,7 +68,7 @@
 </header>
 
 <section class="px-[10vw] pb-4 pt-[80px]">
-	<Header title={announce.title} >
+	<Header title={announce.title} propertyType={announce.propertyType}>
 		<SaveBtn
 		recordId={announce.id}
 		{saved}

@@ -11,20 +11,26 @@ export const load = (async ({ url, locals }) => {
 	let district = url.searchParams.get('district') || '';
 	let minSurface = url.searchParams.get('minSurface') || 0;
 	let maxSurface = url.searchParams.get('maxSurface') || 1000000;
-	// let equipments = url.searchParams.getAll('equipments');
+	let equipments = url.searchParams.getAll('equipments');
 	let state = url.searchParams.get('state') || '';
 	let numOfRoom = url.searchParams.get('numOfRoom') || 0;
 	let numOfBath = url.searchParams.get('numOfBath') || 0;
 
-	// console.log(equipments[0].slice(2, -2).split('","'));
-
-
 	const getSearchAnnounces = async () => {
-	
+		let equi = ``;
 
+		if (equipments.length === 0) {
+			equi = ` || description ?!= ""`;
+		} else {
+			equipments.forEach((item) => {
+				equi += ` || description ?~ "${item}"`;
+			});
+		}
+
+		// console.log(equi.slice(4));
 		try {
 			const records = await locals.pb.collection('announces').getFullList({
-				filter: `status = "activé" && propertyType ?~ "${propertyType}" && price ?>= "${minPrice}" && price ?<= "${maxPrice}" && transactionType ?~ "${transactionType}" && city ?~ "${city}" && commune ?~ "${commune}" && district ?~ "${district}" && surface ?>= "${minSurface}" && surface ?<= "${maxSurface}"  && state ?~ "${state}" && numOfRoom ?>= "${numOfRoom}" && numOfBath ?>= "${numOfBath}"`,
+				filter: `status = "activé" && propertyType ?~ "${propertyType}" && price ?>= "${minPrice}" && price ?<= "${maxPrice}" && transactionType ?~ "${transactionType}" && city ?~ "${city}" && commune ?~ "${commune}" && district ?~ "${district}" && surface ?>= "${minSurface}" && surface ?<= "${maxSurface}"  && state ?~ "${state}" && numOfRoom ?>= "${numOfRoom}" && numOfBath ?>= "${numOfBath}" && (${equi.slice(4)})`,
 				sort: '-created'
 			});
 
@@ -34,8 +40,6 @@ export const load = (async ({ url, locals }) => {
 			throw error(400, { message: '' });
 		}
 	};
-
-
 
 	return {
 		searchAnnounces: await getSearchAnnounces()

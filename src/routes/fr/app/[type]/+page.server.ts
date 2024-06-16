@@ -9,7 +9,6 @@ export const load = (async ({ locals, params }) => {
 				filter: `propertyType="${params.type}" && status = "activé"`
 			});
 
-			console.log(record)
 			
 			return {
 				allAnnounces: record
