@@ -9,16 +9,12 @@
 	import FilterDialog from '$lib/components/own/FilterDialog.svelte';
 	import { Toaster, toast } from 'svelte-sonner';
 	import { Heart } from 'svelte-radix';
-	import {isDesktop} from '$lib/store'
+	import { isDesktop } from '$lib/store';
 	import Saved from '$lib/components/own/Saved.svelte';
-
-
 
 	export let data: LayoutData;
 
-	$: ({savedData} = data)
-
-	
+	$: ({ savedData } = data);
 
 	const subNavItems = [
 		{
@@ -57,7 +53,7 @@
 	];
 </script>
 
-<Toaster richColors  />
+<Toaster richColors />
 
 <header class="fixed top-0 z-40 flex w-full flex-col gap-6 border-b border-input bg-background">
 	<nav class="flex items-center justify-between px-[3vw] py-2">
@@ -76,7 +72,7 @@
 				<Button size="sm" variant="default">Mettre son annonce sur SO</Button>
 			</li>
 			<li>
-				<Saved savedData={savedData?.saved.reverse()}/>
+				<Saved savedData={savedData?.saved.reverse()} />
 			</li>
 			<li>
 				<Theme />
@@ -100,9 +96,24 @@
 				size="sm"
 				href="/fr/app"
 				variant={$page.url.pathname === '/fr/app' ? 'secondary' : 'ghost'}
+				class={$page.url.pathname === '/fr/app' ? 'opacity-100' : 'opacity-50	'}
 			>
 				<span class="mr-4 size-4">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.875"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="lucide lucide-rotate-ccw"
+						><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path
+							d="M3 3v5h5"
+						/></svg
+					>
 				</span>
 				<span> Tous </span>
 			</Button>
@@ -111,11 +122,10 @@
 					<Button
 						size="sm"
 						href="/fr/app/{item.type}"
-						class=" "
+						class="{$page.url.pathname === `/fr/app/${item.type}` ? 'opacity-100' : 'opacity-50'} "
 						variant={$page.url.pathname === `/fr/app/${item.type}` ? 'secondary' : 'ghost'}
-						
 					>
-						<span class="mr-4 icon">{@html item.icon}</span>
+						<span class="icon mr-4">{@html item.icon}</span>
 						<span>
 							{item.title}
 						</span>
