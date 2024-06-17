@@ -28,9 +28,9 @@
 	import { cityObjects, communeAbidjanObject } from '$lib/data';
 	import { goto } from '$app/navigation';
 	import { loadTimerForm } from '$lib/store';
+	import { ScrollArea } from '$lib/components/ui/scroll-area';
 
 	export let data: PageData;
-
 
 	const { delayMs, timeOutMs } = loadTimerForm();
 
@@ -45,7 +45,6 @@
 			console.log('on result', $delayed);
 			switch (result.type) {
 				case 'success':
-					console.log('success', $message);
 					toast.success('Votre annonce a été créee avec succès.', {});
 
 					await goto(`/fr/${data.user?.id}/board/announces`, {
@@ -60,20 +59,16 @@
 					break;
 			}
 		},
-
 		onSubmit: async ({ formData, cancel }) => {
 			let data = Object.fromEntries(formData);
-			if (data.city !== 'abidjan') {
-				formData.set('commune', 'none');
-			}
+			console.log(data);
 
-			if (data.commune === 'Sélectionner une commune' && data.city === 'abidjan') {
+			if (data.city === 'abidjan' && data.commune === 'undefined') {
+				toast.error('Veillez sélectionner une commune', {});
 				cancel();
 				communeIsValid = false;
 			}
-		},
-
-		
+		}
 	});
 
 	const { form: formData, enhance, errors, message, delayed } = form;
@@ -120,12 +115,10 @@
 		: undefined;
 
 	// get commune
-
-	$: if ($formData.city !== 'abidjan') {
-		$formData.commune = 'Sélectionner une commune';
-	}
-
 	let communeIsValid = true;
+	$: if ($formData.city === 'abidjan') {
+		$formData.commune = undefined;
+	}
 
 	// avalaible
 	const df1 = new DateFormatter('fr-FR', {
@@ -162,7 +155,6 @@
 		enctype="multipart/form-data"
 		class="mt-[5rem] grid w-[30rem] gap-6"
 	>
-	
 		<div class="field">
 			<Label for="type">Type</Label>
 			<Input disabled type="text" name="Type" id="type" value="maison" />
@@ -261,7 +253,7 @@
 		{#if $formData.city === 'abidjan'}
 			<Form.Field {form} name="commune">
 				<Form.Control let:attrs>
-					<Form.Label>Commune</Form.Label>
+					<Form.Label class={!communeIsValid ? 'text-destructive' : ''}>Commune</Form.Label>
 					<Select.Root
 						disabled={$formData.city !== 'abidjan'}
 						selected={selectCommune}
@@ -274,12 +266,14 @@
 							<Select.Input {...attrs} bind:value={$formData.commune} />
 							<Select.Value placeholder="Sélectionner une ville" />
 						</Select.Trigger>
-						<Select.Content class="h-[200px] overflow-y-scroll">
-							{#each communeAbidjanObject as commune}
-								<Select.Item value={commune.value} label={commune.label}
-									>{commune.label}</Select.Item
-								>
-							{/each}
+						<Select.Content>
+							<ScrollArea class="h-[200px]" orientation="vertical">
+								{#each communeAbidjanObject as commune}
+									<Select.Item value={commune.value} label={commune.label}
+										>{commune.label}</Select.Item
+									>
+								{/each}
+							</ScrollArea>
 						</Select.Content>
 					</Select.Root>
 				</Form.Control>

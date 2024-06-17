@@ -29,10 +29,9 @@
 	import { cityObjects, communeAbidjanObject } from '$lib/data';
 	import { loadTimerForm } from '$lib/store';
 	import { goto, invalidateAll, replaceState } from '$app/navigation';
+	import { ScrollArea } from '$lib/components/ui/scroll-area';
 
 	export let data: PageData;
-
-	let formIsLoad = false;
 
 	const { delayMs, timeOutMs } = loadTimerForm();
 	const form = superForm(data.form, {
@@ -56,21 +55,16 @@
 				default:
 					break;
 			}
-			formIsLoad = false;
 		},
 
 		onSubmit: async ({ formData, cancel }) => {
 			let data = Object.fromEntries(formData);
-			if (data.city !== 'abidjan') {
-				formData.set('commune', 'none');
-			}
+			console.log(data);
 
-			formIsLoad = true;
-
-			if (data.commune === 'Sélectionner une commune' && data.city === 'abidjan') {
+			if (data.city === 'abidjan' && data.commune === 'undefined') {
+				toast.error('Veillez sélectionner une commune', {});
 				cancel();
 				communeIsValid = false;
-				formIsLoad = false;
 			}
 		}
 	});
@@ -123,11 +117,10 @@
 
 	// get commune
 
-	$: if ($formData.city !== 'abidjan') {
-		$formData.commune = 'Sélectionner une commune';
-	}
-
 	let communeIsValid = true;
+	$: if ($formData.city !== 'abidjan') {
+		$formData.commune = undefined;
+	}
 
 	// avalaible
 	const df1 = new DateFormatter('fr-FR', {
@@ -220,10 +213,12 @@
 						<Select.Input {...attrs} bind:value={$formData.city} />
 						<Select.Value placeholder="Sélectionner une ville" />
 					</Select.Trigger>
-					<Select.Content class="h-[200px] overflow-y-scroll">
-						{#each cityObjects as city}
-							<Select.Item value={city.value} label={city.label}>{city.label}</Select.Item>
-						{/each}
+					<Select.Content>
+						<ScrollArea orientation="vertical" class="h-[200px]">
+							{#each cityObjects as city}
+								<Select.Item value={city.value} label={city.label}>{city.label}</Select.Item>
+							{/each}
+						</ScrollArea>
 					</Select.Content>
 				</Select.Root>
 			</Form.Control>
@@ -235,7 +230,7 @@
 		{#if $formData.city === 'abidjan'}
 			<Form.Field {form} name="commune">
 				<Form.Control let:attrs>
-					<Form.Label>Commune</Form.Label>
+					<Form.Label class={!communeIsValid ? 'text-destructive' : ''}>Commune</Form.Label>
 					<Select.Root
 						disabled={$formData.city !== 'abidjan'}
 						selected={selectCommune}
@@ -248,12 +243,14 @@
 							<Select.Input {...attrs} bind:value={$formData.commune} />
 							<Select.Value placeholder="Sélectionner une ville" />
 						</Select.Trigger>
-						<Select.Content class="h-[200px] overflow-y-scroll">
-							{#each communeAbidjanObject as commune}
-								<Select.Item value={commune.value} label={commune.label}
-									>{commune.label}</Select.Item
-								>
-							{/each}
+						<Select.Content>
+							<ScrollArea class="h-[200px]">
+								{#each communeAbidjanObject as commune}
+									<Select.Item value={commune.value} label={commune.label}
+										>{commune.label}</Select.Item
+									>
+								{/each}
+							</ScrollArea>
 						</Select.Content>
 					</Select.Root>
 				</Form.Control>

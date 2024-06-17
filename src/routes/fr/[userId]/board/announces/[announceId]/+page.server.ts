@@ -5,7 +5,7 @@ import * as schema from './schemas';
 import { error, fail } from '@sveltejs/kit';
 
 export const load = (async ({ params, locals, parent }) => {
-		await parent()
+	await parent();
 	const getUserAnnounces = async () => {
 		try {
 			const record = await locals.pb
@@ -126,7 +126,7 @@ export const actions: Actions = {
 		if (form.data.city !== 'abidjan'.toLowerCase()) {
 			try {
 				await locals.pb.collection('announces').update(params.announceId, {
-					commune: 'none'
+					commune: ''
 				});
 			} catch (e) {
 				console.log(e);

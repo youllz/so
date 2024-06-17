@@ -28,6 +28,7 @@
 	import { cityObjects, communeAbidjanObject } from '$lib/data';
 	import { goto } from '$app/navigation';
 	import { loadTimerForm } from '$lib/store';
+	import { ScrollArea } from '$lib/components/ui/scroll-area';
 
 	export let data: PageData;
 
@@ -55,14 +56,12 @@
 					break;
 			}
 		},
-
 		onSubmit: async ({ formData, cancel }) => {
 			let data = Object.fromEntries(formData);
-			if (data.city !== 'abidjan') {
-				formData.set('commune', 'none');
-			}
+			console.log(data);
 
-			if (data.commune === 'Sélectionner une commune' && data.city === 'abidjan') {
+			if (data.city === 'abidjan' && data.commune === 'undefined') {
+				toast.error('Veillez sélectionner une commune', {});
 				cancel();
 				communeIsValid = false;
 			}
@@ -113,11 +112,10 @@
 
 	// get commune
 
-	$: if ($formData.city !== 'abidjan') {
-		$formData.commune = 'Sélectionner une commune';
-	}
-
 	let communeIsValid = true;
+	$: if ($formData.city !== 'abidjan') {
+		$formData.commune = undefined;
+	}
 
 	// avalaible
 	const df1 = new DateFormatter('fr-FR', {
@@ -221,10 +219,12 @@
 						<Select.Input {...attrs} bind:value={$formData.city} />
 						<Select.Value placeholder="Sélectionner une ville" />
 					</Select.Trigger>
-					<Select.Content class="h-[200px] overflow-y-scroll">
-						{#each cityObjects as city}
-							<Select.Item value={city.value} label={city.label}>{city.label}</Select.Item>
-						{/each}
+					<Select.Content>
+						<ScrollArea class="h-[200px] " orientation="vertical">
+							{#each cityObjects as city}
+								<Select.Item value={city.value} label={city.label}>{city.label}</Select.Item>
+							{/each}
+						</ScrollArea>
 					</Select.Content>
 				</Select.Root>
 			</Form.Control>
@@ -236,7 +236,7 @@
 		{#if $formData.city === 'abidjan'}
 			<Form.Field {form} name="commune">
 				<Form.Control let:attrs>
-					<Form.Label>Commune</Form.Label>
+					<Form.Label class={!communeIsValid ? 'text-destructive' : ''}>Commune</Form.Label>
 					<Select.Root
 						disabled={$formData.city !== 'abidjan'}
 						selected={selectCommune}

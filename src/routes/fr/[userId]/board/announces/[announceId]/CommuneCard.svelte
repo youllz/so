@@ -52,7 +52,7 @@
 
 <div
 	class="rounded-md border bg-background p-4 shadow-sm"
-	class:border-destructive={content === 'none'}
+	class:border-destructive={content === 'undefined'}
 >
 	<div class="flex items-center justify-between">
 		<h2 class="text-sm font-medium text-muted-foreground max-md:text-xs">Commune</h2>
@@ -79,7 +79,7 @@
 										}}
 									>
 										<Select.Trigger {...attrs} class="w-full">
-											<Select.Value placeholder="Sélectionner le type de transaction" />
+											<Select.Value placeholder="Veillez sélectionner la commune" />
 										</Select.Trigger>
 										<Select.Content class="h-[200px] overflow-y-scroll">
 											{#each communeAbidjanObject as commune}
@@ -154,7 +154,7 @@
 			{/if}
 		</div>
 	</div>
-	{#if content === 'none'}
+	{#if !content}
 		<p class="text-sm text-destructive">Veillez sélectionner la commune</p>
 	{:else}
 		<p>

@@ -99,10 +99,10 @@
 					<PriceCard content={announce.price} data={data.priceForm} />
 					<CityCard content={announce.city} data={data.cityForm} />
 					<!-- commune -->
-					{#if announce.commune === 'none' && announce.city === 'abidjan'}
+					{#if !announce.commune && announce.city === 'abidjan'}
 						<CommuneCard content={announce.commune} data={data.communeForm} />
 					{/if}
-					{#if announce.commune !== 'none' && announce.city === 'abidjan'}
+					{#if announce.commune && announce.city === 'abidjan'}
 						<CommuneCard content={announce.commune} data={data.communeForm} />
 					{/if}
 

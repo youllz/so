@@ -4,8 +4,8 @@ import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms';
 
-export const load = (async ({parent}) => {
-	await parent()
+export const load = (async ({ parent }) => {
+	await parent();
 	return {
 		form: await superValidate(zod(formSchema))
 	};
@@ -23,10 +23,10 @@ export const actions: Actions = {
 		}
 
 		// TODO: Do something with the validated form.data
-		let announceId = '';
+		if (form.data.commune === undefined) form.data.commune = '';
+
 		try {
-			const record = await locals.pb.collection('announces').create(form.data);
-			announceId = record.id;
+			await locals.pb.collection('announces').create(form.data);
 		} catch (e) {
 			console.log(e);
 			return fail(400, { form });
