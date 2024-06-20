@@ -6,6 +6,7 @@
 	import { DotsVertical, Plus } from 'svelte-radix';
 	import { enhance } from '$app/forms';
 	import Card from './Card.svelte';
+	import { ScrollArea } from '$lib/components/ui/scroll-area';
 
 	export let data: PageData;
 
@@ -14,19 +15,23 @@
 
 <div class="w-full px-2">
 	<Tabs.Root value="announce" class="w-[100%]  ">
-		<Tabs.List
-			class="  my-4 flex justify-between overflow-y-clip bg-transparent max-sm:overflow-x-scroll  "
-		>
-			<div class="flex-shrink-0 rounded-lg bg-accent p-1 max-sm:items-center max-sm:justify-center">
-				<Tabs.Trigger value="announce">Annonces ({allAnnounces.length })</Tabs.Trigger>
-				<Tabs.Trigger value="active">Actives ({activatedAnnounces.length })</Tabs.Trigger>
-				<Tabs.Trigger value="disabled">Désactivées ({disabledAnnounces.length })</Tabs.Trigger>
-				<Tabs.Trigger value="archives">archives ({archivedAnnounces.length })</Tabs.Trigger>
-			</div>
-			<!-- <div class="flex items-center">
-					<Input type="search" placeholder="Recherche" class="bg-background border border-input"/>
-				</div> -->
-		</Tabs.List>
+		<ScrollArea orientation="horizontal">
+			<Tabs.List
+				class="  my-4 flex justify-between overflow-y-clip bg-transparent max-sm:overflow-x-scroll  "
+			>
+				<div
+					class="flex-shrink-0 rounded-lg bg-accent p-1 max-sm:items-center max-sm:justify-center"
+				>
+					<Tabs.Trigger value="announce">Annonces ({allAnnounces.length})</Tabs.Trigger>
+					<Tabs.Trigger value="active">Actives ({activatedAnnounces.length})</Tabs.Trigger>
+					<Tabs.Trigger value="disabled">Désactivées ({disabledAnnounces.length})</Tabs.Trigger>
+					<Tabs.Trigger value="archives">archives ({archivedAnnounces.length})</Tabs.Trigger>
+				</div>
+				<!-- <div class="flex items-center">
+						<Input type="search" placeholder="Recherche" class="bg-background border border-input"/>
+					</div> -->
+			</Tabs.List>
+		</ScrollArea>
 
 		<div></div>
 		<Tabs.Content value="announce">
@@ -41,6 +46,8 @@
 						status={announce.status}
 						title={announce.title}
 						userId={data.user?.id}
+						property={announce.propertyType}
+						transaction={announce.transactionType}
 					/>
 				{:else}
 					<div class="flex items-start justify-center gap-4 flex-col">
@@ -65,6 +72,8 @@
 						status={announce.status}
 						title={announce.title}
 						userId={data.user?.id}
+						property={announce.propertyType}
+						transaction={announce.transactionType}
 					/>
 				{:else}
 					<div class="flex flex-col gap-4 items-center justify-center">
@@ -89,6 +98,8 @@
 						status={announce.status}
 						title={announce.title}
 						userId={data.user?.id}
+						property={announce.propertyType}
+						transaction={announce.transactionType}
 					/>
 				{:else}
 					<div class="flex items-center justify-center">
@@ -109,6 +120,8 @@
 						status={announce.status}
 						title={announce.title}
 						userId={data.user?.id}
+						property={announce.propertyType}
+						transaction={announce.transactionType}
 					/>
 				{:else}
 					<div class="flex items-center justify-center">
@@ -127,7 +140,7 @@
 	.content {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-		grid-auto-rows: minmax(20rem, auto);
+		grid-auto-rows: minmax(10rem, auto);
 		gap: 1.5rem;
 		border-radius: 10px;
 	}
