@@ -23,7 +23,7 @@ export const load = (async ({ url, locals }) => {
 			equi = ` || description ?!= ""`;
 		} else {
 			equipments.forEach((item) => {
-				equi += ` || description ?~ "${item}"`;
+				equi += ` || equipmentString ?~ "${item}"`;
 			});
 		}
 

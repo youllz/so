@@ -288,10 +288,10 @@
 				<div class="equipement mt-4 w-full">
 					{#each announce.equipments as item}
 						<span
-							class="flex items-center justify-center rounded-md border border-input bg-muted p-3 text-muted-foreground"
+							class="flex items-center justify-center rounded-md border border-input bg-accent p-3 text-accent-foreground"
 						>
 							<p class="text-lg font-medium">
-								{firstCapitalize(item)}
+								{firstCapitalize(item.replace('_', '-'))}
 							</p>
 						</span>
 					{/each}

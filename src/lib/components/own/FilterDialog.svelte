@@ -25,11 +25,11 @@
 		},
 		{
 			id: 'arrièreCour',
-			label: 'arrière-cour'
+			label: 'arrière_cour'
 		},
 		{
 			id: 'avantCour',
-			label: 'avant-cour'
+			label: 'avant_cour'
 		},
 		{
 			id: 'garage',
@@ -467,7 +467,7 @@
 										name="equipments"
 										value={item.label}
 									/>
-									<label for={item.id}>{item.label} </label>
+									<label for={item.id}>{item.label.replace('_', '-')} </label>
 									<input
 										hidden
 										type="checkbox"
