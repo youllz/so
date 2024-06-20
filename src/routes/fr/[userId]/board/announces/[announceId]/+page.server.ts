@@ -33,7 +33,8 @@ export const load = (async ({ params, locals, parent }) => {
 		cityForm: await superValidate(zod(schema.citySchema)),
 		communeForm: await superValidate(zod(schema.communeSchema)),
 		roomForm: await superValidate(zod(schema.roomSchema)),
-		bathForm: await superValidate(zod(schema.bathSchema))
+		bathForm: await superValidate(zod(schema.bathSchema)),
+		districtForm: await superValidate(zod(schema.districtSchema))
 	};
 }) satisfies PageServerLoad;
 
@@ -51,7 +52,7 @@ export const actions: Actions = {
 
 		if (!form.valid) {
 			// Again, return { form } and things will just work.
-			return fail(400, { form: structuredClone(form) });
+			return fail(400, { form });
 		}
 
 		try {
@@ -60,7 +61,7 @@ export const actions: Actions = {
 			});
 		} catch (e) {
 			console.log(e);
-			return fail(400, { form: structuredClone(form) });
+			return fail(400, { form });
 		}
 	},
 
@@ -160,6 +161,25 @@ export const actions: Actions = {
 		}
 	},
 
+	editDistrict: async ({ locals, request, params }) => {
+		const form = await superValidate(request, zod(schema.districtSchema));
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		if (form.data.district === undefined) form.data.district = '';
+
+		try {
+			await locals.pb.collection('announces').update(params.announceId, {
+				district: form.data.district
+			});
+		} catch (e) {
+			console.log(e);
+			return fail(400, { form });
+		}
+	},
+
 	editRoom: async ({ locals, request, params }) => {
 		const form = await superValidate(request, zod(schema.roomSchema));
 
@@ -199,6 +219,8 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
+
+		console.log(form.data.surface);
 
 		try {
 			await locals.pb.collection('announces').update(params.announceId, {
@@ -266,9 +288,20 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
+		let equipmentString = '';
+		if (form.data.equipments.length != 0) {
+			form.data.equipments.forEach((item) => {
+				equipmentString += `${item} `;
+			});
+			equipmentString.trim();
+		}
+
 		try {
 			await locals.pb.collection('announces').update(params.announceId, {
 				equipments: form.data.equipments
+			});
+			await locals.pb.collection('announces').update(params.announceId, {
+				equipmentString: equipmentString
 			});
 		} catch (e) {
 			console.log(e);

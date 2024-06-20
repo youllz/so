@@ -11,7 +11,6 @@ export const states = {
 	construction: 'En construction'
 } as const;
 export const equipments = {
-	aucun: 'Aucun',
 	balcon: 'Balcon',
 	jardin: 'Jardin',
 	garage: 'Garage',
@@ -40,6 +39,7 @@ export const formSchema = z
 		equipments: z
 			.array(z.enum(Object.keys(equipments) as [Equipments, ...Equipments[]]))
 			.min(0, 'Veillez selectionner les équipements disponible ou aucun'),
+		equipmentString: z.string().optional(),
 		available: z.string().refine((v) => v, { message: 'la date de disponibilité est requise' }),
 		endOfAvailability: z.string(),
 		state: z

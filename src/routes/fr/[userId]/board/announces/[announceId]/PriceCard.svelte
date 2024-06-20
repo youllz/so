@@ -58,7 +58,7 @@
 							<Dialog.Title>Prix</Dialog.Title>
 							<Dialog.Description>Modifier le prix</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editPrice" method="POST" use:enhance>
+						<form action="?/editPrice" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="price">
 								<Form.Control let:attrs>
 									<Form.Label>Prix (fcfa)</Form.Label>
@@ -98,7 +98,7 @@
 							action="?/editPrice"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="price">

@@ -63,9 +63,10 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Modifier la ville</Dialog.Title>
+							<Dialog.Title>Ville</Dialog.Title>
+							<Dialog.Description>Modifier la ville</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editCity" method="POST" use:enhance>
+						<form action="?/editCity" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="city">
 								<Form.Control let:attrs>
 									<Form.Label>Ville</Form.Label>
@@ -105,14 +106,14 @@
 					</Drawer.Trigger>
 					<Drawer.Content>
 						<Drawer.Header>
-							<Drawer.Title>Modifier l'état du bâtiment</Drawer.Title>
-							<!-- <Drawer.Description>This action cannot be undone.</Drawer.Description> -->
+							<Drawer.Title>Ville</Drawer.Title>
+							<Drawer.Description>Modifier la ville</Drawer.Description>
 						</Drawer.Header>
 						<form
 							action="?/editCity"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="city">
@@ -152,6 +153,6 @@
 		</div>
 	</div>
 	<p>
-		{content}
+		{firstCapitalize(content)}
 	</p>
 </div>

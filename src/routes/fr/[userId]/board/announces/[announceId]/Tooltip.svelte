@@ -11,7 +11,7 @@
 			<span class="sr-only">Modifier</span>
 		</Button>
 	</Tooltip.Trigger>
-	<Tooltip.Content class="bg-accent text-accent-foreground">
+	<Tooltip.Content class="">
 		<p>Modifier</p>
 	</Tooltip.Content>
 </Tooltip.Root>

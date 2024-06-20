@@ -61,9 +61,10 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Modifier le type de transaction</Dialog.Title>
+							<Dialog.Title>Type de transaction</Dialog.Title>
+							<Dialog.Description>Modifier le type de transaction</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editTransaction" method="POST" use:enhance>
+						<form action="?/editTransaction" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="transactionType">
 								<Form.Control let:attrs>
 									<Form.Label>Type de transaction</Form.Label>
@@ -103,14 +104,14 @@
 					</Drawer.Trigger>
 					<Drawer.Content>
 						<Drawer.Header>
-							<Drawer.Title>Modifier le type de transaction</Drawer.Title>
-							<!-- <Drawer.Description>This action cannot be undone.</Drawer.Description> -->
+							<Drawer.Title>Type de transaction</Drawer.Title>
+							<Drawer.Description>Modifier le type de transaction</Drawer.Description>
 						</Drawer.Header>
 						<form
 							action="?/editTransaction"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-4 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="transactionType">
@@ -148,6 +149,6 @@
 		</div>
 	</div>
 	<p>
-		{content}
+		{firstCapitalize(content)}
 	</p>
 </div>

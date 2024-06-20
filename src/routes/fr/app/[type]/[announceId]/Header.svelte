@@ -1,14 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Send from '$lib/components/own/Send.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { ChevronLeft, Heart } from 'svelte-radix';
-
 	export let title: string;
-	export let propertyType: string;
 	// export let propertyType: string
-
-	$: console.log($page.url.searchParams.get('from'));
 </script>
 
 <div class="flex items-center justify-between">
@@ -27,9 +19,10 @@
 	<ul class="flex items-center gap-4">
 		<li>
 			<!-- <Send /> -->
+			<slot name="send"><!-- optional fallback --></slot>
 		</li>
 		<li>
-			<slot><!-- optional fallback --></slot>
+			<slot name="save"><!-- optional fallback --></slot>
 		</li>
 	</ul>
 </div>

@@ -13,10 +13,11 @@
 	import * as Card from '$lib/components/ui/card';
 	import Details from './Details.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import {ExclamationTriangle} from 'svelte-radix'
+	import { ExclamationTriangle } from 'svelte-radix';
 	import Warning from './warning.svelte';
 	import SaveBtn from '$lib/components/own/SaveBtn.svelte';
 	import Saved from '$lib/components/own/Saved.svelte';
+	import Send from '$lib/components/own/Send.svelte';
 
 	export let data: PageData;
 
@@ -49,7 +50,7 @@
 				<Button size="sm">Mettre son annonce sur SO</Button>
 			</li>
 			<li>
-				<Saved savedData={savedData?.saved.reverse()}/>
+				<Saved savedData={savedData?.saved.reverse()} />
 			</li>
 			<li>
 				<Theme />
@@ -68,12 +69,17 @@
 </header>
 
 <section class="px-[10vw] pb-4 pt-[80px]">
-	<Header title={announce.title} propertyType={announce.propertyType}>
-		<SaveBtn
-		recordId={announce.id}
-		{saved}
-		{user}
-		state="sm"
+	<Header title={announce.title}>
+		<SaveBtn slot="save" recordId={announce.id} {saved} {user} state="sm" />
+		<Send
+			slot="send"
+			announceId={announce.id}
+			city={announce.city}
+			collectionId={announce.collectionId}
+			copieValue="{$page.url.origin}{$page.url.pathname}"
+			img={announce.images[0]}
+			property={announce.propertyType}
+			transaction={announce.transactionType}
 		/>
 	</Header>
 
@@ -281,7 +287,9 @@
 
 				<div class="equipement mt-4 w-full">
 					{#each announce.equipments as item}
-						<span class="p-3 rounded-md text-muted-foreground bg-muted border border-input flex items-center justify-center">
+						<span
+							class="flex items-center justify-center rounded-md border border-input bg-muted p-3 text-muted-foreground"
+						>
 							<p class="text-lg font-medium">
 								{firstCapitalize(item)}
 							</p>
@@ -300,39 +308,52 @@
 					<Card.Description>Pus de détails de l'annonce</Card.Description>
 				</Card.Header> -->
 				<Card.Content>
-					<div class="grid gap-3 mt-6">
+					<div class="mt-6 grid gap-3">
 						<div>
 							<p class="text-sm text-muted-foreground">Type de transaction</p>
 							<p>{firstCapitalize(announce.transactionType)}</p>
 						</div>
-						<Separator/>
+						<Separator />
 						<div>
-							<p class="text-muted-foreground text-sm">Prix</p>
+							<p class="text-sm text-muted-foreground">Prix</p>
 							<p>{formatFCFA(announce.price)}</p>
 						</div>
-						<Separator/>
+						<Separator />
 					</div>
 
 					<div class="mt-6">
-						<Button  class="w-full">
-							Contacter
-						</Button>
+						<Button class="w-full">Contacter</Button>
 					</div>
-
-				
 				</Card.Content>
 				<!-- <Card.Footer>
 					<p>Card Footer</p>
 				</Card.Footer> -->
 			</Card.Root>
-			<div class="mt-4 ">
-				<Warning/>
+			<div class="mt-4">
+				<Warning />
 			</div>
 
 			<div class="mt-4">
-				<Button variant="link" class="text-muted-foreground w-full">
+				<Button variant="link" class="w-full text-muted-foreground">
 					<span class="icon mr-4">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-flag"
+							><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line
+								x1="4"
+								x2="4"
+								y1="22"
+								y2="15"
+							/></svg
+						>
 					</span>
 					Signaler cette annonce
 				</Button>

@@ -76,7 +76,7 @@
 							<Dialog.Title>Date de disponibilité</Dialog.Title>
 							<Dialog.Description>Modifier la date de disponibilité</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editAvailable" use:enhance method="POST">
+						<form action="?/editAvailable" use:enhance class="mt-3" method="POST">
 							<Form.Field {form} name="available" class="flex flex-col">
 								<Form.Control let:attrs>
 									<Form.Label>Disponibilité</Form.Label>
@@ -136,7 +136,7 @@
 							action="?/editAvailable"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="available" class="flex flex-col">

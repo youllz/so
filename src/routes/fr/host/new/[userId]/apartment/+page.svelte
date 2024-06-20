@@ -140,9 +140,9 @@
 	let placeholder2: DateValue = today(getLocalTimeZone());
 </script>
 
-<!-- <div class="">
+<div class="">
 	<SuperDebug data={$formData} />
-</div> -->
+</div>
 
 <section class="flex items-center justify-center pb-6">
 	<form

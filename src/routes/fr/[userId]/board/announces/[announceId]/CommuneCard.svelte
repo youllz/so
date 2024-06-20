@@ -66,9 +66,10 @@
 					<Dialog.Content>
 						<Dialog.Header>
 							<!-- <SuperDebug data={$formData}/> -->
-							<Dialog.Title>Modifier la commune</Dialog.Title>
+							<Dialog.Title>Commune</Dialog.Title>
+							<Dialog.Description>Modifier la commune</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editCommune" method="POST" use:enhance>
+						<form action="?/editCommune" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="commune">
 								<Form.Control let:attrs>
 									<Form.Label>Commune</Form.Label>
@@ -108,14 +109,14 @@
 					</Drawer.Trigger>
 					<Drawer.Content>
 						<Drawer.Header>
-							<Drawer.Title>Modifier l'état du bâtiment</Drawer.Title>
-							<!-- <Drawer.Description>This action cannot be undone.</Drawer.Description> -->
+							<Drawer.Title>Commune</Drawer.Title>
+							<Drawer.Description>Modifier la commune.</Drawer.Description>
 						</Drawer.Header>
 						<form
 							action="?/editCommune"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="commune">
@@ -158,7 +159,7 @@
 		<p class="text-sm text-destructive">Veillez sélectionner la commune</p>
 	{:else}
 		<p>
-			{content}
+			{firstCapitalize(content)}
 		</p>
 	{/if}
 

@@ -15,7 +15,9 @@ export const equipments = {
 	jardin: 'Jardin',
 	garage: 'Garage',
 	piscine: 'Piscine',
-	terrasse: 'Terrasse'
+	terrasse: 'Terrasse',
+	avant_cour: 'Avant-cour',
+	arrière_cour: 'Arrière-cour'
 } as const;
 
 type Equipments = keyof typeof equipments;
@@ -39,6 +41,7 @@ export const formSchema = z
 		equipments: z
 			.array(z.enum(Object.keys(equipments) as [Equipments, ...Equipments[]]))
 			.min(0, 'Veillez selectionner les équipements disponible ou aucun'),
+		equipmentString: z.string().optional(),
 		available: z.string().refine((v) => v, { message: 'la date de disponibilité est requise' }),
 		endOfAvailability: z.string(),
 		state: z

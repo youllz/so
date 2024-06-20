@@ -58,7 +58,7 @@
 							<Dialog.Title>Superficie</Dialog.Title>
 							<Dialog.Description>Modifier la superficie</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editSurface" method="POST" use:enhance>
+						<form action="?/editSurface" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="surface">
 								<Form.Control let:attrs>
 									<Form.Label>Superficie (m2)</Form.Label>
@@ -95,10 +95,10 @@
 							<Drawer.Description>Modifier la superficie</Drawer.Description>
 						</Drawer.Header>
 						<form
-							action="?/editBath"
+							action="?/editSurface"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="surface">

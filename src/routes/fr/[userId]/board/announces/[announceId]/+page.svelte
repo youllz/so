@@ -26,13 +26,15 @@
 	import { onMount } from 'svelte';
 	import Skeleton from './Skeleton.svelte';
 	import Send from '$lib/components/own/Send.svelte';
+	import DistrictCard from './DistrictCard.svelte';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 	let open = false;
 
-	$: ({ announce } = data);
+	$: ({ announce, user } = data);
 
 	const df = new DateFormatter('fr-FR', {
 		dateStyle: 'full'
@@ -55,7 +57,12 @@
 	<section class="">
 		<div>
 			<div class="flex items-center justify-between px-4">
-				<Button variant="outline" class="rounded-full " size="icon">
+				<Button
+					href="/fr/{user?.id}/board/announces"
+					variant="outline"
+					class="rounded-full "
+					size="icon"
+				>
 					<ChevronLeft class="icon " />
 				</Button>
 				<Send
@@ -65,6 +72,7 @@
 					city={announce.city}
 					property={announce.propertyType}
 					transaction={announce.transactionType}
+					copieValue="{$page.url.origin}/fr/app/{announce.propertyType}/{announce.id}"
 				/>
 			</div>
 
@@ -105,6 +113,7 @@
 					{#if announce.commune && announce.city === 'abidjan'}
 						<CommuneCard content={announce.commune} data={data.communeForm} />
 					{/if}
+					<DistrictCard content={announce.district} data={data.districtForm} />
 
 					<AvailableCard content={announce.available.split(' ')[0]} data={data.availableForm} />
 
@@ -150,7 +159,7 @@
 				<DescriptionCard data={data.descriptionForm} content={announce.description} />
 			</ScrollArea>
 		</div>
-		<div class="stat-container layer rounded-md border p-4 max-md:grid-cols-1">
+		<!-- <div class="stat-container layer rounded-md border p-4 max-md:grid-cols-1">
 			<div>
 				<Chart />
 			</div>
@@ -168,7 +177,7 @@
 					</Button>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<!-- <ChartStat/> -->
 	</section>

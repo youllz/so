@@ -25,6 +25,17 @@ export const actions: Actions = {
 		// TODO: Do something with the validated form.data
 
 		if (form.data.commune === undefined) form.data.commune = '';
+
+		if (form.data.equipments.length != 0) {
+			form.data.equipmentString = '';
+			form.data.equipments.forEach((item) => {
+				form.data.equipmentString += `${item} `;
+			});
+		} else {
+			form.data.equipmentString = '';
+		}
+
+		form.data.equipmentString?.trim();
 		try {
 			await locals.pb.collection('announces').create(form.data);
 		} catch (e) {

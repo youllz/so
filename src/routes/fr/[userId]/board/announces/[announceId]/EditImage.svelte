@@ -114,7 +114,7 @@
 					<Drawer.Title>Images</Drawer.Title>
 					<Drawer.Description>Ajouter des images</Drawer.Description>
 				</Drawer.Header>
-				<form action="?/addImage" method="POST" use:enhance>
+				<form action="?/addImage" method="POST" use:addEnhance enctype="multipart/form-data">
 					<div class="field px-4">
 						<Label for="image">Images</Label>
 						<Input
@@ -132,7 +132,7 @@
 						{/if}
 					</div>
 					<Drawer.Footer>
-						<Button>Submit</Button>
+						<Button type="submit">Sauvegarder</Button>
 						<Drawer.Close>Annuler</Drawer.Close>
 					</Drawer.Footer>
 				</form>

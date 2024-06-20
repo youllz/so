@@ -5,7 +5,9 @@ export const equipments = {
 	jardin: 'Jardin',
 	garage: 'Garage',
 	piscine: 'Piscine',
-	terrasse: 'Terrasse'
+	terrasse: 'Terrasse',
+	avant_cour: 'Avant-cour',
+	arrière_cour: 'Arrière-cour'
 } as const;
 
 type Equipments = keyof typeof equipments;
@@ -76,6 +78,10 @@ export const communeSchema = z.object({
 		.min(1, { message: 'Veillez sélectionner une commune' })
 });
 
+export const districtSchema = z.object({
+	district: z.string().optional()
+});
+
 export const roomSchema = z.object({
 	numOfRoom: z.string()
 });
@@ -97,3 +103,4 @@ export type AvailableSchema = typeof availableSchema;
 export type EndOfAvailabilitySchema = typeof endOfAvailabilitySchema;
 export type TitleSchema = typeof titleSchema;
 export type EquipmentsSchema = typeof equipmentsSchema;
+export type DistrictSchema = typeof districtSchema;

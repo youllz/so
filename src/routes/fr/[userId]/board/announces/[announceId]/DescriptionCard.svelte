@@ -48,7 +48,7 @@
 						<Pencil2 class="size-4" />
 					</Button>
 				</Tooltip.Trigger>
-				<Tooltip.Content class="bg-accent text-accent-foreground">
+				<Tooltip.Content class="">
 					<p>Modifier</p>
 				</Tooltip.Content>
 			</Tooltip.Root>

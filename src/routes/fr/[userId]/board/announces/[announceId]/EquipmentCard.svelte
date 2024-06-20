@@ -14,6 +14,7 @@
 	import { firstCapitalize } from '$lib/utils';
 	import { mediaQuery } from 'svelte-legos';
 	import { cityObjects } from '$lib/data';
+	import { Badge } from '$lib/components/ui/badge';
 
 	export let data: SuperValidated<Infer<EquipmentsSchema>>;
 	export let content: string[];
@@ -40,6 +41,17 @@
 	const { form: formData, enhance } = form;
 
 	$: selectedEquipment = $formData?.equipments.map((c) => ({ label: equipments[c], value: c }));
+
+	function formatEquipement(item: string | undefined) {
+		if (item === undefined) return;
+
+		if (item === 'avant_cour' || item === 'arrière_cour') {
+			item.split('_').join();
+			return item;
+		}
+
+		return item;
+	}
 </script>
 
 <div class="rounded-md border bg-background p-4 shadow-sm">
@@ -54,10 +66,10 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Modifier les Equipements</Dialog.Title>
+							<Dialog.Title>Les Equipements</Dialog.Title>
 							<Dialog.Description>Modifier les equipements disponibles</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editEquipments" method="POST" use:enhance>
+						<form action="?/editEquipments" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="equipments">
 								<Form.Control let:attrs>
 									<Form.Label>Les equipements</Form.Label>
@@ -109,7 +121,7 @@
 							action="?/editEquipments"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="equipments">
@@ -154,11 +166,11 @@
 			{/if}
 		</div>
 	</div>
-	<p class="flex gap-4">
+	<div class="mt-2 flex flex-wrap gap-4">
 		{#each content as item}
-			<span>
-				{item}
+			<span class="rounded-md border px-2">
+				{firstCapitalize(item.replace('_', '-'))}
 			</span>
 		{/each}
-	</p>
+	</div>
 </div>

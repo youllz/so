@@ -62,9 +62,10 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Modifier le nombre de salle de bains</Dialog.Title>
+							<Dialog.Title>Nombre de salle de bains</Dialog.Title>
+							<Dialog.Description>Modifier le nombre de salle de bains</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editBath" method="POST" use:enhance>
+						<form action="?/editBath" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="numOfBath">
 								<Form.Control let:attrs>
 									<Form.Label>Nombre de salle de bains</Form.Label>
@@ -97,14 +98,14 @@
 					</Drawer.Trigger>
 					<Drawer.Content>
 						<Drawer.Header>
-							<Drawer.Title>Modifier le nombre de salle de bains</Drawer.Title>
-							<!-- <Drawer.Description>This action cannot be undone.</Drawer.Description> -->
+							<Drawer.Title>Nombre de salle de bains</Drawer.Title>
+							<Drawer.Description>Modifier le nombre de salle de bains.</Drawer.Description>
 						</Drawer.Header>
 						<form
 							action="?/editBath"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="numOfBath">

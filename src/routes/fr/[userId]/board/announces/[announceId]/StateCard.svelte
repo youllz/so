@@ -61,9 +61,10 @@
 					</Dialog.Trigger>
 					<Dialog.Content>
 						<Dialog.Header>
-							<Dialog.Title>Modifier l'etat du bâtiment</Dialog.Title>
+							<Dialog.Title>L'ètat du bâtiment</Dialog.Title>
+							<Dialog.Description>Modifier l'ètat du bâtiment</Dialog.Description>
 						</Dialog.Header>
-						<form action="?/editState" method="POST" use:enhance>
+						<form action="?/editState" method="POST" class="mt-3" use:enhance>
 							<Form.Field {form} name="state">
 								<Form.Control let:attrs>
 									<Form.Label>L'état du bâtiment</Form.Label>
@@ -103,14 +104,14 @@
 					</Drawer.Trigger>
 					<Drawer.Content>
 						<Drawer.Header>
-							<Drawer.Title>Modifier l'état du bâtiment</Drawer.Title>
-							<!-- <Drawer.Description>This action cannot be undone.</Drawer.Description> -->
+							<Drawer.Title>L'état du bâtiment</Drawer.Title>
+							<Drawer.Description>Modifier l'état du batiment</Drawer.Description>
 						</Drawer.Header>
 						<form
 							action="?/editState"
 							method="POST"
 							use:enhance
-							class="mx-auto flex w-[100%] flex-col"
+							class="mx-auto mt-3 flex w-[100%] flex-col"
 						>
 							<div class="px-4">
 								<Form.Field {form} name="state">
@@ -150,6 +151,6 @@
 		</div>
 	</div>
 	<p>
-		{content}
+		{firstCapitalize(content)}
 	</p>
 </div>
