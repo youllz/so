@@ -10,6 +10,7 @@
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { toast } from 'svelte-sonner';
+	import { firstCapitalize, formatFCFA } from '$lib/utils';
 
 	export let images: string[];
 	export let propertyType: string;
@@ -21,16 +22,13 @@
 	export let recordId: string;
 	export let user: AuthModel | undefined;
 	export let saved: string[] | undefined;
-	export let href: string
-	export let target:string
+	export let href: string;
+	export let target: string = '_self';
 
 	$: getSave = saved?.find((item) => item === recordId);
 
-
-
 	const checkSaved: SubmitFunction = async () => {
-
-		return async ({  update }) => {
+		return async ({ update }) => {
 			// switch (result.type) {
 			// 	case 'success':
 			// 		toast.success('Opération effectué avec succès');
@@ -44,13 +42,13 @@
 			// 		break;
 			// }
 
-			await update({invalidateAll: true})
+			await update({ invalidateAll: true });
 		};
 	};
 </script>
 
 <Carousel.Root class="relative w-full">
-	<a href={href} target="{target}">
+	<a {href} {target}>
 		<Carousel.Content class="-ml-1 ">
 			{#each images as image}
 				<Carousel.Item>
@@ -66,47 +64,60 @@
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
-		<div class="mt-4 w-full px-1">
-			<div class="flex items-center justify-between">
-				<span> {propertyType} </span>
-				<Badge />
+		<div class="mt-2 grid w-full gap-4 px-1">
+			<div>
+				<p class="text-sm font-semibold">
+					{firstCapitalize(propertyType)}
+				</p>
+				<p class="text-sm font-semibold">
+					En {transactionType}
+				</p>
+				<p class="text-sm font-light text-muted-foreground">
+					{commune ? `${firstCapitalize(city)},` : firstCapitalize(city)}
+					{commune ? firstCapitalize(commune) : ''}
+				</p>
 			</div>
-			<div class="grid">
-				<span class="tex-xs font-light text-muted-foreground">
-					{transactionType}
-				</span>
-				<span class="tex-xs font-light text-muted-foreground">
-					{city}
-					{commune === 'none' ? '' : commune}
-				</span>
-				<span class=" font-semibold">
-					{price} <span> fcfa </span>
-				</span>
+			<div>
+				<p class="text-sm font-semibold">{formatFCFA(price)}</p>
 			</div>
 		</div>
 	</a>
 	<Carousel.Previous class="z-30" />
 	<Carousel.Next class="z-30" />
 	<div class="absolute right-[5%] top-[5%] z-30">
-
 		<!-- save -->
-		
+
 		{#if user}
 			<form
-				action={getSave === recordId ? `/fr/app?/deleteSaved&recordId=${recordId}&userId=${user.id}` : `/fr/app?/save&recordId=${recordId}&userId=${user.id}`}
+				action={getSave === recordId
+					? `/fr/app?/deleteSaved&recordId=${recordId}&userId=${user.id}`
+					: `/fr/app?/save&recordId=${recordId}&userId=${user.id}`}
 				method="POST"
 				use:enhance={checkSaved}
 			>
 				<Button type="submit" variant="secondary" size="icon" class="rounded-full">
-
 					{#if getSave === recordId}
 						<span>
-							<svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart fill-red-600 stroke-white"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="lucide lucide-heart fill-red-600 stroke-white"
+								><path
+									d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+								/></svg
+							>
 						</span>
-						{:else}
+					{:else}
 						<Heart class="icon  " />
 					{/if}
-					
+
 					<span class="sr-only">Enregisré</span>
 				</Button>
 			</form>

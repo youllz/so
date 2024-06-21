@@ -28,6 +28,7 @@
 	import Send from '$lib/components/own/Send.svelte';
 	import DistrictCard from './DistrictCard.svelte';
 	import { page } from '$app/stores';
+	import { Badge } from '$lib/components/ui/badge';
 
 	export let data: PageData;
 
@@ -80,6 +81,17 @@
 				<TitleCard content={announce.title} data={data.titleForm} />
 				<p class="text-sm text-muted-foreground">
 					créer le {df.format(createDay)}
+				</p>
+				<p class="mt-1">
+					<Badge variant="outline">
+						<span
+							class:text-destructive={announce.status === 'archivé'}
+							class:text-orange-500={announce.status === 'désactivé'}
+							class:text-green-500={announce.status === 'activé'}
+						>
+							{announce.status}
+						</span>
+					</Badge>
 				</p>
 			</div>
 		</div>

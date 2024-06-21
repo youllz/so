@@ -6,7 +6,8 @@
 	import Slide from './Slide.svelte';
 	import { slide } from 'svelte/transition';
 	import { expoInOut } from 'svelte/easing';
-	import SaveBtn from '$lib/components/own/SaveBtn.svelte'
+	import SaveBtn from '$lib/components/own/SaveBtn.svelte';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 	$: ({ announce, user, saved } = data);
@@ -34,15 +35,11 @@
 				img={announce.images[0]}
 				property={announce.propertyType}
 				transaction={announce.transactionType}
+				copieValue="{$page.url.origin}/fr/app/{announce.propertyType}/{announce.id}"
 			/>
 		</li>
 		<li>
-			<SaveBtn 
-			{user}
-			{saved}
-			recordId={announce.id}
-			state="sm"
-			/>
+			<SaveBtn {user} {saved} recordId={announce.id} state="sm" />
 		</li>
 	</ul>
 </header>
@@ -79,25 +76,21 @@
 			collectionId={announce.collectionId}
 			images={announce.images}
 		>
-		<div slot="send">
-			<Send
-				announceId={announce.id}
-				city={announce.city}
-				collectionId={announce.collectionId}
-				img={announce.images[0]}
-				property={announce.propertyType}
-				transaction={announce.transactionType}
-			/>
-		</div>
-		<div slot="save">
-			<SaveBtn 
-			{user}
-			{saved}
-			recordId={announce.id}
-			state="sm"
-			/>
-		</div>
-	</Slide>
+			<div slot="send">
+				<Send
+					announceId={announce.id}
+					city={announce.city}
+					collectionId={announce.collectionId}
+					img={announce.images[0]}
+					property={announce.propertyType}
+					transaction={announce.transactionType}
+					copieValue="{$page.url.origin}/fr/app/{announce.propertyType}/{announce.id}"
+				/>
+			</div>
+			<div slot="save">
+				<SaveBtn {user} {saved} recordId={announce.id} state="sm" />
+			</div>
+		</Slide>
 	</div>
 {/if}
 

@@ -19,7 +19,7 @@
 </script>
 
 <section class="px-[2vw] pb-4">
-	<div class="cards-container ">
+	<div class="cards-container">
 		{#each allAnnounces.items as announce}
 			<Card
 				images={announce.images}
@@ -42,7 +42,7 @@
 		{/each}
 	</div>
 
-	{#if allAnnounces.totalPages > 2 }
+	{#if allAnnounces.totalPages > 1}
 		<div class="mt-14">
 			<Pagination.Root
 				{count}

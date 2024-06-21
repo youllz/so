@@ -13,7 +13,6 @@
 	import * as Card from '$lib/components/ui/card';
 	import Details from './Details.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import { ExclamationTriangle } from 'svelte-radix';
 	import Warning from './warning.svelte';
 	import SaveBtn from '$lib/components/own/SaveBtn.svelte';
 	import Saved from '$lib/components/own/Saved.svelte';
@@ -93,16 +92,17 @@
 	<div class=" card-container w-full">
 		<div class="    ">
 			<div>
-				<p class="mt-6 text-xl font-medium">
-					{firstCapitalize(announce.transactionType)} - {announce.propertyType} - {announce.city}
-					{#if announce.commune !== 'none'}
-						{announce.commune}
+				<h2 class="mt-6 text-base font-medium">
+					{firstCapitalize(announce.propertyType)} en {announce.transactionType} à {firstCapitalize(
+						announce.city
+					)}
+					{#if announce.commune}
+						dans la commune de {commune}
 					{/if}
-					-
 					{#if announce.district}
-						{announce.district}
+						et dans le quartier {district}
 					{/if}
-				</p>
+				</h2>
 			</div>
 
 			<Separator class="mt-6" />
@@ -253,7 +253,7 @@
 				<Separator />
 
 				<div>
-					<p class="text-lg font-medium">Description</p>
+					<h3 class="text-lg font-medium">Description</h3>
 
 					<pre class="line-clamp-6 text-wrap text-left indent-0 font-sans"> 
 						<p>{announce.description.trim()}</p>
@@ -283,7 +283,7 @@
 			</div>
 
 			{#if announce.equipments}
-				<p class="mt-4 text-lg font-medium">Les équipements</p>
+				<h3 class="mt-4 text-lg font-medium">Les équipements</h3>
 
 				<div class="equipement mt-4 w-full">
 					{#each announce.equipments as item}

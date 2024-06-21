@@ -32,6 +32,8 @@
 				propertyType={announce.propertyType}
 				{user}
 				{saved}
+				href="/fr/app/{announce.propertyType}/{announce.id}"
+				target="_self"
 			/>
 		{:else}
 			<p class="text-7xl text-muted-foreground">Aucun résultat trouvé</p>
@@ -47,7 +49,10 @@
 				let:pages
 				let:currentPage
 				onPageChange={(item) => {
-					goto(`/fr/app/${$page.params.type}/page/${item}`, { replaceState: true, invalidateAll: true });
+					goto(`/fr/app/${$page.params.type}/page/${item}`, {
+						replaceState: true,
+						invalidateAll: true
+					});
 				}}
 			>
 				<Pagination.Content>
