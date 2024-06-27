@@ -4,6 +4,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Separator } from '$lib/components/ui/separator';
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 </script>
@@ -14,11 +15,11 @@
 
 <section class="flex min-h-[100dvh] flex-col items-center justify-center gap-12 px-[3vw]">
 	<div class="flex w-[300px] flex-col items-center gap-6">
-		<span class="text-center text-xl font-semibold"> Bienvenue 👋 connectez-vous pour continuer pour continuer.
-
- </span>
-		<form method="POST" action="?/oauth" class="grid w-full gap-6">
-			<!-- <div class="grid gap-4">
+		<span class="text-center text-xl font-semibold">
+			Bienvenue 👋 connectez-vous pour continuer pour continuer.
+		</span>
+		<form method="POST" class="grid w-full gap-6">
+			<div class="grid gap-4">
 				<div class="field">
 					<Label for="email">Adresse e-mail</Label>
 					<Input type="email" name="email" id="email" autocomplete="on" />
@@ -28,7 +29,7 @@
 					<Input type="password" name="password" id="password" autocomplete="on" />
 				</div>
 				<div>
-					<Button type="submit" class="w-full">Se connecter</Button>
+					<Button formaction="?/withEmail" type="submit" class="w-full">Se connecter</Button>
 				</div>
 				<div>
 					<p class="text-center text-xs">
@@ -42,9 +43,9 @@
 				<Separator class="w-full" />
 				<span class="text-sm">ou</span>
 				<Separator />
-			</div> -->
+			</div>
 			<div>
-				<Button type="submit" variant="outline" class="w-full">
+				<Button formaction="?/oauth" type="submit" variant="outline" class="w-full">
 					<span class="mr-4">
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 262"
 							><path

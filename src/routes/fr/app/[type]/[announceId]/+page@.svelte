@@ -17,6 +17,9 @@
 	import SaveBtn from '$lib/components/own/SaveBtn.svelte';
 	import Saved from '$lib/components/own/Saved.svelte';
 	import Send from '$lib/components/own/Send.svelte';
+	import { Textarea } from '$lib/components/ui/textarea';
+	import { Label } from '$lib/components/ui/label';
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 
@@ -25,12 +28,19 @@
 	$: city = firstCapitalize(announce.city) as string;
 	$: commune = announce.commune === 'none' ? ' ' : (announce.commune as string);
 	$: district = announce.district ?? ('' as string);
+	$: initMessage = `${$page.url.origin}${$page.url.pathname}`;
 
 	let location: string;
 	$: if (city === 'Abidjan') {
 		location = city.concat(' ', commune, ' ', district);
 	} else {
 		location = city;
+	}
+
+	$: annonceUserId = announce.userId;
+
+	$: if (!annonceUserId) {
+		annonceUserId = announce.expand?.userId.id;
 	}
 </script>
 
@@ -322,7 +332,34 @@
 					</div>
 
 					<div class="mt-6">
-						<Button class="w-full">Contacter</Button>
+						<Dialog.Root>
+							<Dialog.Trigger class="w-full">
+								<Button class="w-full">Contacter</Button>
+							</Dialog.Trigger>
+							<Dialog.Content>
+								<Dialog.Header>
+									<Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
+									<Dialog.Description>
+										This action cannot be undone. This will permanently delete your account and
+										remove your data from our servers.
+									</Dialog.Description>
+								</Dialog.Header>
+								<form
+									action="?/createConversation&user2={annonceUserId}"
+									method="POST"
+									use:enhance
+									class="grid gap-2"
+								>
+									<div>
+										<Label for="Message">message</Label>
+										<Textarea id="message" name="message" value={initMessage} />
+									</div>
+									<div class="flex items-center justify-end">
+										<Button type="submit">Envoyer</Button>
+									</div>
+								</form>
+							</Dialog.Content>
+						</Dialog.Root>
 					</div>
 				</Card.Content>
 				<!-- <Card.Footer>

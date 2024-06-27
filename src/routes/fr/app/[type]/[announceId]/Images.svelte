@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 	import { Button } from '$lib/components/ui/button';
 	import { Image } from 'svelte-radix';
 
@@ -15,7 +16,7 @@
 	<div class="h-[400px] overflow-hidden">
 		<a href="/fr/app/{propertyType}/{announceId}/images">
 			<img
-				src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{allImages[0]}"
+				src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{allImages[0]}"
 				alt="maison"
 				class="rounded-s-md"
 			/>
@@ -25,29 +26,26 @@
 		{#each imageSlice as img}
 			<div class="overflow-hidden">
 				<a href="/fr/app/{propertyType}/{announceId}/images">
-					<img
-						src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{img}"
-						alt="maison"
-					/>
+					<img src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{img}" alt="maison" />
 				</a>
 			</div>
 		{/each}
 		<!-- <div class="overflow-hidden"> 
 			<img
-				src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{allImages[1]}"
+				src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{allImages[1]}"
 				alt="maison"
 			/>
 		</div>
 		<div class="overflow-hidden">
 			<img
-				src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{allImages[2]}"
+				src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{allImages[2]}"
 				alt="maison"
         class="rounded-se-md"
 			/>
 		</div>
 		<div class="overflow-hidden">
 			<img
-				src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{allImages[
+				src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{allImages[
           3
         ]}"
 				alt="maison"
@@ -55,7 +53,7 @@
 		</div>
 		<div class="overflow-hidden">
 			<img
-				src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{allImages[
+				src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{allImages[
           4
         ]}"
 				alt="maison"

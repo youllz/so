@@ -50,5 +50,20 @@ export const actions: Actions = {
 		// } else {
 		// 	throw redirect(303, `/fr/${id}/board/announce`);
 		// }
+	},
+	withEmail: async ({ request, locals }) => {
+		const formData = Object.fromEntries(await request.formData()) as {
+			email: string;
+			password: string;
+		};
+
+		try {
+			await locals.pb.collection('users').authWithPassword(formData.email, formData.password);
+		} catch (err) {
+			console.log(err);
+			return fail(400, { message: '' });
+		}
+
+		throw redirect(303, '/fr/app');
 	}
 };

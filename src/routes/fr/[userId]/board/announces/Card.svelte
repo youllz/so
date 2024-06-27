@@ -7,6 +7,7 @@
 	import { DateFormatter } from '@internationalized/date';
 	import { fade } from 'svelte/transition';
 	import { firstCapitalize } from '$lib/utils';
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 
 	export let image: string;
 	export let title: string;
@@ -35,7 +36,7 @@
 		<figure class="h-[15rem] w-full overflow-hidden">
 			<a href="/fr/{userId}/board/announces/{recordId}">
 				<img
-					src="http://127.0.0.1:8090/api/files/{collectionId}/{recordId}/{image}"
+					src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{recordId}/{image}"
 					alt=""
 					class="h-full w-full rounded-md object-cover"
 				/>

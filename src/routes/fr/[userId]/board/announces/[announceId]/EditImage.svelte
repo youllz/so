@@ -16,6 +16,7 @@
 	import { fade } from 'svelte/transition';
 	import { mediaQuery } from 'svelte-legos';
 	import { Label } from '$lib/components/ui/label';
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 
 	const isDesktop = mediaQuery('(min-width: 768px)');
 
@@ -148,7 +149,7 @@
 				<figure transition:fade class="relative shrink-0">
 					<div class=" img-container h-[200px] w-[300px] overflow-hidden rounded-md">
 						<img
-							src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{img.img}"
+							src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{img.img}"
 							alt="maison"
 							class="  h-fit w-fit rounded-md object-cover object-center"
 						/>

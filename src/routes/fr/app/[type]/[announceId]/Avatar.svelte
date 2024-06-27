@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import dayjs from '$lib/date';
 
@@ -12,8 +13,10 @@
 
 	let initial = '';
 
-	$: if (lastname && name) {
+	$: if (lastname) {
 		initial = name[0] + lastname[0];
+	} else {
+		initial = name[0];
 	}
 
 	let endDate = dayjs();
@@ -22,32 +25,27 @@
 	let durationTime = dayjs.duration(endDate.diff(startDate));
 
 	function formatDate() {
-		const days = Number(durationTime.format('D'))
-		const months = Number(durationTime.format('M'))
-		const years = Number(durationTime.format('Y'))
-
+		const days = Number(durationTime.format('D'));
+		const months = Number(durationTime.format('M'));
+		const years = Number(durationTime.format('Y'));
 
 		if (months === 0 && years === 0) {
-			return durationTime.format('D [jours]')
+			return durationTime.format('D [jours]');
 		}
 		if (months !== 0 && years === 0) {
-			return durationTime.format('M [mois]')
+			return durationTime.format('M [mois]');
 		}
-		if ( years !== 0) {
-			return durationTime.format('Y [années]')
+		if (years !== 0) {
+			return durationTime.format('Y [années]');
 		}
-
-
 	}
-
-	
 </script>
 
 <div class="mt-4 flex items-center gap-6">
 	<div>
 		<Avatar.Root class="border border-input">
 			<Avatar.Image
-				src="http://127.0.0.1:8090/api/files/{collectionId}/{userId}/{avatar}"
+				src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{userId}/{avatar}"
 				alt="avatar de l'utilisateur"
 			/>
 			<Avatar.Fallback>{initial.toLocaleUpperCase()}</Avatar.Fallback>

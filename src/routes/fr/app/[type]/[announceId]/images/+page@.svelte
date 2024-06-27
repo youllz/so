@@ -8,6 +8,7 @@
 	import { expoInOut } from 'svelte/easing';
 	import SaveBtn from '$lib/components/own/SaveBtn.svelte';
 	import { page } from '$app/stores';
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 
 	export let data: PageData;
 	$: ({ announce, user, saved } = data);
@@ -51,7 +52,7 @@
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<li class="h-[300px] flex-grow">
 				<img
-					src="http://127.0.0.1:8090/api/files/{announce.collectionId}/{announce.id}/{image}"
+					src="{PUBLIC_POCKETBASE}/api/files/{announce.collectionId}/{announce.id}/{image}"
 					alt=""
 					class="h-full w-full cursor-pointer object-cover"
 					on:click={() => {

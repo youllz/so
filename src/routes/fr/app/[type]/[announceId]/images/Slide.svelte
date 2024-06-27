@@ -3,6 +3,7 @@
 	import { Heart, Cross1, Share1, ChevronLeft, ChevronRight } from 'svelte-radix';
 	import Send from '$lib/components/own/Send.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 
 	export let images: string[];
 	export let collectionId: string;
@@ -28,10 +29,10 @@
 
 			<ul class="flex items-center gap-2">
 				<li>
-					<slot name="send"/>
+					<slot name="send" />
 				</li>
 				<li>
-					<slot name="save"/>
+					<slot name="save" />
 				</li>
 			</ul>
 		</div>
@@ -47,10 +48,7 @@
 				<ChevronLeft class="icon" />
 			</Button>
 			<div class="h-[60dvh] w-[600px] border">
-				<img
-					src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{images[idx]}"
-					alt=""
-				/>
+				<img src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{images[idx]}" alt="" />
 			</div>
 			<Button
 				on:click={() => (idx = idx + 1)}

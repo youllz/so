@@ -6,6 +6,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { toast, Toaster } from 'svelte-sonner';
 	import { onMount } from 'svelte';
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 
 	export let img: string;
 	export let city: string;
@@ -64,7 +65,7 @@
 				<div class="flex items-center gap-4">
 					<figure class="size-16">
 						<img
-							src="http://127.0.0.1:8090/api/files/{collectionId}/{announceId}/{img}"
+							src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{announceId}/{img}"
 							alt=""
 							class="h-full w-full rounded-md object-cover"
 						/>

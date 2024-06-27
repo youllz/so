@@ -11,6 +11,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { toast } from 'svelte-sonner';
 	import { firstCapitalize, formatFCFA } from '$lib/utils';
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 
 	export let images: string[];
 	export let propertyType: string;
@@ -55,7 +56,7 @@
 					<div class="p-1">
 						<div class="h-[18rem] w-[100%]">
 							<img
-								src="http://127.0.0.1:8090/api/files/{collectionId}/{recordId}/{image}"
+								src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{recordId}/{image}"
 								alt=""
 								class="h-full w-full rounded-lg object-cover"
 							/>

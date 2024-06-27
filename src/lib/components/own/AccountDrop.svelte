@@ -1,11 +1,12 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import * as Avatar from '$lib/components/ui/avatar';
-	import { Dashboard, CardStackPlus, Exit, Person } from 'svelte-radix';
+	import { Dashboard, CardStackPlus, Exit, Person, ChatBubble } from 'svelte-radix';
+	import { PUBLIC_POCKETBASE } from '$env/static/public';
 
 	// export let email:string | undefined = undefined
 	export let lastname: string | undefined = undefined;
-	export let name: string | undefined = undefined;
+	export let name: string;
 	export let userId: string;
 	export let collectionId: string;
 	export let avatar: string;
@@ -14,13 +15,15 @@
 
 	$: if (lastname && name) {
 		initial = name[0] + lastname[0];
+	} else {
+		// initial = name[0];
 	}
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		<Avatar.Root>
-			<Avatar.Image src="http://127.0.0.1:8090/api/files/{collectionId}/{userId}/{avatar}" />
+			<Avatar.Image src="{PUBLIC_POCKETBASE}/api/files/{collectionId}/{userId}/{avatar}" />
 			<Avatar.Fallback>
 				{#if initial}
 					{initial.toLocaleUpperCase()}
@@ -47,6 +50,9 @@
 			>
 			<DropdownMenu.Item href="/fr/{userId}/board/announces"
 				><Dashboard class="icon mr-4" /> Borad</DropdownMenu.Item
+			>
+			<DropdownMenu.Item href="/fr/{userId}/m"
+				><ChatBubble class="icon mr-4" /> Messages</DropdownMenu.Item
 			>
 			<DropdownMenu.Item><Person class="icon mr-4" /> Mon compte</DropdownMenu.Item>
 			<DropdownMenu.Item href="/fr/logout"><Exit class="icon mr-4" /> Déconnexion</DropdownMenu.Item
