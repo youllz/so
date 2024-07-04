@@ -10,9 +10,6 @@
 
 	export let data: LayoutData;
 
-
-	
-
 	const navItems = [
 		{
 			url: `/fr/host/new/${data.user?.id}/house`,
@@ -57,9 +54,6 @@
 			<a href="/fr/app" class="text-2xl font-semibold"> SO </a>
 		</div>
 		<ul class="flex items-center gap-4">
-			<li>
-				<Theme />
-			</li>
 			<li>
 				<AccountDrop
 					name={data.user?.name}

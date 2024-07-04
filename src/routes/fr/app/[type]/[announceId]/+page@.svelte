@@ -56,7 +56,7 @@
 
 		<ul class="flex items-center gap-4">
 			<li>
-				<Button size="sm">Mettre son annonce sur SO</Button>
+				<Button size="sm" variant="ghost">Mettre son annonce sur SO</Button>
 			</li>
 			<li>
 				<Saved savedData={savedData?.saved.reverse()} />
@@ -332,34 +332,36 @@
 					</div>
 
 					<div class="mt-6">
-						<Dialog.Root>
-							<Dialog.Trigger class="w-full">
-								<Button class="w-full">Contacter</Button>
-							</Dialog.Trigger>
-							<Dialog.Content>
-								<Dialog.Header>
-									<Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
-									<Dialog.Description>
-										This action cannot be undone. This will permanently delete your account and
-										remove your data from our servers.
-									</Dialog.Description>
-								</Dialog.Header>
-								<form
-									action="?/createConversation&user2={annonceUserId}"
-									method="POST"
-									use:enhance
-									class="grid gap-2"
-								>
-									<div>
-										<Label for="Message">message</Label>
-										<Textarea id="message" name="message" value={initMessage} />
-									</div>
-									<div class="flex items-center justify-end">
-										<Button type="submit">Envoyer</Button>
-									</div>
-								</form>
-							</Dialog.Content>
-						</Dialog.Root>
+						{#if user?.id !== annonceUserId}
+							<Dialog.Root>
+								<Dialog.Trigger class="w-full">
+									<Button class="w-full">Contacter</Button>
+								</Dialog.Trigger>
+								<Dialog.Content>
+									<Dialog.Header>
+										<Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
+										<Dialog.Description>
+											This action cannot be undone. This will permanently delete your account and
+											remove your data from our servers.
+										</Dialog.Description>
+									</Dialog.Header>
+									<form
+										action="?/createConversation&user2={annonceUserId}"
+										method="POST"
+										use:enhance
+										class="grid gap-2"
+									>
+										<div>
+											<Label for="Message">message</Label>
+											<Textarea id="message" name="message" value={initMessage} />
+										</div>
+										<div class="flex items-center justify-end">
+											<Button type="submit">Envoyer</Button>
+										</div>
+									</form>
+								</Dialog.Content>
+							</Dialog.Root>
+						{/if}
 					</div>
 				</Card.Content>
 				<!-- <Card.Footer>

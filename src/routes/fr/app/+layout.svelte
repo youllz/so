@@ -53,7 +53,7 @@
 	];
 </script>
 
-<Toaster richColors />
+<!-- <Toaster richColors /> -->
 
 <header class="fixed top-0 z-40 flex w-full flex-col gap-6 border-b border-input bg-background">
 	<nav class="flex items-center justify-between px-[3vw] py-2">
@@ -69,14 +69,12 @@
 
 		<ul class="flex items-center gap-4">
 			<li>
-				<Button size="sm" variant="default">Mettre son annonce sur SO</Button>
+				<Button size="sm" variant="ghost">Mettre son annonce sur SO</Button>
 			</li>
 			<li>
 				<Saved savedData={savedData?.saved.reverse()} />
 			</li>
-			<li>
-				<Theme />
-			</li>
+
 			<li>
 				<AccountDrop
 					userId={data.user?.id}

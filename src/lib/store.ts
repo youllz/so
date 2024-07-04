@@ -1,6 +1,7 @@
 import { persisted } from 'svelte-persisted-store';
 import { mediaQuery } from 'svelte-legos';
 import { readable, writable } from 'svelte/store';
+import type { RecordModel } from 'pocketbase';
 
 export const preferences = persisted('preferences', {
 	deploySidebar: true
@@ -18,4 +19,6 @@ export function loadTimerForm() {
 	};
 }
 
-export const resultFound = writable<number>()
+export const resultFound = writable<number>();
+
+export const messageReceved = writable(false);

@@ -16,7 +16,7 @@
 	const isDesktop = mediaQuery('(min-width: 768px)');
 </script>
 
-<Toaster richColors position={$isDesktop ? 'bottom-right' : 'top-center'} />
+<Toaster richColors expand={true} position={$isDesktop ? 'bottom-right' : 'top-center'} />
 <main class=" flex min-h-[100dvh] items-start bg-card">
 	{#if $isDesktop}
 		{#key $preferences.deploySidebar}
