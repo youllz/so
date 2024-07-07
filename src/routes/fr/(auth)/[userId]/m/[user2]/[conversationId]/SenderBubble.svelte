@@ -30,7 +30,7 @@
 >
 	{#if contenType === 'message'}
 		<div class=" box bg-primary text-primary-foreground">
-			<p class="text-balance p-4">
+			<p class="text-balance p-4 text-right">
 				{message}
 			</p>
 		</div>
@@ -40,7 +40,7 @@
 	{/if}
 
 	{#if contenType === 'photo'}
-		<div class="box bg-primary p-6 text-primary-foreground">
+		<div class="box bg-primary p-4 text-primary-foreground">
 			<ScrollArea orientation="vertical" class="h-[220px]">
 				<div class="mx-4 grid gap-2">
 					{#if images}
@@ -140,10 +140,11 @@
 	{/if}
 {/if}
 
-<style>
+<style lang="postcss">
 	.box {
-		border-top-left-radius: 30px;
+		/* border-top-left-radius: 30px;
 		border-bottom-left-radius: 30px;
-		border-bottom-right-radius: 30px;
+		border-bottom-right-radius: 30px; */
+		border-radius: theme(borderRadius.lg);
 	}
 </style>

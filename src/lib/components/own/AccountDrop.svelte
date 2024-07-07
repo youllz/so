@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import * as Avatar from '$lib/components/ui/avatar';
-	import { Dashboard, CardStackPlus, Exit, Person, ChatBubble, Half2 } from 'svelte-radix';
+	import { Dashboard, CardStackPlus, Exit, Person, ChatBubble, Half2, Enter } from 'svelte-radix';
 	import { PUBLIC_POCKETBASE } from '$env/static/public';
 	import { messageReceved } from '$lib/store';
 	import { mode, setMode } from 'mode-watcher';
@@ -10,6 +10,8 @@
 	import { Toaster, toast } from 'svelte-sonner';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { currentUser } from '$lib/pockectBase';
+	import { Collections, type MessagesResponse, type UsersResponse } from '$lib/pocketbaseType';
 
 	// export let email:string | undefined = undefined
 	export let lastname: string | undefined = undefined;
@@ -28,6 +30,10 @@
 		// initial = name[0];
 	}
 
+	type Texpand = {
+		senderId: UsersResponse;
+	};
+
 	let pb: PocketBase;
 	onMount(async () => {
 		pb = new PocketBase(PUBLIC_POCKETBASE);
@@ -36,22 +42,22 @@
 		pb.collection('conversations').subscribe(
 			'*',
 			async ({ action, record }) => {
-				console.log(record);
+				// console.log(record);
 
-				const lastMessage = await pb.collection('messages').getOne(record.lastMessage, {
-					expand: 'senderId'
-				});
+				const lastMessage = await pb
+					.collection(Collections.Messages)
+					.getOne<MessagesResponse<Texpand>>(record.lastMessage, {
+						expand: 'senderId'
+					});
 
 				if (
 					(action === 'update' || action === 'create') &&
-					lastMessage.senderId !== userId &&
+					lastMessage.expand?.senderId.id !== userId &&
 					!$page.params.conversationId
 				) {
-					toast.message(`Nouveau message de ${lastMessage.expand?.senderId.name}`, {
-						description:
-							lastMessage.contentType === 'message'
-								? lastMessage.content
-								: `<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 1H12.5C13.3284 1 14 1.67157 14 2.5V12.5C14 13.3284 13.3284 14 12.5 14H2.5C1.67157 14 1 13.3284 1 12.5V2.5C1 1.67157 1.67157 1 2.5 1ZM2.5 2C2.22386 2 2 2.22386 2 2.5V8.3636L3.6818 6.6818C3.76809 6.59551 3.88572 6.54797 4.00774 6.55007C4.12975 6.55216 4.24568 6.60372 4.32895 6.69293L7.87355 10.4901L10.6818 7.6818C10.8575 7.50607 11.1425 7.50607 11.3182 7.6818L13 9.3636V2.5C13 2.22386 12.7761 2 12.5 2H2.5ZM2 12.5V9.6364L3.98887 7.64753L7.5311 11.4421L8.94113 13H2.5C2.22386 13 2 12.7761 2 12.5ZM12.5 13H10.155L8.48336 11.153L11 8.6364L13 10.6364V12.5C13 12.7761 12.7761 13 12.5 13ZM6.64922 5.5C6.64922 5.03013 7.03013 4.64922 7.5 4.64922C7.96987 4.64922 8.35078 5.03013 8.35078 5.5C8.35078 5.96987 7.96987 6.35078 7.5 6.35078C7.03013 6.35078 6.64922 5.96987 6.64922 5.5ZM7.5 3.74922C6.53307 3.74922 5.74922 4.53307 5.74922 5.5C5.74922 6.46693 6.53307 7.25078 7.5 7.25078C8.46693 7.25078 9.25078 6.46693 9.25078 5.5C9.25078 4.53307 8.46693 3.74922 7.5 3.74922Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>`,
+					// console.log('toast');
+					toast.message(`  Nouveau message de ${lastMessage.expand?.senderId.name} `, {
+						description: lastMessage.content,
 						action: {
 							label: 'Voir',
 							onClick: async () => {
@@ -92,22 +98,53 @@
 		</Avatar.Root>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
+		{#if !userId}
+			<DropdownMenu.Group>
+				<DropdownMenu.Item href="/fr/login" class="font-bold">
+					<Enter class="icon mr-4" /> Inscription</DropdownMenu.Item
+				>
+				<DropdownMenu.Item href="/fr/login">
+					<span class="icon mr-4"
+						><svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.875"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-key-round"
+							><path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z" /><circle
+								cx="16.5"
+								cy="7.5"
+								r=".5"
+								fill="currentColor"
+							/></svg
+						></span
+					> Connexion</DropdownMenu.Item
+				>
+			</DropdownMenu.Group>
+			<DropdownMenu.Separator />
+		{/if}
 		<DropdownMenu.Group>
-			<!-- <DropdownMenu.Label></DropdownMenu.Label> -->
-			<!-- <DropdownMenu.Separator /> -->
 			<DropdownMenu.Item href="/fr/host/new/{userId}"
 				><CardStackPlus class="icon mr-4" /> Ajouter une annonce</DropdownMenu.Item
 			>
-			<DropdownMenu.Item href="/fr/{userId}/board/announces"
-				><Dashboard class="icon mr-4" /> Borad</DropdownMenu.Item
-			>
-			<DropdownMenu.Item href="/fr/{userId}/m">
-				<ChatBubble class="icon mr-4" />
-				Messages {#if $messageReceved}
-					<span class="ml-4 block size-1 rounded-full bg-primary"> </span>
-				{/if}
-			</DropdownMenu.Item>
-			<DropdownMenu.Item><Person class="icon mr-4" /> Mon compte</DropdownMenu.Item>
+			{#if userId}
+				<DropdownMenu.Item href="/fr/{userId}/board/announces"
+					><Dashboard class="icon mr-4" /> Borad</DropdownMenu.Item
+				>
+				<DropdownMenu.Item href="/fr/{userId}/m">
+					<ChatBubble class="icon mr-4" />
+					Messages {#if $messageReceved}
+						<span class="ml-4 block size-1 rounded-full bg-primary"> </span>
+					{/if}
+				</DropdownMenu.Item>
+				<DropdownMenu.Item><Person class="icon mr-4" /> Mon compte</DropdownMenu.Item>
+			{/if}
+
 			<DropdownMenu.Sub>
 				<DropdownMenu.SubTrigger><Half2 class="icon mr-4" /> Theme</DropdownMenu.SubTrigger>
 				<DropdownMenu.SubContent>
@@ -124,8 +161,11 @@
 					</DropdownMenu.RadioGroup>
 				</DropdownMenu.SubContent>
 			</DropdownMenu.Sub>
-			<DropdownMenu.Item href="/fr/logout"><Exit class="icon mr-4" /> Déconnexion</DropdownMenu.Item
-			>
+			{#if userId}
+				<DropdownMenu.Item href="/fr/logout"
+					><Exit class="icon mr-4" /> Déconnexion</DropdownMenu.Item
+				>
+			{/if}
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

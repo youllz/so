@@ -3,6 +3,12 @@ import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import {
+	Collections,
+	type ConversationsResponse,
+	type MessagesResponse,
+	type UsersResponse
+} from '$lib/pocketbaseType';
 
 export const ssr = false;
 
@@ -20,10 +26,12 @@ export const load = (async ({ parent, params, locals }) => {
 	const photoForm = await superValidate(zod(sendPhotoSchema));
 	const getConversationMessages = async () => {
 		try {
-			const messages = await locals.pb.collection('messages').getFullList({
-				filter: `conversationId = "${params.conversationId}"`,
-				sort: '+created'
-			});
+			const messages = await locals.pb
+				.collection(Collections.Messages)
+				.getFullList<MessagesResponse>({
+					filter: `conversationId = "${params.conversationId}"`,
+					sort: '+created'
+				});
 			return messages;
 		} catch (err) {
 			console.log(err);
@@ -31,11 +39,18 @@ export const load = (async ({ parent, params, locals }) => {
 		}
 	};
 
+	type Texpand = {
+		lastMessage: MessagesResponse;
+		menbers: UsersResponse[];
+	};
+
 	const getConversation = async () => {
 		try {
-			const record = await locals.pb.collection('conversations').getOne(params.conversationId, {
-				expand: 'menbers,lastMessage'
-			});
+			const record = await locals.pb
+				.collection(Collections.Conversations)
+				.getOne<ConversationsResponse<Texpand>>(params.conversationId, {
+					expand: 'menbers,lastMessage'
+				});
 			return record;
 		} catch (err) {
 			console.log(err);

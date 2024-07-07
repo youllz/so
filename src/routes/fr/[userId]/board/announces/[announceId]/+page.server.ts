@@ -3,14 +3,15 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import * as schema from './schemas';
 import { error, fail } from '@sveltejs/kit';
+import { Collections, type AnnouncesResponse } from '$lib/pocketbaseType';
 
 export const load = (async ({ params, locals, parent }) => {
 	await parent();
 	const getUserAnnounces = async () => {
 		try {
 			const record = await locals.pb
-				.collection('announces')
-				.getFirstListItem(`id="${params.announceId}"`);
+				.collection(Collections.Announces)
+				.getFirstListItem<AnnouncesResponse>(`id="${params.announceId}"`);
 			return structuredClone(record);
 		} catch (e) {
 			console.log(e);

@@ -1,11 +1,14 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { message } from 'sveltekit-superforms';
+import { Collections, type AnnouncesResponse, type UsersResponse } from '$lib/pocketbaseType';
 
+type Texpand = {
+	userId: UsersResponse;
+};
 export const load = (async ({ locals, params }) => {
 	const getAnnounce = async () => {
 		try {
-			const record = await locals.pb.collection('announces').getOne(params.announceId, {
+			const record = await locals.pb.collection(Collections.Announces).getOne(params.announceId, {
 				expand: 'userId'
 			});
 			return record;

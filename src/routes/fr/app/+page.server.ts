@@ -1,13 +1,16 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import { Collections, type AnnouncesResponse } from '$lib/pocketbaseType';
 
 export const load = (async ({ locals }) => {
 	const getannounces = async () => {
 		try {
-			const record = await locals.pb.collection('announces').getList(1, 20, {
-				sort: '-created',
-				filter: `status = "activé"`
-			});
+			const record = await locals.pb
+				.collection(Collections.Announces)
+				.getList<AnnouncesResponse>(1, 20, {
+					sort: '-created',
+					filter: `status = "activé"`
+				});
 
 			return {
 				allAnnounces: record

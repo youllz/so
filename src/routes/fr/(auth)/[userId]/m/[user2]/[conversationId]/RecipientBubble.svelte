@@ -29,8 +29,8 @@
 	class="min-h-[30px] max-w-[80%] self-start rounded-md"
 >
 	{#if contenType === 'message'}
-		<div class="box bg-background text-foreground">
-			<p class="text-balance p-6 text-right">
+		<div class="box rounded-lg bg-background text-foreground">
+			<p class="text-balance p-4">
 				{message}
 			</p>
 		</div>
@@ -40,7 +40,7 @@
 	{/if}
 
 	{#if contenType === 'photo'}
-		<div class="box bg-background p-6 text-foreground">
+		<div class="box bg-background p-4 text-foreground">
 			<ScrollArea orientation="vertical" class="h-[220px]">
 				<div class="mx-4 grid gap-2">
 					{#if images}
@@ -140,10 +140,11 @@
 	{/if}
 {/if}
 
-<style>
+<style lang="postcss">
 	.box {
-		border-bottom-right-radius: 30px;
+		/* border-bottom-right-radius: 30px;
 		border-bottom-left-radius: 30px;
-		border-top-right-radius: 30px;
+		border-top-right-radius: 30px; */
+		border-radius: theme(borderRadius.lg);
 	}
 </style>

@@ -18,7 +18,7 @@
 	export let transactionType: string;
 	export let city: string;
 	export let commune: string;
-	export let price: string;
+	export let price: number;
 	export let collectionId: string;
 	export let recordId: string;
 	export let user: AuthModel | undefined;
@@ -79,7 +79,7 @@
 				</p>
 			</div>
 			<div>
-				<p class="text-sm font-semibold">{formatFCFA(price)}</p>
+				<p class="text-sm font-semibold">{formatFCFA(price.toString())}</p>
 			</div>
 		</div>
 	</a>

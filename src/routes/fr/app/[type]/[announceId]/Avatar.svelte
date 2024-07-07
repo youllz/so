@@ -13,11 +13,11 @@
 
 	let initial = '';
 
-	$: if (lastname) {
-		initial = name[0] + lastname[0];
-	} else {
-		initial = name[0];
-	}
+	// $: if (lastname) {
+	// 	initial = name[0] + lastname[0];
+	// } else {
+	// 	initial = name[0];
+	// }
 
 	let endDate = dayjs();
 	let startDate = dayjs(create);

@@ -20,6 +20,7 @@
 	import * as Popover from '$lib/components/ui/popover';
 	import { Label } from '$lib/components/ui/label';
 	import { superForm } from 'sveltekit-superforms';
+	import { Collections, type MessagesResponse } from '$lib/pocketbaseType';
 
 	export let data: PageData;
 
@@ -60,7 +61,7 @@
 		});
 		pb = new Pocketbase(PUBLIC_POCKETBASE);
 		pb.authStore.loadFromCookie(document.cookie || '');
-		pb.collection('messages').subscribe(
+		pb.collection(Collections.Messages).subscribe<MessagesResponse>(
 			'*',
 			async ({ action, record }) => {
 				if (action === 'create') {
@@ -100,27 +101,29 @@
 <div class="flex h-full flex-col justify-between">
 	<div class="border-b px-6 py-3">
 		<div>
-			{#each conversation?.expand?.menbers as item}
-				{#if item.id !== user?.id}
-					<div class="flex items-center gap-4">
-						<Avatar.Root class="border">
-							<Avatar.Image
-								src="{PUBLIC_POCKETBASE}/api/files/{item.collectionId}/{item.id}/{item.avatar}"
-								alt="@{item.name}"
-							/>
-							<Avatar.Fallback>
-								<span class="uppercase">{item.name[0]}</span>
-							</Avatar.Fallback>
-						</Avatar.Root>
-						<p class="text-sm font-light">
-							{firstCapitalize(item.name)}
-							{#if item.lastname}
-								{firstCapitalize(item.lastname)}
-							{/if}
-						</p>
-					</div>
-				{/if}
-			{/each}
+			{#if conversation?.expand?.menbers}
+				{#each conversation?.expand?.menbers as item}
+					{#if item.id !== user?.id}
+						<div class="flex items-center gap-4">
+							<Avatar.Root class="border">
+								<Avatar.Image
+									src="{PUBLIC_POCKETBASE}/api/files/{item.collectionId}/{item.id}/{item.avatar}"
+									alt="@{item.name}"
+								/>
+								<Avatar.Fallback>
+									<span class="uppercase">{item.name[0]}</span>
+								</Avatar.Fallback>
+							</Avatar.Root>
+							<p class="text-sm font-light">
+								{firstCapitalize(item.name)}
+								{#if item.lastname}
+									{firstCapitalize(item.lastname)}
+								{/if}
+							</p>
+						</div>
+					{/if}
+				{/each}
+			{/if}
 		</div>
 	</div>
 	<ScrollArea orientation="vertical" class="relative flex-grow px-[5vw]">

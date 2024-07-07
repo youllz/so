@@ -2,7 +2,6 @@
 	import type { PageData } from './$types';
 	import Card from '$lib/components/own/Card.svelte';
 	import { resultFound } from '$lib/store';
-	import { queryParam, ssp } from 'sveltekit-search-params';
 	import { page } from '$app/stores';
 
 	export let data: PageData;

@@ -1,34 +1,56 @@
 import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
+import {
+	Collections,
+	type AnnouncesResponse,
+	type ConversationsResponse,
+	type MessagesResponse,
+	type UsersResponse
+} from '$lib/pocketbaseType';
 
 export const load = (async ({ locals, params }) => {
 	const getSaved = async () => {
 		try {
-			const record = await locals.pb.collection('users').getOne(locals.user?.id);
-			return record.saved as string[];
+			const record = await locals.pb
+				.collection(Collections.Users)
+				.getOne<UsersResponse>(locals.user?.id);
+			return record.saved;
 		} catch (e) {
 			console.log(e);
 		}
 	};
 
+	type Texpand = {
+		saved: AnnouncesResponse[] | undefined;
+	};
+
 	const getSavedData = async () => {
 		try {
-			const records = await locals.pb.collection('users').getOne(locals.user?.id, {
-				expand: 'saved'
-			});
+			const records = await locals.pb
+				.collection(Collections.Users)
+				.getOne<UsersResponse<Texpand>>(locals.user?.id, {
+					expand: 'saved'
+				});
 
 			return records.expand;
 		} catch (e) {
 			console.log(e);
 		}
 	};
+
+	type ConvExpand = {
+		menbers: UsersResponse[];
+		lastMessage: MessagesResponse;
+	};
 	const getAllUserConversations = async () => {
 		try {
-			const records = await locals.pb.collection('conversations').getFullList({
-				filter: `user1 = "${params.userId}" || user2 = "${params.userId}"`,
-				sort: '-created',
-				expand: 'menbers,lastMessage'
-			});
+			const records = await locals.pb
+				.collection(Collections.Conversations)
+				.getFullList<ConversationsResponse<ConvExpand>>({
+					filter: `user1 = "${params.userId}" || user2 = "${params.userId}"`,
+					sort: '-created',
+					expand: 'menbers,lastMessage'
+				});
 
 			return records;
 		} catch (err) {

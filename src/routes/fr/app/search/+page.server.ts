@@ -2,19 +2,19 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ url, locals }) => {
-	let minPrice = url.searchParams.get('minPrice') || 0;
-	let maxPrice = url.searchParams.get('maxPrice') || 10000000000;
-	let propertyType = url.searchParams.get('propertyType') || '';
-	let transactionType = url.searchParams.get('transactionType') || '';
-	let city = url.searchParams.get('city') || '';
-	let commune = url.searchParams.get('commune') || '';
-	let district = url.searchParams.get('district') || '';
-	let minSurface = url.searchParams.get('minSurface') || 0;
-	let maxSurface = url.searchParams.get('maxSurface') || 1000000;
-	let equipments = url.searchParams.getAll('equipments');
-	let state = url.searchParams.get('state') || '';
-	let numOfRoom = url.searchParams.get('numOfRoom') || 0;
-	let numOfBath = url.searchParams.get('numOfBath') || 0;
+	const minPrice = url.searchParams.get('minPrice') || 0;
+	const maxPrice = url.searchParams.get('maxPrice') || 10000000000;
+	const propertyType = url.searchParams.get('propertyType') || '';
+	const transactionType = url.searchParams.get('transactionType') || '';
+	const city = url.searchParams.get('city') || '';
+	const commune = url.searchParams.get('commune') || '';
+	const district = url.searchParams.get('district') || '';
+	const minSurface = url.searchParams.get('minSurface') || 0;
+	const maxSurface = url.searchParams.get('maxSurface') || 1000000;
+	const equipments = url.searchParams.getAll('equipments');
+	const state = url.searchParams.get('state') || '';
+	const numOfRoom = url.searchParams.get('numOfRoom') || 0;
+	const numOfBath = url.searchParams.get('numOfBath') || 0;
 
 	const getSearchAnnounces = async () => {
 		let equi = ``;

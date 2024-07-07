@@ -72,7 +72,7 @@
 				<Button size="sm" variant="ghost">Mettre son annonce sur SO</Button>
 			</li>
 			<li>
-				<Saved savedData={savedData?.saved.reverse()} />
+				<Saved savedData={savedData?.saved?.reverse()} />
 			</li>
 
 			<li>
