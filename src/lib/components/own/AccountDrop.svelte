@@ -15,10 +15,10 @@
 
 	// export let email:string | undefined = undefined
 	export let lastname: string | undefined = undefined;
-	export let name: string;
-	export let userId: string;
-	export let collectionId: string;
-	export let avatar: string;
+	export let name: string | undefined;
+	export let userId: string | undefined;
+	export let collectionId: string | undefined;
+	export let avatar: string | undefined;
 
 	let initial = '';
 

@@ -15,8 +15,6 @@
 
 	type State = 'sm' | 'icon';
 
-  
-
 	$: getSave = saved?.find((item) => item === recordId);
 
 	const checkSaved: SubmitFunction = () => {
@@ -68,11 +66,10 @@
 								/></svg
 							>
 						</span>
-            Retirer
+						Retirer
 					{:else}
 						<Heart class="icon  mr-4" /> Enregistrer
 					{/if}
-
 				</Button>
 			{:else}
 				<Button type="submit" variant="secondary" size="icon" class="rounded-full">
@@ -100,21 +97,21 @@
 
 					<span class="sr-only">Enregistrer</span>
 				</Button>
-        {/if}
+			{/if}
 		</form>
 	{:else}
 		<Dialog.Root>
-      <Dialog.Trigger>
-        {#if state === "sm"}
-				<Button type="submit" variant="secondary" size="sm" >
-          <Heart class="icon  mr-4" /> Enregistrer
-				</Button>
-        {:else}
-        <Button type="submit" variant="secondary" size="icon" class="rounded-full" >
-          <Heart class="icon  mr-4" /> 
-          <span class="sr-only">Enregistrer</span>
-				</Button>
-        {/if}
+			<Dialog.Trigger>
+				{#if state === 'sm'}
+					<Button type="submit" variant="secondary" size="sm">
+						<Heart class="icon  mr-4" /> Enregistrer
+					</Button>
+				{:else}
+					<Button type="submit" variant="secondary" size="icon" class="rounded-full">
+						<Heart class="icon  mr-4" />
+						<span class="sr-only">Enregistrer</span>
+					</Button>
+				{/if}
 			</Dialog.Trigger>
 			<Dialog.Content>
 				<Dialog.Header>

@@ -5,9 +5,16 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { firstCapitalize } from '$lib/utils';
 	import { onDestroy, onMount } from 'svelte';
-	import { ArrowLeft, ArrowRight } from 'svelte-radix';
+	import { ArrowLeft, ArrowRight, Image } from 'svelte-radix';
 	import { writable } from 'svelte/store';
 	import { messageReceved } from '$lib/store';
+	import {
+		Collections,
+		MessagesContentTypeOptions,
+		type ConversationsResponse,
+		type MessagesResponse
+	} from '$lib/pocketbaseType';
+	import { DateFormatter } from '@internationalized/date';
 
 	export let lastname: string | undefined = undefined;
 	export let name: string;
@@ -17,6 +24,7 @@
 	export let lastmessage: string = '';
 	export let messageUser: string = '';
 	export let date: string = '';
+	export let contenType: MessagesContentTypeOptions;
 
 	export let conversationId: string;
 
@@ -30,7 +38,8 @@
 
 	const lastMessageStore = writable({
 		content: lastmessage,
-		messageUser
+		messageUser,
+		contenType
 	});
 
 	$: if (messageUser !== $page.params.userId) {
@@ -41,15 +50,20 @@
 	onMount(async () => {
 		pb = new Pocketbase(PUBLIC_POCKETBASE);
 		pb.authStore?.loadFromCookie(document.cookie || '');
-		pb.collection('conversations').subscribe(
+		pb.collection(Collections.Conversations).subscribe<ConversationsResponse>(
 			conversationId,
 			async ({ action, record }) => {
 				if (action === 'update') {
-					const data = await pb.collection('messages').getOne(record.lastMessage);
+					const data = await pb
+						.collection(Collections.Messages)
+						.getOne<MessagesResponse>(record.lastMessage);
 					$lastMessageStore = {
 						content: data.content,
-						messageUser: data.senderId
+						messageUser: data.senderId,
+						contenType: data.contentType
 					};
+
+					console.log($lastMessageStore.contenType);
 
 					if ($lastMessageStore.messageUser !== $page.params.userId) {
 						$messageReceved = true;
@@ -64,8 +78,14 @@
 		);
 	});
 
+	const df = new DateFormatter('fr-FR', {
+		dateStyle: 'short'
+
+		// timeStyle: 'short'
+	});
+
 	onDestroy(async () => {
-		pb.collection('conversations').unsubscribe();
+		pb.collection(Collections.Conversations).unsubscribe();
 	});
 </script>
 
@@ -82,10 +102,13 @@
 			</Avatar.Root>
 		</div>
 		<div>
-			<p class="text-sm font-light">
-				{firstCapitalize(name)}
-				{lastname ? firstCapitalize(lastname) : ''}
-			</p>
+			<div class="flex items-center justify-between">
+				<p class="text-sm font-light">
+					{firstCapitalize(name)}
+					<!-- {lastname ? firstCapitalize(lastname) : ''} -->
+				</p>
+				<span class="text-[10px] text-muted-foreground">{df.format(new Date(date))}</span>
+			</div>
 			<div class="flex gap-3">
 				{#if $lastMessageStore.messageUser === $page.params.userId}
 					<span>
@@ -96,7 +119,11 @@
 						<ArrowRight class="icon" />
 					</span>
 				{/if}
+
 				<p class="line-clamp-1 w-[150px] text-xs text-muted-foreground">
+					{#if $lastMessageStore.contenType === 'photos'}
+						<Image class="icon mr-2" />
+					{/if}
 					{$lastMessageStore.content}
 				</p>
 			</div>

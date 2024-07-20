@@ -6,10 +6,19 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { formSchema, equipments, transactionTypes, states } from './schema';
 	import { superForm } from 'sveltekit-superforms';
-	import { Field, Control, FieldErrors, Description } from 'formsnap';
+	import {
+		Field,
+		Control,
+		FieldErrors,
+		Description,
+		Fieldset,
+		Legend,
+		ElementField
+	} from 'formsnap';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import * as Select from '$lib/components/ui/select';
 	import * as Form from '$lib/components/ui/form';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import SuperDebug from 'sveltekit-superforms';
 	import {
 		DateFormatter,
@@ -29,8 +38,11 @@
 	import { goto } from '$app/navigation';
 	import { loadTimerForm } from '$lib/store';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
+	import Images from '../../../../app/[type]/[announceId]/Images.svelte';
+	import { Trash } from 'svelte-radix';
 
 	export let data: PageData;
+	$: ({ user } = data);
 
 	const { delayMs, timeOutMs } = loadTimerForm();
 	const form = superForm(data.form, {
@@ -51,6 +63,7 @@
 					break;
 				case 'failure':
 					toast.error("Désolé, une erreur s'est produite.", {});
+
 					break;
 				default:
 					break;
@@ -58,7 +71,6 @@
 		},
 		onSubmit: async ({ formData, cancel }) => {
 			let data = Object.fromEntries(formData);
-			console.log(data);
 
 			if (data.city === 'abidjan' && data.commune === 'undefined') {
 				toast.error('Veillez sélectionner une commune', {});
@@ -138,11 +150,22 @@
 	$: value2 = $formData.endOfAvailability ? parseDate($formData.endOfAvailability) : undefined;
 
 	let placeholder2: DateValue = today(getLocalTimeZone());
+
+	// dinamic file input
+
+	function removeImageByIndex(index: number) {
+		$formData.images = $formData.images.filter((_, i) => i !== index);
+	}
+
+	let file: File;
+	function addImage() {
+		$formData.images = [...$formData.images, file];
+	}
 </script>
 
-<div class="">
+<!-- <div class="">
 	<SuperDebug data={$formData} />
-</div>
+</div> -->
 
 <section class="flex items-center justify-center pb-6">
 	<form
@@ -547,63 +570,117 @@
 		<!-- images -->
 		<div>
 			<div class="field">
-				<!-- <Form.Field {form} name="images">
-					<Form.Control let:attrs>
-						<Form.Label>Images</Form.Label>
-					</Form.Control>
-					<Form.FieldErrors class="text-xs" />
-				</Form.Field> -->
+				<fieldset>
+					<legend
+						class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>Images</legend
+					>
+					{#each $formData.images as _, i}
+						<label for="image {i + 1}" class="sr-only">
+							image {i + 1}
+						</label>
+						<div class="mt-1 flex items-center gap-4">
+							<Input
+								accept="image/png, image/jpeg, image/webp, image/avif, image/svg"
+								type="file"
+								id="image {i + 1}"
+								name="images"
+								on:input={(e) => ($formData.images[i] = e.currentTarget.files?.item(0) ?? file)}
+							/>
+							<Button
+								type="button"
+								variant="destructive"
+								on:click={() => {
+									removeImageByIndex(i);
+								}}
+								size="icon"
+							>
+								<Trash class="icon" />
+							</Button>
+						</div>
+					{/each}
+					{#if $errors.images}
+						<span class="text-xs text-destructive">{$errors.images[0] || ''}</span>
+					{/if}
+					{#if $errors.images?._errors}
+						<span class="text-xs text-destructive">{$errors.images._errors[0] || ''}</span>
+					{/if}
+					{#if user?.pass === 'pro'}
+						<Button
+							class="mt-2 w-full"
+							type="button"
+							variant="secondary"
+							size="sm"
+							on:click={addImage}
+						>
+							Ajouter une image
+						</Button>
+					{/if}
 
-				<label for="images"> Les images </label>
+					{#if user?.pass === 'free'}
+						{#if user?.pass === 'free' && $formData.images.length <= 3}
+							<Button
+								class="mt-2 w-full"
+								type="button"
+								variant="secondary"
+								size="sm"
+								on:click={addImage}
+							>
+								Ajouter une image
+							</Button>
+						{:else}
+							<Dialog.Root>
+								<Dialog.Trigger class="mt-2 w-full">
+									<Button class="w-full " variant="secondary" size="sm">Ajouter une image</Button>
+								</Dialog.Trigger>
+								<Dialog.Content>
+									<Dialog.Header>
+										<Dialog.Title>Passer au plan pro pour ajouter plus d'images</Dialog.Title>
+										<!-- <Dialog.Description>
+											This action cannot be undone. This will permanently delete your account and
+											remove your data from our servers.
+										</Dialog.Description> -->
+									</Dialog.Header>
+									<div class="mt-3">
+										<Button class="w-full">Voir l'offre</Button>
+									</div>
+								</Dialog.Content>
+							</Dialog.Root>
+						{/if}
+					{/if}
+				</fieldset>
 
-				<Input
-					type="file"
-					multiple
-					accept="image/png, image/jpeg, image/webp, image/avif, image/svg"
-					name="images"
-					id="image"
-					on:input={(e) => ($formData.images = Array.from(e.currentTarget.files ?? []))}
-				/>
-				<span class="text-xs text-muted-foreground">Sélectionner une ou plusieurs images</span>
+				<!-- price -->
+				<div>
+					<div class="field">
+						<Form.Field {form} name="price">
+							<Form.Control let:attrs>
+								<Form.Label>Prix (cfa)</Form.Label>
+								<Input
+									type="number"
+									inputmode="numeric"
+									min="0"
+									autocomplete="off"
+									{...attrs}
+									bind:value={$formData.price}
+								/>
+							</Form.Control>
+							<Form.FieldErrors class="text-xs" />
+						</Form.Field>
+					</div>
+				</div>
 
-				{#if $errors.images}
-					<span class="text-xs text-destructive">{$errors.images[0] || ''}</span>
-				{/if}
-				{#if $errors.images?._errors}
-					<span class="text-xs text-destructive">{$errors.images._errors[0] || ''}</span>
-				{/if}
+				<div>
+					{#if $delayed}
+						<Button class="w-full" disabled>
+							<Reload class="mr-2 h-4 w-4 animate-spin" />
+							Veillez patienter
+						</Button>
+					{:else}
+						<Button type="submit" class="w-full">Créer</Button>
+					{/if}
+				</div>
 			</div>
-		</div>
-
-		<!-- price -->
-		<div>
-			<div class="field">
-				<Form.Field {form} name="price">
-					<Form.Control let:attrs>
-						<Form.Label>Prix (cfa)</Form.Label>
-						<Input
-							type="number"
-							inputmode="numeric"
-							min="0"
-							autocomplete="off"
-							{...attrs}
-							bind:value={$formData.price}
-						/>
-					</Form.Control>
-					<Form.FieldErrors class="text-xs" />
-				</Form.Field>
-			</div>
-		</div>
-
-		<div>
-			{#if $delayed}
-				<Button class="w-full" disabled>
-					<Reload class="mr-2 h-4 w-4 animate-spin" />
-					Veillez patienter
-				</Button>
-			{:else}
-				<Button type="submit" class="w-full">Créer</Button>
-			{/if}
 		</div>
 	</form>
 </section>

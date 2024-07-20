@@ -5,12 +5,17 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import {
 	Collections,
+	type AnnouncesResponse,
 	type ConversationsResponse,
 	type MessagesResponse,
 	type UsersResponse
 } from '$lib/pocketbaseType';
 
 export const ssr = false;
+
+type MessageExpand = {
+	announceId: AnnouncesResponse;
+};
 
 const sendPhotoSchema = z.object({
 	photos: z
@@ -28,9 +33,10 @@ export const load = (async ({ parent, params, locals }) => {
 		try {
 			const messages = await locals.pb
 				.collection(Collections.Messages)
-				.getFullList<MessagesResponse>({
+				.getFullList<MessagesResponse<MessageExpand>>({
 					filter: `conversationId = "${params.conversationId}"`,
-					sort: '+created'
+					sort: '+created',
+					expand: 'announceId'
 				});
 			return messages;
 		} catch (err) {
@@ -110,8 +116,7 @@ export const actions: Actions = {
 				senderId: locals.user?.id,
 				recipientId: params.user2,
 				content: form.data.content,
-				date: new Date().toISOString(),
-				contentType: 'photo',
+				contentType: 'photos',
 				photos: form.data.photos
 			});
 		} catch (err) {

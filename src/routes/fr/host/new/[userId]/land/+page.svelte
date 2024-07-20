@@ -30,6 +30,7 @@
 	import { loadTimerForm } from '$lib/store';
 	import { goto, invalidate, invalidateAll, replaceState } from '$app/navigation';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
+	import { Trash } from 'svelte-radix';
 
 	export let data: PageData;
 
@@ -135,6 +136,16 @@
 	$: value2 = $formData.endOfAvailability ? parseDate($formData.endOfAvailability) : undefined;
 
 	let placeholder2: DateValue = today(getLocalTimeZone());
+
+	// dinamic file input
+	function removeImageByIndex(index: number) {
+		$formData.images = $formData.images.filter((_, i) => i !== index);
+	}
+
+	let file: File;
+	function addImage() {
+		$formData.images = [...$formData.images, file];
+	}
 </script>
 
 <!-- <div class="">
@@ -501,32 +512,50 @@
 		<!-- images -->
 		<div>
 			<div class="field">
-				<!-- <Form.Field {form} name="images">
-					<Form.Control let:attrs>
-						<Form.Label>Images</Form.Label>
-					</Form.Control>
-					<Form.FieldErrors class="text-xs" />
-				</Form.Field> -->
-
-				<Label for="images">Image (s)</Label>
-
-				<Input
-					type="file"
-					multiple
-					accept="image/png, image/jpeg, image/webp, image/avif, image/svg"
-					name="images"
-					id="images"
-					on:input={(e) => ($formData.images = Array.from(e.currentTarget.files ?? []))}
-				/>
-				<div class="grid gap-1">
-					<span class="text-xs text-muted-foreground">Sélectionner une ou plusieurs images</span>
+				<fieldset>
+					<legend
+						class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>Images</legend
+					>
+					{#each $formData.images as _, i}
+						<label for="image {i + 1}" class="sr-only">
+							image {i + 1}
+						</label>
+						<div class="mt-1 flex items-center gap-4">
+							<Input
+								accept="image/png, image/jpeg, image/webp, image/avif, image/svg"
+								type="file"
+								id="image {i + 1}"
+								name="images"
+								on:input={(e) => ($formData.images[i] = e.currentTarget.files?.item(0) ?? file)}
+							/>
+							<Button
+								type="button"
+								variant="destructive"
+								on:click={() => {
+									removeImageByIndex(i);
+								}}
+								size="icon"
+							>
+								<Trash class="icon" />
+							</Button>
+						</div>
+					{/each}
 					{#if $errors.images}
 						<span class="text-xs text-destructive">{$errors.images[0] || ''}</span>
 					{/if}
 					{#if $errors.images?._errors}
 						<span class="text-xs text-destructive">{$errors.images._errors[0] || ''}</span>
 					{/if}
-				</div>
+					<Button
+						class="mt-2 w-full"
+						type="button"
+						variant="secondary"
+						size="sm"
+						on:click={addImage}>Ajouter une image</Button
+					>
+				</fieldset>
+
 			</div>
 		</div>
 

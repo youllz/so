@@ -7,7 +7,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			pb: PocketBase;
-			user: import("pocketbase").default['authStore']['model']
+			user: import('pocketbase').default['authStore']['model'];
 		}
 		// interface PageData {}
 		// interface PageState {}

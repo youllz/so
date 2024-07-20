@@ -42,9 +42,9 @@
 </script>
 
 <div class="flex items-start gap-2">
-	<h1 class="tracking-tight ">
-		{content} 
-</h1>
+	<h1 class="tracking-tight">
+		{content}
+	</h1>
 	<div>
 		{#if $isDesktop}
 			<Dialog.Root bind:open>

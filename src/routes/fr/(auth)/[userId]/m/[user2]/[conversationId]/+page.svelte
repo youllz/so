@@ -20,11 +20,15 @@
 	import * as Popover from '$lib/components/ui/popover';
 	import { Label } from '$lib/components/ui/label';
 	import { superForm } from 'sveltekit-superforms';
-	import { Collections, type MessagesResponse } from '$lib/pocketbaseType';
+	import { Collections, type AnnouncesResponse, type MessagesResponse } from '$lib/pocketbaseType';
 
 	export let data: PageData;
 
 	$: ({ messages, conversation, user, photoForm } = data);
+
+	type MessageExpand = {
+		announceId: AnnouncesResponse;
+	};
 
 	let chatBox: HTMLDivElement;
 
@@ -61,7 +65,7 @@
 		});
 		pb = new Pocketbase(PUBLIC_POCKETBASE);
 		pb.authStore.loadFromCookie(document.cookie || '');
-		pb.collection(Collections.Messages).subscribe<MessagesResponse>(
+		pb.collection(Collections.Messages).subscribe<MessagesResponse<MessageExpand>>(
 			'*',
 			async ({ action, record }) => {
 				if (action === 'create') {
@@ -131,24 +135,26 @@
 			bind:this={chatBox}
 			class=" chatBox flex h-full w-full flex-col justify-start gap-4 py-8 pb-[50px]"
 		>
-			{#each messages as item, idx (item.id)}
+			{#each messages as item (item.id)}
 				{#if data.user?.id === item.senderId}
 					<SenderBubble
-						date={item.date}
+						date={item.created}
 						message={item.content}
 						collectionId={item.collectionId}
 						contenType={item.contentType}
 						recordId={item.id}
-						images={item.photos}
+						photos={item.photos}
+						announceData={item.expand?.announceId}
 					/>
 				{:else}
 					<RecipientBubble
-						date={item.date}
+						date={item.created}
 						message={item.content}
 						collectionId={item.collectionId}
 						contenType={item.contentType}
 						recordId={item.id}
-						images={item.photos}
+						photos={item.photos}
+						announceData={item.expand?.announceId}
 					/>
 				{/if}
 			{/each}

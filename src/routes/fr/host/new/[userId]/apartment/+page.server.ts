@@ -1,8 +1,8 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
-import { superValidate, message } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 
 export const load = (async ({ parent }) => {
 	await parent();
@@ -12,16 +12,16 @@ export const load = (async ({ parent }) => {
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-	default: async ({ request, locals, params }) => {
+	default: async ({ request, locals }) => {
 		const form = await superValidate(request, zod(formSchema));
 
+		console.log(form);
 		if (!form.valid) {
 			// Again, return { form } and things will just work.
 			return fail(400, { form });
 		}
 
 		// TODO: Do something with the validated form.data
-		let announceId = '';
 
 		if (form.data.commune === undefined) form.data.commune = '';
 

@@ -52,7 +52,7 @@
 							<div class=" w-full">
 								<Tooltip.Root>
 									<Tooltip.Trigger>
-										<Button variant="ghost" size="icon">
+										<Button href="/fr/{data.user?.id}/m" variant="ghost" size="icon">
 											<ChatBubble class="size-4" />
 										</Button>
 									</Tooltip.Trigger>
@@ -63,7 +63,7 @@
 							</div>
 						{:else}
 							<div class=" ">
-								<Button size="sm" variant="ghost" class="min-w-full justify-start">
+								<Button href="/fr/{data.user?.id}/m" size="sm" variant="ghost" class="min-w-full justify-start">
 									<span class="flex items-center">
 										<ChatBubble class="mr-4 size-4" /> Messages
 									</span>

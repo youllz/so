@@ -1,14 +1,7 @@
-import { error } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import {
-	Collections,
-	type AnnouncesResponse,
-	type ConversationsResponse,
-	type MessagesResponse,
-	type UsersResponse
-} from '$lib/pocketbaseType';
+import { Collections, type AnnouncesResponse, type UsersResponse } from '$lib/pocketbaseType';
 
-export const load = (async ({ locals, params }) => {
+export const load = (async ({ locals }) => {
 	const getSaved = async () => {
 		try {
 			const record = await locals.pb
@@ -38,37 +31,15 @@ export const load = (async ({ locals, params }) => {
 		}
 	};
 
-	type ConvExpand = {
-		menbers: UsersResponse[];
-		lastMessage: MessagesResponse;
-	};
-	const getAllUserConversations = async () => {
-		try {
-			const records = await locals.pb
-				.collection(Collections.Conversations)
-				.getFullList<ConversationsResponse<ConvExpand>>({
-					filter: `user1 = "${params.userId}" || user2 = "${params.userId}"`,
-					sort: '-created',
-					expand: 'menbers,lastMessage'
-				});
-
-			return records;
-		} catch (err) {
-			console.log(err);
-			throw error(400);
-		}
-	};
-
 	if (locals.pb.authStore.isValid) {
 		return {
-			user: locals.pb.authStore.model,
+			user: locals.pb.authStore.model as UsersResponse,
 			saved: await getSaved(),
-			savedData: await getSavedData(),
-			conversations: await getAllUserConversations()
+			savedData: await getSavedData()
+		};
+	} else {
+		return {
+			user: undefined
 		};
 	}
-
-	return {
-		user: undefined
-	};
 }) satisfies LayoutServerLoad;

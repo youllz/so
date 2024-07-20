@@ -19,8 +19,8 @@ export const equipments = {
 } as const;
 
 type Equipments = keyof typeof equipments;
-type TransactionTypes = keyof typeof transactionTypes;
-type States = keyof typeof states;
+// type TransactionTypes = keyof typeof transactionTypes;
+// type States = keyof typeof states;
 
 export const formSchema = z
 	.object({
@@ -60,7 +60,8 @@ export const formSchema = z
 			.instanceof(File, { message: 'Veuillez télécharger au moins une image' })
 			.refine((f) => f.size < 100_000, 'Taille de téléchargement max 100 kB.')
 			.array()
-			.min(1, { message: 'veillez selectionner au moins une image' }),
+			.min(1, { message: 'veillez selectionner au moins une image' })
+			.default([]),
 		userId: z.string().optional(),
 		city: z
 			.string({ required_error: 'Veillez sélectionner la ville' })

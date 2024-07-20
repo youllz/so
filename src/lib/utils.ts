@@ -63,7 +63,6 @@ export function firstCapitalize(mot: string) {
 	return mot.charAt(0).toUpperCase() + mot.slice(1).toLowerCase();
 }
 
-
 export function formatFCFA(amount: string) {
 	// Convert the amount to a string
 	let str = amount.toString();

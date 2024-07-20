@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"typegen": "pnpx pocketbase-typegen --out ./src/lib/pocketbase.d.ts --db ../so-backend/pb_data/data.db"
+		"typegen": "pnpx pocketbase-typegen --out ./src/lib/pocketbaseType.ts --db ../so-backend/pb_data/data.db"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -21,6 +21,7 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.7",
+		"@types/node": "^20.14.10",
 		"autoprefixer": "^10.4.16",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",

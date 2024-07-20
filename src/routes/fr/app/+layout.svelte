@@ -69,7 +69,7 @@
 
 		<ul class="flex items-center gap-4">
 			<li>
-				<Button size="sm" variant="ghost">Mettre son annonce sur SO</Button>
+				<Button href="/fr/host/home" size="sm" variant="ghost">Mettre son annonce sur SO</Button>
 			</li>
 			<li>
 				<Saved savedData={savedData?.saved?.reverse()} />
