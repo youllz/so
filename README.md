@@ -1,3 +1,40 @@
+For security concerns the database is not hosted on github
+
+# Preview
+
+<p>
+<img src="https://github.com/youllz/so/blob/master/static/images/home.png" />
+<h1>
+Announces
+</h1>
+</p>
+
+<br></br>
+
+<p>
+<img src="https://github.com/youllz/so/blob/master/static/images/filter-search.png" />
+<h1>
+Search
+</h1>
+</p>
+
+<br></br>
+
+<p>
+<img src="https://github.com/youllz/so/blob/master/static/images/dashboard.png" />
+<h1>
+Dashboard
+</h1>
+
+</p>
+<br></br>
+<p>
+<img src="https://github.com/youllz/so/blob/master/static/images/chat.png" />
+<h1>
+Real time chat
+</h1>
+</p>
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
