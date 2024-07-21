@@ -555,7 +555,6 @@
 						on:click={addImage}>Ajouter une image</Button
 					>
 				</fieldset>
-
 			</div>
 		</div>
 

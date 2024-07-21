@@ -90,7 +90,6 @@
 		/>
 	</Header>
 
-	/>
 	<Images
 		allImages={announce.images}
 		collectionId={announce.collectionId}
@@ -331,7 +330,6 @@
 					</div>
 
 					<div class="mt-6">
-						{announce.expand?.userId.pass}
 						{#if announce.expand?.userId.pass === 'pro'}
 							{#if user?.id !== annonceUserId}
 								<Dialog.Root>

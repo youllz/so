@@ -63,7 +63,12 @@
 							</div>
 						{:else}
 							<div class=" ">
-								<Button href="/fr/{data.user?.id}/m" size="sm" variant="ghost" class="min-w-full justify-start">
+								<Button
+									href="/fr/{data.user?.id}/m"
+									size="sm"
+									variant="ghost"
+									class="min-w-full justify-start"
+								>
 									<span class="flex items-center">
 										<ChatBubble class="mr-4 size-4" /> Messages
 									</span>

@@ -147,7 +147,6 @@
 	function addImage() {
 		$formData.images = [...$formData.images, file];
 	}
-	
 </script>
 
 <!-- <div class="">

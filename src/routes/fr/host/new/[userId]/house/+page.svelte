@@ -143,7 +143,7 @@
 	let placeholder2: DateValue = today(getLocalTimeZone());
 
 	// dinamic file input
-	
+
 	function removeImageByIndex(index: number) {
 		$formData.images = $formData.images.filter((_, i) => i !== index);
 	}
@@ -630,7 +630,6 @@
 						on:click={addImage}>Ajouter une image</Button
 					>
 				</fieldset>
-
 			</div>
 		</div>
 
